@@ -82,4 +82,4 @@ theme_config:
 deploy:
   type: git
   repo: git@github.com:ChocoCLv/ChocoClv.github.io.git
-  branch: release
+  branch: master
