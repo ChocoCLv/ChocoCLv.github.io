@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="蘑菇街直播部门的秋招面试回顾">
+<meta name="keywords" content="面试,蘑菇街,序列化,tomcat,热部署,classloader,netty,动态代理,线程池,mybatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蘑菇街直播部门面试拾遗">
+<meta property="og:url" content="http://yoursite.com/2019/09/16/蘑菇街直播部门面试拾遗/index.html">
+<meta property="og:site_name" content="窝边草">
+<meta property="og:description" content="蘑菇街直播部门的秋招面试回顾">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/imgs/1568616201479.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1568616256447.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1568616306911.png">
+<meta property="og:updated_time" content="2019-09-17T16:30:40.342Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="蘑菇街直播部门面试拾遗">
+<meta name="twitter:description" content="蘑菇街直播部门的秋招面试回顾">
+<meta name="twitter:image" content="http://yoursite.com/imgs/1568616201479.png">
+  <link rel="canonical" href="http://yoursite.com/2019/09/16/蘑菇街直播部门面试拾遗/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>蘑菇街直播部门面试拾遗 | 窝边草</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?859cee8f5da7a00121e9a0bef911e58c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">窝边草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-commonweal">
+      
+    
+
+    <a href="/404.html" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/蘑菇街直播部门面试拾遗/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">蘑菇街直播部门面试拾遗
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-16 00:27:19" itemprop="dateCreated datePublished" datetime="2019-09-16T00:27:19+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-18 00:30:40" itemprop="dateModified" datetime="2019-09-18T00:30:40+08:00">2019-09-18</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>蘑菇街直播部门的秋招面试回顾</p>
+<a id="more"></a>
+
+<h1 id="蘑菇街一面记录"><a href="#蘑菇街一面记录" class="headerlink" title="蘑菇街一面记录"></a>蘑菇街一面记录</h1><h2 id="不同序列化方式对比"><a href="#不同序列化方式对比" class="headerlink" title="不同序列化方式对比"></a>不同序列化方式对比</h2><p>序列化实际上就是将内存中的数据以一定格式表达出来，序列化后的数据可以存储在本地也可以在网络上传输。对于Java对象而言，序列化的内容可能会包括类的继承关系。</p>
+<p>序列化可以分为文本和二进制两种形式。</p>
+<p>其中Json/XML为文本格式，比如Spring中从xml加载bean的定义并实例化实际上就是一个使用xml反序列化的过程。文本格式的序列化可读性好，但是性能差。一般应用于前后端交互接口。</p>
+<p>对于RPC框架而言，需要追求极致性能，一般会考虑使用二进制序列化。二进制序列化往往会对数据进行压缩，使用尽可能小的数据量表达更多的信息。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hessian</td>
+<td>默认支持跨语言</td>
+<td>较慢</td>
+</tr>
+<tr>
+<td>Protostuff</td>
+<td>速度快，基于protobuf</td>
+<td>需静态编译</td>
+</tr>
+<tr>
+<td>Protostuff-Runtime</td>
+<td>无需静态编译，但序列化前需预先传入schema</td>
+<td>不支持无默认构造函数的类，反序列化时需用户自己初始化序列化后的对象，其只负责将该对象进行赋值</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>使用方便，可序列化所有类</td>
+<td>速度慢，占空间</td>
+</tr>
+<tr>
+<td>Kryo</td>
+<td>速度快，序列化后体积小</td>
+<td>跨语言支持较复杂</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>hsf/dubbo默认使用的hessian2改造后的hessian lite。</p>
+</blockquote>
+<h3 id="不同序列化生成的字节码大小"><a href="#不同序列化生成的字节码大小" class="headerlink" title="不同序列化生成的字节码大小"></a>不同序列化生成的字节码大小</h3><p><img src="/imgs/1568616201479.png" alt="1568616201479"></p>
+<h3 id="平均响应时间"><a href="#平均响应时间" class="headerlink" title="平均响应时间"></a>平均响应时间</h3><p><img src="/imgs/1568616256447.png" alt="1568616256447"></p>
+<h3 id="tps"><a href="#tps" class="headerlink" title="tps"></a>tps</h3><p><img src="/imgs/1568616306911.png" alt="1568616306911"></p>
+<h2 id="netty的线程模型，如何拆包"><a href="#netty的线程模型，如何拆包" class="headerlink" title="netty的线程模型，如何拆包"></a>netty的线程模型，如何拆包</h2><p>netty使用了Reactor主从多线程模型。</p>
+<p><a href="https://www.jianshu.com/p/128ddc36e713" target="_blank" rel="noopener">https://www.jianshu.com/p/128ddc36e713</a></p>
+<p>netty提供了多种拆包方式，当然也可以用户自定义协议。</p>
+<ul>
+<li>DelimiterBasedFrameDecoder是基于消息边界方式进行粘包拆包处理的。</li>
+<li>FixedLengthFrameDecoder是基于固定长度消息进行粘包拆包处理的。</li>
+<li>LengthFieldBasedFrameDecoder是基于消息头指定消息长度进行粘包拆包处理的。</li>
+<li>LineBasedFrameDecoder是基于行来进行消息粘包拆包处理的。</li>
+</ul>
+<h2 id="代理的实现方式，以及对比"><a href="#代理的实现方式，以及对比" class="headerlink" title="代理的实现方式，以及对比"></a>代理的实现方式，以及对比</h2><p>静态代理 动态代理</p>
+<table>
+<thead>
+<tr>
+<th>动态代理</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>jdk</td>
+<td>被代理对象必须要实现接口，实际上是对接口的代理</td>
+</tr>
+<tr>
+<td>cglib</td>
+<td>是一个强大的高性能的代码生成包,它可以在运行期扩展java类与实现java接口。底层使用ASM字节码框架实现。</td>
+</tr>
+<tr>
+<td>asm</td>
+<td>低级的字节码生成工具，还可以用于热部署、性能诊断和mock，参考<a href="https://tech.meituan.com/2019/09/05/java-bytecode-enhancement.html" target="_blank" rel="noopener">https://tech.meituan.com/2019/09/05/java-bytecode-enhancement.html</a></td>
+</tr>
+</tbody></table>
+<p>性能上asm&gt;cglib&gt;jdk</p>
+<p>在1.6和1.7的时候，JDK动态代理的速度要比CGLib动态代理的速度要慢，但是并没有教科书上的10倍差距，在JDK1.8的时候，JDK动态代理的速度已经比CGLib动态代理的速度快很多了</p>
+<h2 id="线程池参数设置问题"><a href="#线程池参数设置问题" class="headerlink" title="线程池参数设置问题"></a>线程池参数设置问题</h2><p>如何设置合适的值，io密集，cpu密集</p>
+<h3 id="线程池参数"><a href="#线程池参数" class="headerlink" title="线程池参数"></a>线程池参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+<th>注意</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>corePoolSize</td>
+<td>核心线程数</td>
+<td></td>
+</tr>
+<tr>
+<td>maxPoolSize</td>
+<td>最大线程数</td>
+<td></td>
+</tr>
+<tr>
+<td>keepAliveTime</td>
+<td>核心线程池外线程的存活时间</td>
+<td>核心线程默认不会被回收，但是可以显式指定</td>
+</tr>
+<tr>
+<td>rejectedExecutionHandler</td>
+<td>拒绝策略，</td>
+<td>当线程池满并且任务队列满时拒绝</td>
+</tr>
+<tr>
+<td>threadFactory</td>
+<td>线程工厂</td>
+<td></td>
+</tr>
+<tr>
+<td>workQueue</td>
+<td>任务队列</td>
+<td>注意设置队列长度</td>
+</tr>
+</tbody></table>
+<h3 id="如何设置"><a href="#如何设置" class="headerlink" title="如何设置"></a>如何设置</h3><p>参数的设置跟系统的负载有直接的关系，下面为系统负载的相关参数：</p>
+<ul>
+<li>tasks，每秒需要处理的最大任务数量</li>
+<li>tasktime，处理第个任务所需要的时间</li>
+<li>responsetime，系统允许任务最大的响应时间，比如每个任务的响应时间不得超过2秒。</li>
+</ul>
+<h4 id="corePoolSize"><a href="#corePoolSize" class="headerlink" title="corePoolSize:"></a>corePoolSize:</h4><p>每个任务需要tasktime秒处理，则每个线程每钞可处理1/tasktime个任务。系统每秒有tasks个任务需要处理，则需要的线程数为：tasks/(1/tasktime)，即tasks<em>tasktime个线程数。假设系统每秒任务数为100~1000，每个任务耗时0.1秒，则需要100</em>0.1至1000*0.1，即10~100个线程。那么corePoolSize应该设置为大于10，具体数字最好根据8020原则，即80%情况下系统每秒任务数，若系统80%的情况下第秒任务数小于200，最多时为1000，则corePoolSize可设置为20。</p>
+<h4 id="queueCapacity"><a href="#queueCapacity" class="headerlink" title="queueCapacity:"></a>queueCapacity:</h4><p>任务队列的长度要根据核心线程数，以及系统对任务响应时间的要求有关。队列长度可以设置为(corePoolSize/tasktime)<em>responsetime： (20/0.1)</em>2=400，即队列长度可设置为400。</p>
+<h4 id="maxPoolSize"><a href="#maxPoolSize" class="headerlink" title="maxPoolSize:"></a>maxPoolSize:</h4><p>当系统负载达到最大值时，核心线程数已无法按时处理完所有任务，这时就需要增加线程。每秒200个任务需要20个线程，那么当每秒达到1000个任务时，则需要(1000-queueCapacity)*(20/200)，即60个线程，可将maxPoolSize设置为60。</p>
+<h4 id="cpu密集-io密集"><a href="#cpu密集-io密集" class="headerlink" title="cpu密集 io密集"></a>cpu密集 io密集</h4><p>CPU密集型任务应配置尽可能小的线程，如配置CPU个数+1的线程数，IO密集型任务应配置尽可能多的线程，因为IO操作不占用CPU，不要让CPU闲下来，应加大线程数量，如配置两倍CPU个数+1，而对于混合型的任务，如果可以拆分，拆分成IO密集型和CPU密集型分别处理，前提是两者运行的时间是差不多的，如果处理时间相差很大，则没必要拆分了。</p>
+<h2 id="任务调度引擎vs消息队列"><a href="#任务调度引擎vs消息队列" class="headerlink" title="任务调度引擎vs消息队列"></a>任务调度引擎vs消息队列</h2><p>为什么要使用任务调度引擎，而不是直接使用消息队列。</p>
+<h2 id="mybatis"><a href="#mybatis" class="headerlink" title="mybatis"></a>mybatis</h2><h3 id="调用mybatis接口时发生了什么"><a href="#调用mybatis接口时发生了什么" class="headerlink" title="调用mybatis接口时发生了什么"></a>调用mybatis接口时发生了什么</h3><blockquote>
+<ol>
+<li><p>Mapper 接口在初始SqlSessionFactory 注册的。</p>
+</li>
+<li><p>Mapper 接口注册在了名为 MapperRegistry 类的 HashMap中， key = Mapper class value = 创建当前Mapper的工厂。</p>
+</li>
+<li><p>Mapper 注册之后，可以从SqlSession中get</p>
+</li>
+<li><p>SqlSession.getMapper 运用了 JDK动态代理，产生了目标Mapper接口的代理对象。</p>
+</li>
+<li><p>动态代理的 代理类是 MapperProxy ，这里边最终完成了增删改查方法的调用。</p>
+<p><a href="https://www.cnblogs.com/demingblog/p/9544774.html" target="_blank" rel="noopener">https://www.cnblogs.com/demingblog/p/9544774.html</a></p>
+</li>
+</ol>
+</blockquote>
+<h3 id="无spring使用mybatis"><a href="#无spring使用mybatis" class="headerlink" title="无spring使用mybatis"></a>无spring使用mybatis</h3><ol>
+<li>使用xml配置文件创建SqlSessionFactory</li>
+<li>从SqlSessionFactory中获取session</li>
+<li>从session中获取mapper，传入mapper.class</li>
+<li>调用mapper接口的方法</li>
+</ol>
+<h3 id="spring如何加载mybatis"><a href="#spring如何加载mybatis" class="headerlink" title="spring如何加载mybatis"></a>spring如何加载mybatis</h3><ul>
+<li>构建SqlSessionFactory，实现InitializingBean接口，在afterPropertiesSet中buildSqlSessionFactory。</li>
+<li>把Mappers注入到Spring容器管理</li>
+</ul>
+<h2 id="tomcat-reload时classloader干了啥"><a href="#tomcat-reload时classloader干了啥" class="headerlink" title="tomcat reload时classloader干了啥"></a>tomcat reload时classloader干了啥</h2><p>使用新的classloader加载后旧的类没有关联的实例对象后将被回收（不是马上）。</p>
+<p>tomcat的reloadable属性实际上是配置热部署，即检测到WEB-INF/classes和WEB-INF/lib目录下class文件有改动后会重新加载。</p>
+<h3 id="自定义classloader"><a href="#自定义classloader" class="headerlink" title="自定义classloader"></a>自定义classloader</h3><p>Java使用classloader+类全限定名来唯一确定一个类，一种热部署方案是使用新的classloader加载修改后的class文件，这样加载后将使用新的类创建实例。但是在实际应用中很多类对象都是单例的，这种机制无法工作。tomcat的热部署也不是使用这种方案。</p>
+<h3 id="java-lang-instrument"><a href="#java-lang-instrument" class="headerlink" title="java.lang.instrument"></a>java.lang.instrument</h3><p>Tomcat中的class文件是通过org.apache.catalina.loader. WebappClassLoader装载的。</p>
+<p>在热部署的情况下，对于被该classloader 加载的class文件，它的classloader始终是同一个WebappClassLoader，除非容器重启了，相信做完这个实验你就不会再认为tomcat是使用一个新的classloader来加载修改过的class了，而且对于有状态的实例，之前该实例拥有的属性和状态都将保存，并在下次执行时拥有了新的class的逻辑，这就是热部署的神秘之处（其实每个实例只是保存了该实例的状态属性，我们通过序列化对象就能看到对象中包含的状态，最终的逻辑还是存在于class文件中）。</p>
+<p>class重定义是通过：java.lang.instrument实现的，具体可参考相关文档。</p>
+<h1 id="二面"><a href="#二面" class="headerlink" title="二面"></a>二面</h1><h2 id="metaq如何保证可靠性"><a href="#metaq如何保证可靠性" class="headerlink" title="metaq如何保证可靠性"></a>metaq如何保证可靠性</h2><h3 id="发送阶段"><a href="#发送阶段" class="headerlink" title="发送阶段"></a>发送阶段</h3><ul>
+<li>提供同步发送/异步发送+回调的方式，获取发送结果</li>
+<li>超时/失败重新发送</li>
+<li>broker提供多主模式</li>
+</ul>
+<h3 id="处理阶段"><a href="#处理阶段" class="headerlink" title="处理阶段"></a>处理阶段</h3><ul>
+<li>提供同步刷盘策略</li>
+<li>提供主从模式，同步双写</li>
+</ul>
+<h3 id="消费阶段"><a href="#消费阶段" class="headerlink" title="消费阶段"></a>消费阶段</h3><ul>
+<li>at least onece，consumer pull消息到本地，消费成功后提交ack</li>
+<li>重新消费消息</li>
+</ul>
+<p>[RocketMQ保证消息不丢失的手段](<a href="http://silence.work/2019/05/04/RocketMQ" target="_blank" rel="noopener">http://silence.work/2019/05/04/RocketMQ</a> Reliablity/)</p>
+<h2 id="对比notify-metaq"><a href="#对比notify-metaq" class="headerlink" title="对比notify/metaq"></a>对比notify/metaq</h2><table>
+<thead>
+<tr>
+<th>notify</th>
+<th>metaq</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>消息堆积能力强</td>
+<td>使用队列模型，借鉴metaq，侧重顺序消息</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="TODO-iss的同时有大量任务需要调度怎么办"><a href="#TODO-iss的同时有大量任务需要调度怎么办" class="headerlink" title="TODO iss的同时有大量任务需要调度怎么办"></a>TODO iss的同时有大量任务需要调度怎么办</h2><p>对于周期任务，比如周期为2s，当某次执行时间超过了两秒，怎么办</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+            
+              <a href="/tags/蘑菇街/" rel="tag"><i class="fa fa-tag"></i> 蘑菇街</a>
+            
+              <a href="/tags/序列化/" rel="tag"><i class="fa fa-tag"></i> 序列化</a>
+            
+              <a href="/tags/tomcat/" rel="tag"><i class="fa fa-tag"></i> tomcat</a>
+            
+              <a href="/tags/热部署/" rel="tag"><i class="fa fa-tag"></i> 热部署</a>
+            
+              <a href="/tags/classloader/" rel="tag"><i class="fa fa-tag"></i> classloader</a>
+            
+              <a href="/tags/netty/" rel="tag"><i class="fa fa-tag"></i> netty</a>
+            
+              <a href="/tags/动态代理/" rel="tag"><i class="fa fa-tag"></i> 动态代理</a>
+            
+              <a href="/tags/线程池/" rel="tag"><i class="fa fa-tag"></i> 线程池</a>
+            
+              <a href="/tags/mybatis/" rel="tag"><i class="fa fa-tag"></i> mybatis</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/16/腾讯CSIG面试拾遗/" rel="next" title="腾讯CSIG面试拾遗">
+                  <i class="fa fa-chevron-left"></i> 腾讯CSIG面试拾遗
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/16/招银网络科技面试拾遗/" rel="prev" title="招银网络科技面试拾遗">
+                  招银网络科技面试拾遗 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#蘑菇街一面记录"><span class="nav-number">1.</span> <span class="nav-text">蘑菇街一面记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不同序列化方式对比"><span class="nav-number">1.1.</span> <span class="nav-text">不同序列化方式对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不同序列化生成的字节码大小"><span class="nav-number">1.1.1.</span> <span class="nav-text">不同序列化生成的字节码大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平均响应时间"><span class="nav-number">1.1.2.</span> <span class="nav-text">平均响应时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tps"><span class="nav-number">1.1.3.</span> <span class="nav-text">tps</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#netty的线程模型，如何拆包"><span class="nav-number">1.2.</span> <span class="nav-text">netty的线程模型，如何拆包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理的实现方式，以及对比"><span class="nav-number">1.3.</span> <span class="nav-text">代理的实现方式，以及对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程池参数设置问题"><span class="nav-number">1.4.</span> <span class="nav-text">线程池参数设置问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池参数"><span class="nav-number">1.4.1.</span> <span class="nav-text">线程池参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何设置"><span class="nav-number">1.4.2.</span> <span class="nav-text">如何设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#corePoolSize"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">corePoolSize:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#queueCapacity"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">queueCapacity:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#maxPoolSize"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">maxPoolSize:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cpu密集-io密集"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">cpu密集 io密集</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务调度引擎vs消息队列"><span class="nav-number">1.5.</span> <span class="nav-text">任务调度引擎vs消息队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mybatis"><span class="nav-number">1.6.</span> <span class="nav-text">mybatis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调用mybatis接口时发生了什么"><span class="nav-number">1.6.1.</span> <span class="nav-text">调用mybatis接口时发生了什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无spring使用mybatis"><span class="nav-number">1.6.2.</span> <span class="nav-text">无spring使用mybatis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring如何加载mybatis"><span class="nav-number">1.6.3.</span> <span class="nav-text">spring如何加载mybatis</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tomcat-reload时classloader干了啥"><span class="nav-number">1.7.</span> <span class="nav-text">tomcat reload时classloader干了啥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义classloader"><span class="nav-number">1.7.1.</span> <span class="nav-text">自定义classloader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang-instrument"><span class="nav-number">1.7.2.</span> <span class="nav-text">java.lang.instrument</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二面"><span class="nav-number">2.</span> <span class="nav-text">二面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#metaq如何保证可靠性"><span class="nav-number">2.1.</span> <span class="nav-text">metaq如何保证可靠性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发送阶段"><span class="nav-number">2.1.1.</span> <span class="nav-text">发送阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理阶段"><span class="nav-number">2.1.2.</span> <span class="nav-text">处理阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消费阶段"><span class="nav-number">2.1.3.</span> <span class="nav-text">消费阶段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对比notify-metaq"><span class="nav-number">2.2.</span> <span class="nav-text">对比notify/metaq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TODO-iss的同时有大量任务需要调度怎么办"><span class="nav-number">2.3.</span> <span class="nav-text">TODO iss的同时有大量任务需要调度怎么办</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/avatar.jpg"
+      alt="ChocoCLv">
+  <p class="site-author-name" itemprop="name">ChocoCLv</p>
+  <div class="site-description" itemprop="description">兔子🐇和窝边草🌱</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/ChocoCLv" title="GitHub &rarr; https://github.com/ChocoCLv" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:choco_cl@163.com" title="E-Mail &rarr; mailto:choco_cl@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yihuan18.github.io" title="https://yihuan18.github.io" rel="noopener" target="_blank">🐇</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ChocoCLv</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

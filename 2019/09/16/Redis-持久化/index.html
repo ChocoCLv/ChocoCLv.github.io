@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Redis支持RDB和AOF持久化机制，注意持久化机制并不完全等同于主从复制原理。RDB将内存数据以文件保存在本地，会对数据进行压缩，适合备份、全量复制等场景。AOF以独立日志的方式记录每次写命令，类似mysql的binlog。解决了RDB的实时性问题。">
+<meta name="keywords" content="redis,持久化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis:持久化">
+<meta property="og:url" content="http://yoursite.com/2019/09/16/Redis-持久化/index.html">
+<meta property="og:site_name" content="窝边草">
+<meta property="og:description" content="Redis支持RDB和AOF持久化机制，注意持久化机制并不完全等同于主从复制原理。RDB将内存数据以文件保存在本地，会对数据进行压缩，适合备份、全量复制等场景。AOF以独立日志的方式记录每次写命令，类似mysql的binlog。解决了RDB的实时性问题。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/imgs/1568637625579.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1568721676828.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1568723757563.png">
+<meta property="og:updated_time" content="2019-09-17T16:30:40.340Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis:持久化">
+<meta name="twitter:description" content="Redis支持RDB和AOF持久化机制，注意持久化机制并不完全等同于主从复制原理。RDB将内存数据以文件保存在本地，会对数据进行压缩，适合备份、全量复制等场景。AOF以独立日志的方式记录每次写命令，类似mysql的binlog。解决了RDB的实时性问题。">
+<meta name="twitter:image" content="http://yoursite.com/imgs/1568637625579.png">
+  <link rel="canonical" href="http://yoursite.com/2019/09/16/Redis-持久化/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Redis:持久化 | 窝边草</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?859cee8f5da7a00121e9a0bef911e58c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">窝边草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-commonweal">
+      
+    
+
+    <a href="/404.html" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/Redis-持久化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Redis:持久化
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-16 00:04:06" itemprop="dateCreated datePublished" datetime="2019-09-16T00:04:06+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-18 00:30:40" itemprop="dateModified" datetime="2019-09-18T00:30:40+08:00">2019-09-18</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Redis支持RDB和AOF持久化机制，注意持久化机制并不完全等同于主从复制原理。RDB将内存数据以文件保存在本地，会对数据进行压缩，适合备份、全量复制等场景。AOF以独立日志的方式记录每次写命令，类似mysql的binlog。解决了RDB的实时性问题。</p>
+<a id="more"></a>
+
+<h1 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h1><h2 id="触发机制"><a href="#触发机制" class="headerlink" title="触发机制"></a>触发机制</h2><p>将当前进程数据生成快照保存到硬盘。RDB持久化可以手动触发也可以自动触发。</p>
+<table>
+<thead>
+<tr>
+<th>触发机制</th>
+<th>触发方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>手动触发</td>
+<td>save：阻塞当前服务器直到持久化完成，以废弃</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>bgsave：fork子进程，阻塞只发生在fork阶段</td>
+<td></td>
+</tr>
+<tr>
+<td>自动触发</td>
+<td>save m n：m秒内达到n次修改时触发</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>从节点执行全量复制，主节点自动bgsave</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>debug reload</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>shutdown时如果没有开启AOF则bgsave</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="bgsave流程"><a href="#bgsave流程" class="headerlink" title="bgsave流程"></a>bgsave流程</h2><img src="/imgs/1568637625579.png" alt="1568637625579" style="zoom:50%;">
+
+<h2 id="RDB文件的处理"><a href="#RDB文件的处理" class="headerlink" title="RDB文件的处理"></a>RDB文件的处理</h2><ul>
+<li>默认采用LZF算法进行压缩，压缩后的文件大小远远小于内存大小，默认开启</li>
+<li>加载损坏的RDB文件时拒绝启动</li>
+</ul>
+<h2 id="RDB的优缺点"><a href="#RDB的优缺点" class="headerlink" title="RDB的优缺点"></a>RDB的优缺点</h2><p>优点：</p>
+<ul>
+<li>文件紧凑压缩，适合备份、全量复制</li>
+<li>数据恢复快</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>无法实时持久化</li>
+<li>存在多个版本的RDB文件格式</li>
+</ul>
+<h1 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h1><p>以独立日志的方式记录每次写命令，类似mysql的binlog。解决了RDB的实时性问题。</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><img src="/imgs/1568721676828.png" alt="1568721676828" style="zoom:50%;">
+
+<ul>
+<li>AOF并不是直接将命令写入磁盘，而是先写入缓冲，通过提供不同的刷盘策略在性能和安全性方面做出平衡。</li>
+<li>刷盘策略有：实时刷盘；每秒刷盘；操作系统负责刷盘（存在page cache）</li>
+<li>随着AOF文件越来越大，不仅占空间，而且数据恢复时间也会很长，所以需要定期重写AOF，对AOF文件进行压缩。（删除无效命令、合并多条命令）。</li>
+<li>重启恢复数据时优先使用aof</li>
+</ul>
+<h2 id="AOF重写流程"><a href="#AOF重写流程" class="headerlink" title="AOF重写流程"></a>AOF重写流程</h2><ol>
+<li>fork子进程对AOF进行重写</li>
+<li>重写期间父进程将命令写到aof缓冲区和aof_rewrite缓冲区</li>
+<li>子进程重写完成后，父进程将重写缓冲区的数据写到新的aof文件</li>
+<li>使用新的aof文件替换老文件</li>
+</ol>
+<h1 id="持久化可能带来的问题"><a href="#持久化可能带来的问题" class="headerlink" title="持久化可能带来的问题"></a>持久化可能带来的问题</h1><h2 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h2><p>不管是RDB还是AOF，都需要fork子进程持久化，而fork需要复制父进程的空间内存页表，耗时与内存大小密切相关。</p>
+<ul>
+<li>控制redis最大可用内存</li>
+<li>合理配置Linux内存分配策略，避免fork时物理内存不足</li>
+<li>避免不必要的全量复制</li>
+</ul>
+<h2 id="子进程开销"><a href="#子进程开销" class="headerlink" title="子进程开销"></a>子进程开销</h2><p>针对子进程的RDB AOF文件重写任务</p>
+<ul>
+<li>CPU密集操作，不要绑定单核CPU，不要跟其他CPU密集服务部署在仪器</li>
+<li>Linux有COW机制，父子进程共享物理内存页，父进程把需要修改的页创建副本，避免在大量写入时进行重写。</li>
+<li>在AOF重写期间不做刷盘</li>
+</ul>
+<h2 id="AOF刷盘阻塞"><a href="#AOF刷盘阻塞" class="headerlink" title="AOF刷盘阻塞"></a>AOF刷盘阻塞</h2><p>对于每秒刷盘的策略，redis使用子线程同步硬盘，如果硬盘资源繁忙，会造成主线程阻塞。</p>
+<img src="/imgs/1568723757563.png" alt="1568723757563" style="zoom: 33%;">
+
+<ul>
+<li>如果同步慢，会阻塞主线程</li>
+<li>最多丢失两秒数据</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+            
+              <a href="/tags/持久化/" rel="tag"><i class="fa fa-tag"></i> 持久化</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/16/腾讯CSIG面试拾遗/" rel="prev" title="腾讯CSIG面试拾遗">
+                  腾讯CSIG面试拾遗 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RDB"><span class="nav-number">1.</span> <span class="nav-text">RDB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#触发机制"><span class="nav-number">1.1.</span> <span class="nav-text">触发机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bgsave流程"><span class="nav-number">1.2.</span> <span class="nav-text">bgsave流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB文件的处理"><span class="nav-number">1.3.</span> <span class="nav-text">RDB文件的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB的优缺点"><span class="nav-number">1.4.</span> <span class="nav-text">RDB的优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AOF"><span class="nav-number">2.</span> <span class="nav-text">AOF</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#工作流程"><span class="nav-number">2.1.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF重写流程"><span class="nav-number">2.2.</span> <span class="nav-text">AOF重写流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#持久化可能带来的问题"><span class="nav-number">3.</span> <span class="nav-text">持久化可能带来的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">3.1.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子进程开销"><span class="nav-number">3.2.</span> <span class="nav-text">子进程开销</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF刷盘阻塞"><span class="nav-number">3.3.</span> <span class="nav-text">AOF刷盘阻塞</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/avatar.jpg"
+      alt="ChocoCLv">
+  <p class="site-author-name" itemprop="name">ChocoCLv</p>
+  <div class="site-description" itemprop="description">兔子🐇和窝边草🌱</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/ChocoCLv" title="GitHub &rarr; https://github.com/ChocoCLv" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:choco_cl@163.com" title="E-Mail &rarr; mailto:choco_cl@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yihuan18.github.io" title="https://yihuan18.github.io" rel="noopener" target="_blank">🐇</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ChocoCLv</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
