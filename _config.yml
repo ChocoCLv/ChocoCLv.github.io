@@ -75,6 +75,12 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: next
 theme_config:
+  avatar:
+    url: /uploads/avatar.jpg #/images/avatar.gif
+    # If true, the avatar would be dispalyed in circle.
+    rounded: true
+    # If true, the avatar would be rotated with the cursor.
+    rotated: true
 
 
 # Deployment
