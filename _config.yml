@@ -8,7 +8,7 @@ subtitle:
 description: 兔子🐇和窝边草🌱
 keywords:
 author: ChocoCLv
-language: en
+language: zh-CN
 timezone:
 
 # URL
@@ -73,9 +73,9 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: cactus
+theme: next
 theme_config:
-  colorscheme: dark
+
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -83,3 +83,9 @@ deploy:
   type: git
   repo: git@github.com:ChocoCLv/ChocoClv.github.io.git
   branch: master
+
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
