@@ -56,17 +56,21 @@
   };
 </script>
 
-  <meta name="description" content="兔子🐇和窝边草🌱">
-<meta property="og:type" content="website">
-<meta property="og:title" content="窝边草">
-<meta property="og:url" content="http://yoursite.com/tags/面试/index.html">
+  <meta name="description" content="一面就凉">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cvte一面凉">
+<meta property="og:url" content="http://yoursite.com/2019/09/18/cvte一面凉/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="兔子🐇和窝边草🌱">
+<meta property="og:description" content="一面就凉">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/C:/Users/choco/AppData/Roaming/Typora/typora-user-images/1568818000255.png">
+<meta property="og:updated_time" content="2019-09-18T15:07:41.296Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="窝边草">
-<meta name="twitter:description" content="兔子🐇和窝边草🌱">
-  <link rel="canonical" href="http://yoursite.com/tags/面试/">
+<meta name="twitter:title" content="cvte一面凉">
+<meta name="twitter:description" content="一面就凉">
+<meta name="twitter:image" content="http://yoursite.com/C:/Users/choco/AppData/Roaming/Typora/typora-user-images/1568818000255.png">
+  <link rel="canonical" href="http://yoursite.com/2019/09/18/cvte一面凉/">
 
 
 <script id="page-configurations">
@@ -74,13 +78,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>标签: 面试 | 窝边草</title>
+  <title>cvte一面凉 | 窝边草</title>
   
 
 
@@ -220,27 +224,6 @@
 
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
 </nav>
   <div class="site-search">
     <div class="popup search-popup">
@@ -279,89 +262,150 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
   
   
   
-  <div class="post-block tag">
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">面试<small>标签</small>
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/18/cvte一面凉/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">cvte一面凉
+
+          
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-18 22:39:24 / 修改时间：23:07:41" itemprop="dateCreated datePublished" datetime="2019-09-18T22:39:24+08:00">2019-09-18</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+        <p>一面就凉</p>
+<a id="more"></a>
 
-  
-  
+<h3 id="cvte凉面记录"><a href="#cvte凉面记录" class="headerlink" title="cvte凉面记录"></a>cvte凉面记录</h3><ul>
+<li><p>hashmap怎么扩容</p>
+</li>
+<li><p>hashmap大小为啥是2的幂</p>
+</li>
+<li><p>ConcurrentHashMap的读需要加锁吗，为什么不需要加，怎么保证的，put的过程</p>
+</li>
+<li><p>线程状态有哪些，怎么进入blocked</p>
+<p><img src="/C:/Users/choco/AppData/Roaming/Typora/typora-user-images/1568818000255.png" alt="1568818000255"></p>
+</li>
+<li><p>metaq的架构，不同模块的交互，比如跟nameserver的交互，如何保证高可用，存储结构</p>
+</li>
+<li><p>metaq的消息发送过程，是否要将消息落盘</p>
+</li>
+<li><p>hsf的架构，ConfigServer对比zk</p>
+<ul>
+<li><p>ConfigServer强调AP，zk强调CP，但是对于注册中心而言，AP更重要。</p>
+</li>
+<li><p>zk的水平扩展能力差//TODO 为啥</p>
+</li>
+<li><p>zk对数据一致性和持久性的保障影响了性能，但是注册中心并不太关心这些，所以hsf将不需要持久化的数据存在ConfigServer中，将需要持久化的服务元数据存在redis中</p>
+</li>
+<li><p>zk使用tcp长连接的状态来判断服务状态，不一定可靠</p>
+<blockquote>
+<p>注册中心应该提供更丰富的健康监测方案，服务的健康与否的逻辑应该开放给服务提供方自己定义，而不是一刀切搞成了 TCP 活性检测！</p>
+</blockquote>
+</li>
+<li><p>zk的原生客户端在注册中心宕机时无法完成服务调用，</p>
+<blockquote>
+<p>服务调用（请求响应流）链路应该是弱依赖注册中心，必须仅在服务发布，机器上下线，服务扩缩容等必要时才依赖注册中心。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p><a href="http://jm.taobao.org/2018/06/13/%E5%81%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%9F/" target="_blank" rel="noopener">http://jm.taobao.org/2018/06/13/%E5%81%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%9F/</a></p>
+<ul>
+<li>mysql索引命中的问题，(a,b,c)联合索引，where a=1 and b!=1 and c=1会命中索引吗</li>
+<li>redis持久化介绍</li>
+<li>项目中tddl怎么分库分表的，cbCode怎么生成的</li>
+</ul>
 
-  
+    </div>
+
     
-    <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
-    </div>
-  
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
+    
+    
         
-          <a class="post-title-link" href="/2019/09/18/cvte一面凉/" itemprop="url">
-            <span itemprop="name">cvte一面凉</span>
-          </a>
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+            
+          </div>
         
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-18T22:39:24+08:00"
-              content="2019-09-18">
-          09-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-
-  
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
         
-          <a class="post-title-link" href="/2019/09/16/蘑菇街直播部门面试拾遗/" itemprop="url">
-            <span itemprop="name">蘑菇街直播部门面试拾遗</span>
-          </a>
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/18/关于hashmap的那点事儿/" rel="next" title="关于hashmap的那点事儿">
+                  <i class="fa fa-chevron-left"></i> 关于hashmap的那点事儿
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
         
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-16T00:27:19+08:00"
-              content="2019-09-16">
-          09-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    </div>
+      </footer>
+    
   </div>
   
   
   
+  </article>
 
-  
-
+  </div>
 
 
           </div>
@@ -380,6 +424,11 @@
 
   <aside class="sidebar">
     <div class="sidebar-inner">
+        
+        
+        
+        
+      
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -392,6 +441,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#cvte凉面记录"><span class="nav-number">1.</span> <span class="nav-text">cvte凉面记录</span></a></li></ol></div>
+        
       </div>
       <!--/noindex-->
 
