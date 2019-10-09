@@ -56,17 +56,19 @@
   };
 </script>
 
-  <meta name="description" content="兔子🐇和窝边草🌱">
+  <meta name="description" content="两个队列实现栈  123456789101112131415161718192021222324252627282930313233import java.util.LinkedList;import java.util.Queue;/** * 使用两个队列实现一个栈 * 只使用其中的一个队列存储所有数据 * * @param &amp;lt;T&amp;gt; */public class StackWith">
 <meta property="og:type" content="article">
 <meta property="og:title" content="招银网络科技面试拾遗">
 <meta property="og:url" content="http://yoursite.com/2019/09/16/招银网络科技面试拾遗/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="兔子🐇和窝边草🌱">
+<meta property="og:description" content="两个队列实现栈  123456789101112131415161718192021222324252627282930313233import java.util.LinkedList;import java.util.Queue;/** * 使用两个队列实现一个栈 * 只使用其中的一个队列存储所有数据 * * @param &amp;lt;T&amp;gt; */public class StackWith">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-16T15:07:38.668Z">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/12320828-9c623ad26646a550.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/500/format/webp">
+<meta property="og:updated_time" content="2019-10-09T11:25:59.716Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="招银网络科技面试拾遗">
-<meta name="twitter:description" content="兔子🐇和窝边草🌱">
+<meta name="twitter:description" content="两个队列实现栈  123456789101112131415161718192021222324252627282930313233import java.util.LinkedList;import java.util.Queue;/** * 使用两个队列实现一个栈 * 只使用其中的一个队列存储所有数据 * * @param &amp;lt;T&amp;gt; */public class StackWith">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/12320828-9c623ad26646a550.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/500/format/webp">
   <link rel="canonical" href="http://yoursite.com/2019/09/16/招银网络科技面试拾遗/">
 
 
@@ -293,11 +295,19 @@
                 
               
 
-              <time title="创建时间：2019-09-16 00:27:40 / 修改时间：23:07:38" itemprop="dateCreated datePublished" datetime="2019-09-16T00:27:40+08:00">2019-09-16</time>
+              <time title="创建时间：2019-09-16 00:27:40" itemprop="dateCreated datePublished" datetime="2019-09-16T00:27:40+08:00">2019-09-16</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-09 19:25:59" itemprop="dateModified" datetime="2019-10-09T19:25:59+08:00">2019-10-09</time>
+              </span>
             
           
 
@@ -312,7 +322,51 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <ol>
+<li>两个队列实现栈</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">import</span> java.util.Queue;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用两个队列实现一个栈</span></span><br><span class="line"><span class="comment"> * 只使用其中的一个队列存储所有数据</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackWithTwoQueues</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Queue&lt;T&gt; queueEmpty = <span class="keyword">new</span> LinkedList&lt;T&gt;();</span><br><span class="line">    <span class="keyword">private</span> Queue&lt;T&gt; queueValid = <span class="keyword">new</span> LinkedList&lt;T&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(T ele)</span> </span>&#123;</span><br><span class="line">        queueValid.add(ele);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (queueValid.isEmpty())</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (queueValid.size() != <span class="number">1</span>) &#123;</span><br><span class="line">            queueEmpty.add(queueValid.remove());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Queue&lt;T&gt; queue = queueValid;</span><br><span class="line">        queueValid = queueEmpty;</span><br><span class="line">        queueEmpty = queue;</span><br><span class="line">        <span class="keyword">return</span> queueEmpty.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>mybatis分页</p>
+<p><a href="https://www.cnblogs.com/aeolian/p/9229149.html" target="_blank" rel="noopener">mybatis的四种分页方式</a></p>
+<ul>
+<li>数组分页：查询出全部数据，然后再list中截取需要的部分。</li>
+<li>sql分页：limit offset</li>
+<li>拦截器分页</li>
+<li>RowBounds实现分页，与数组分页类似</li>
+</ul>
+</li>
+<li><p>mysql的架构</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/12320828-9c623ad26646a550.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/500/format/webp" alt="img"></p>
+</li>
+<li><p>http状态码 session cookie</p>
+</li>
+<li><p>用于统计的SQL语句，创建表时字段类型的选择</p>
+<blockquote>
+<p>记住一个原则，越小的列会越快。如果一个表只会有几列罢了（比如说字典表，配置表），那么，我们就没有理由使用 INT 来做主键，使用 MEDIUMINT, SMALLINT 或是更小的 TINYINT 会更经济一些。如果你不需要记录时间，使用 DATE 要比 DATETIME 好得多。当然，你也需要留够足够的扩展空间。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="几种时间类型的区别"><a href="#几种时间类型的区别" class="headerlink" title="几种时间类型的区别"></a>几种时间类型的区别</h3><p>存在TIME TIMESTAMP DATE DATETIME四种类型，</p>
+<p>TIME——“HH:MM:SS”</p>
+<p>DATE——‘YYYY-MM-DD’</p>
+<p>DATETIME——‘YYYY-MM-DD HH:MM:SS’</p>
+<blockquote>
+<p><strong>TIMESTAMP</strong>是标准的unix timestamp，它存储的是1970-1-1到现在经过的秒数，4字节存储。mysql用这个类型还蛮方便的，一个是有很多内置的函数和trigger来处理它，比如<code>CURRENT_TIMESTAMP</code>宏，最关键的是在取数据的时候mysql会自动帮你处理DST和时区的问题。</p>
+<p><strong>DATETIME</strong>的范围更大，好像可以从0000-00-00 00:00:00到9999-12-31 23:59:59，8字节存储，当然mysql内部肯定也是用整数而不是字符串的（说了是8字节了），所以效率不是大问题。但DATETIME不带时区，比如我在程序里生成了一个2015-05-07 15:26:00的时间（实际上是+8时区的，但这个对象可能是timezone naive）的，存到mysql里，再从不同时区的地方拿出来，这个时间可能就混了。</p>
+<p>但TIMESTAMP也有两个很大的问题：</p>
+<ol>
+<li>4字节长度限制，它只能到2038年</li>
+<li>很多时候我们希望根据用户所在地的时区显示时间而不是光显示一个服务器时间</li>
+</ol>
+<p>所以比较好的做法是，数据库中使用<strong>DATETIME</strong>，然后存时间的时候一律用程序生成<strong>UTC</strong>时间（而不是local时区的时间）存进去，取出来的时候不管想显示服务器时间还是显示用户的时间都可以处理。</p>
+</blockquote>
+<ol>
+<li>ArrayList LinkedList</li>
+<li>浏览器缓存机制</li>
+</ol>
+
     </div>
 
     
@@ -389,6 +443,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#几种时间类型的区别"><span class="nav-number">1.</span> <span class="nav-text">几种时间类型的区别</span></a></li></ol></div>
+        
       </div>
       <!--/noindex-->
 
