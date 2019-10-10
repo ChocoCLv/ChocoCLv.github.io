@@ -56,18 +56,18 @@
   };
 </script>
 
-  <meta name="description" content="数字1的个数链接：https://leetcode-cn.com/problems/number-of-digit-one/ 华为现场面试遇到该题 题目给定一个整数 n，计算所有小于等于 n 的非负整数中数字 1 出现的个数。 示例:  输入: 13输出: 6解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。  分析两种思路 横向：遍历1~n，转换为字符串后统计1的个数，">
+  <meta name="description" content="数字1的个数链接：https://leetcode-cn.com/problems/number-of-digit-one/ 华为现场面试遇到该题 题目给定一个整数 n，计算所有小于等于 n 的非负整数中数字 1 出现的个数。 示例:  输入: 13输出: 6解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。">
 <meta name="keywords" content="leetcode,面试题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode题解-Q233-数字1的个数">
 <meta property="og:url" content="http://yoursite.com/2019/10/10/Leetcode题解-Q233-数字1的个数/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="数字1的个数链接：https://leetcode-cn.com/problems/number-of-digit-one/ 华为现场面试遇到该题 题目给定一个整数 n，计算所有小于等于 n 的非负整数中数字 1 出现的个数。 示例:  输入: 13输出: 6解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。  分析两种思路 横向：遍历1~n，转换为字符串后统计1的个数，">
+<meta property="og:description" content="数字1的个数链接：https://leetcode-cn.com/problems/number-of-digit-one/ 华为现场面试遇到该题 题目给定一个整数 n，计算所有小于等于 n 的非负整数中数字 1 出现的个数。 示例:  输入: 13输出: 6解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-10T13:42:08.495Z">
+<meta property="og:updated_time" content="2019-10-10T13:43:40.789Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode题解-Q233-数字1的个数">
-<meta name="twitter:description" content="数字1的个数链接：https://leetcode-cn.com/problems/number-of-digit-one/ 华为现场面试遇到该题 题目给定一个整数 n，计算所有小于等于 n 的非负整数中数字 1 出现的个数。 示例:  输入: 13输出: 6解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。  分析两种思路 横向：遍历1~n，转换为字符串后统计1的个数，">
+<meta name="twitter:description" content="数字1的个数链接：https://leetcode-cn.com/problems/number-of-digit-one/ 华为现场面试遇到该题 题目给定一个整数 n，计算所有小于等于 n 的非负整数中数字 1 出现的个数。 示例:  输入: 13输出: 6解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。">
   <link rel="canonical" href="http://yoursite.com/2019/10/10/Leetcode题解-Q233-数字1的个数/">
 
 
@@ -294,7 +294,7 @@
                 
               
 
-              <time title="创建时间：2019-10-10 20:19:19 / 修改时间：21:42:08" itemprop="dateCreated datePublished" datetime="2019-10-10T20:19:19+08:00">2019-10-10</time>
+              <time title="创建时间：2019-10-10 20:19:19 / 修改时间：21:43:40" itemprop="dateCreated datePublished" datetime="2019-10-10T20:19:19+08:00">2019-10-10</time>
             </span>
           
             
@@ -320,6 +320,8 @@
 <blockquote>
 <p>输入: 13<br>输出: 6<br>解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。</p>
 </blockquote>
+<a id="more"></a>
+
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>两种思路</p>
 <p>横向：遍历1~n，转换为字符串后统计1的个数，时间复杂度为<br>$$<br>O(n\times log_{10}(n))<br>$$<br>纵向：分别统计每一位出现1的次数，时间复杂度为<br>$$<br>O(log_{10}(n))<br>$$</p>
 <h2 id="数学法"><a href="#数学法" class="headerlink" title="数学法"></a>数学法</h2><p>考虑’1’ 在 个位，十位，百位，… 出现的情况，找规律</p>
