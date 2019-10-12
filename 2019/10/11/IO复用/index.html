@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="内核一旦发现进程指定的一个或多个I/O条件就绪，它就通知进程。这种能力称为I/O复用。">
+<meta name="keywords" content="unix,网络编程,IO复用,select,poll,epoll">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO复用">
+<meta property="og:url" content="http://yoursite.com/2019/10/11/IO复用/index.html">
+<meta property="og:site_name" content="窝边草">
+<meta property="og:description" content="内核一旦发现进程指定的一个或多个I/O条件就绪，它就通知进程。这种能力称为I/O复用。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/imgs/1570773791564.png">
+<meta property="og:updated_time" content="2019-10-12T02:28:52.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IO复用">
+<meta name="twitter:description" content="内核一旦发现进程指定的一个或多个I/O条件就绪，它就通知进程。这种能力称为I/O复用。">
+<meta name="twitter:image" content="http://yoursite.com/imgs/1570773791564.png">
+  <link rel="canonical" href="http://yoursite.com/2019/10/11/IO复用/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>IO复用 | 窝边草</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?859cee8f5da7a00121e9a0bef911e58c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">窝边草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-commonweal">
+      
+    
+
+    <a href="/404.html" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/11/IO复用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">IO复用
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-11 13:37:10" itemprop="dateCreated datePublished" datetime="2019-10-11T13:37:10+08:00">2019-10-11</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-12 10:28:52" itemprop="dateModified" datetime="2019-10-12T10:28:52+08:00">2019-10-12</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>内核一旦发现进程指定的一个或多个I/O条件就绪，它就通知进程。这种能力称为I/O复用。</p>
+<a id="more"></a>
+
+<h1 id="IO模型"><a href="#IO模型" class="headerlink" title="IO模型"></a>IO模型</h1><p>Unix下5种IO模型：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>介绍</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>阻塞式I/O</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>非阻塞式I/O</td>
+<td>非阻塞+轮询</td>
+<td>耗费大量CPU时间</td>
+</tr>
+<tr>
+<td>I/O复用（select和poll）</td>
+<td>select/poll+I/O</td>
+<td>可以同时处理多个描述符</td>
+</tr>
+<tr>
+<td>信号驱动式I/O</td>
+<td>内核在就绪时发送SIGIO信号</td>
+<td>就续前进程不被阻塞；通知何时启动一个I/O操作</td>
+</tr>
+<tr>
+<td>异步I/O</td>
+<td>告知内核启动某个操作，在整个操作（包括将数据从内核复制到用户空间）完成后通知</td>
+<td>通知何时I/O操作完成</td>
+</tr>
+</tbody></table>
+<p>前四种模型均为同步I/O。</p>
+<p>同步I/O：导致请求进程阻塞，直到I/O操作完成</p>
+<p>异步I/O：不导致请求进程阻塞。</p>
+<p><img src="/imgs/1570773791564.png" alt="1570773791564"></p>
+<h1 id="select函数"><a href="#select函数" class="headerlink" title="select函数"></a>select函数</h1><p>该函数允许进程指示内核等待多个事件中的任何一个发生，并只在有一个或多个事件发生或经历一段指定的时间后才唤醒它。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/select.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span><span class="params">(<span class="keyword">int</span> maxfdp1, fd_set *readset, fd_set *writeset, fd_set *exceptset, <span class="keyword">const</span> struct timeval *timeout)</span></span>;</span><br><span class="line"><span class="comment">//若有就绪描述符则返回数目，超时返回0，出错返回-1</span></span><br></pre></td></tr></table></figure>
+
+<p>当三个set均为空指针时，可以用作精度为us的定时器</p>
+<h1 id="poll函数"><a href="#poll函数" class="headerlink" title="poll函数"></a>poll函数</h1><p>poll的功能与select类似</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;poll.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//timeout单位：ms</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">poll</span><span class="params">(struct pollfd *fdarray, <span class="keyword">unsigned</span> <span class="keyword">long</span> nfds, <span class="keyword">int</span> timeout)</span></span>;</span><br><span class="line"><span class="comment">//若有就绪描述符则返回数目，超时返回0，出错返回-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> fd;</span><br><span class="line">    <span class="keyword">short</span> events;<span class="comment">//该描述符上感兴趣的事件</span></span><br><span class="line">    <span class="keyword">short</span> revents;<span class="comment">//该描述符上发生的事件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h1><p>不同于select和poll，epoll由三部分组成。</p>
+<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 创建epoll句柄</span></span><br><span class="line"><span class="comment"> * size：最大socket fd数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 该函数用于控制某个epoll文件描述符上的事件，可以注册事件，修改事件，删除事件。</span></span><br><span class="line"><span class="comment"> * epfd：由 epoll_create 生成的epoll专用的文件描述符；</span></span><br><span class="line"><span class="comment"> * op：要进行的操作例如注册事件，可能的取值EPOLL_CTL_ADD 注册、EPOLL_CTL_MOD 修 改、EPOLL_CTL_DEL 删除</span></span><br><span class="line"><span class="comment"> * fd：关联的文件描述符；</span></span><br><span class="line"><span class="comment"> * event：指向epoll_event的指针；</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待事件触发，当超过timeout还没有事件触发时，就超时。</span></span><br><span class="line"><span class="comment"> * epfd:由epoll_create 生成的epoll专用的文件描述符；</span></span><br><span class="line"><span class="comment"> * epoll_event:用于回传代处理事件的数组；</span></span><br><span class="line"><span class="comment"> * maxevents:每次能处理的事件数；</span></span><br><span class="line"><span class="comment"> * timeout:等待I/O事件发生的超时值；-1相当于阻塞，0相当于非阻塞。一般用-1即可</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct epoll_event *events,<span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;  </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">uint32_t</span> events;   <span class="comment">/* Epoll events */</span></span><br><span class="line">  <span class="keyword">epoll_data_t</span> data;    <span class="comment">/* User data variable */</span></span><br><span class="line">&#125; __attribute__ ((__packed__));</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> epoll_data</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">void</span> *ptr;</span><br><span class="line">  <span class="keyword">int</span> fd;</span><br><span class="line">  <span class="keyword">uint32_t</span> u32;</span><br><span class="line">  <span class="keyword">uint64_t</span> u64;</span><br><span class="line">&#125; <span class="keyword">epoll_data_t</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对于epoll_wait</p>
+<p>等侍注册在epfd上的socket fd的事件的发生，如果发生则将发生的sokct fd和事件类型放入到events数组中。<br>并 且将注册在epfd上的socket fd的事件类型给清空，所以如果下一个循环你还要关注这个socket fd的话，则<strong>需要用epoll_ctl(epfd,EPOLL_CTL_MOD,listenfd,&amp;ev)来重新设置socket fd的事件类型</strong>。这时不用EPOLL_CTL_ADD,因为socket fd并未清空，只是事件类型清空。</p>
+</blockquote>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>调用epoll_create时，内核除了帮我们在epoll文件系统里建了个file结点，在内核cache里建了个红黑树用于存储以后epoll_ctl传来的socket外，还会再建立一个rdllist双向链表，用于存储准备就绪的事件，<strong>当epoll_wait调用时，仅仅观察这个rdllist双向链表里有没有数据即可</strong>。有数据就返回，没有数据就sleep，等到timeout时间到后即使链表没数据也返回。所以，epoll_wait非常高效。</p>
+<p>所有添加到epoll中的事件都会与设备(如网卡)驱动程序<strong>建立回调关系</strong>，也就是说相应事件的发生时会调用这里的回调方法。这个回调方法在内核中叫做<strong>ep_poll_callback</strong>，它会把这样的事件放到上面的rdllist双向链表中。</p>
+<h2 id="触发方式"><a href="#触发方式" class="headerlink" title="触发方式"></a>触发方式</h2><p>LT（水平触发）模式下，只要这个文件描述符还有数据可读，每次 epoll_wait都会返回它的事件，提醒用户程序去操作；</p>
+<p>ET（边缘触发）模式下，在它检测到有 I/O 事件时，通过 epoll_wait 调用会得到有事件通知的文件描述符，对于每一个被通知的文件描述符，如可读，则必须将该文件描述符一直读到空，让 errno 返回 EAGAIN 为止，否则下次的 epoll_wait 不会返回余下的数据，会丢掉事件。如果ET模式不是非阻塞的，那这个一直读或一直写势必会在最后一次阻塞。</p>
+<p>ET的优点：</p>
+<p>如果采用EPOLLLT模式的话，系统中一旦有大量你不需要读写的就绪文件描述符，它们每次调用epoll_wait都会返回，这样会大大降低处理程序检索自己关心的就绪文件描述符的效率.。而采用EPOLLET这种边缘触发模式的话，当被监控的文件描述符上有可读写事件发生时，epoll_wait()会通知处理程序去读写。如果这次没有把数据全部读写完(如读写缓冲区太小)，那么下次调用epoll_wait()时，它不会通知你，也就是它只会通知你一次，直到该文件描述符上出现第二次可读写事件才会通知你！！！这种模式比水平触发效率高，系统不会充斥大量你不关心的就绪文件描述符。</p>
+<h1 id="select、poll、epoll对比"><a href="#select、poll、epoll对比" class="headerlink" title="select、poll、epoll对比"></a>select、poll、epoll对比</h1><p>三种都是同步I/O</p>
+<p>(1)select==&gt;时间复杂度O(n)</p>
+<p>它仅仅知道了，有I/O事件发生了，却并不知道是哪那几个流（可能有一个，多个，甚至全部），我们只能无差别轮询所有流，找出能读出数据，或者写入数据的流，对他们进行操作。所以<strong>select具有O(n)的无差别轮询复杂度</strong>，同时处理的流越多，无差别轮询时间就越长。</p>
+<p>(2)poll==&gt;时间复杂度O(n)</p>
+<p>poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态， <strong>但是它没有最大连接数的限制</strong>，原因是它是基于链表来存储的.</p>
+<p>(3)epoll==&gt;时间复杂度O(1)</p>
+<p><strong>epoll可以理解为event poll</strong>，不同于忙轮询和无差别轮询，epoll会把哪个流发生了怎样的I/O事件通知我们。所以我们说epoll实际上是<strong>事件驱动（每个事件关联上fd）</strong>的，此时我们对这些流的操作都是有意义的。<strong>（复杂度降低到了O(1)）</strong></p>
+<h2 id="select的缺点"><a href="#select的缺点" class="headerlink" title="select的缺点"></a>select的缺点</h2><p>（1）每次调用select，都需要把fd集合从用户态拷贝到内核态，这个开销在fd很多时会很大</p>
+<p>（2）同时每次调用select都需要在内核遍历传递进来的所有fd，这个开销在fd很多时也很大</p>
+<p>（3）select支持的文件描述符数量太小了，默认是1024</p>
+<h2 id="poll的缺点"><a href="#poll的缺点" class="headerlink" title="poll的缺点"></a>poll的缺点</h2><p>除了没有最大连接数的限制，其他与select相同。</p>
+<h2 id="epoll-1"><a href="#epoll-1" class="headerlink" title="epoll"></a>epoll</h2><p>​        epoll既然是对select和poll的改进，就应该能避免上述的三个缺点。那epoll都是怎么解决的呢？在此之前，我们先看一下epoll和select和poll的调用接口上的不同，select和poll都只提供了一个函数——select或者poll函数。而epoll提供了三个函数，epoll_create,epoll_ctl和epoll_wait，epoll_create是创建一个epoll句柄；epoll_ctl是注册要监听的事件类型；epoll_wait则是等待事件的产生。</p>
+<p>　　对于第一个缺点，epoll的解决方案在epoll_ctl函数中。每次注册新的事件到epoll句柄中时（在epoll_ctl中指定EPOLL_CTL_ADD），会把所有的fd拷贝进内核，而不是在epoll_wait的时候重复拷贝。epoll保证了每个fd在整个过程中只会拷贝一次。</p>
+<p>　　对于第二个缺点，epoll的解决方案不像select或poll一样每次都把current轮流加入fd对应的设备等待队列中，而只在epoll_ctl时把current挂一遍（这一遍必不可少）并为每个fd指定一个回调函数，当设备就绪，唤醒等待队列上的等待者时，就会调用这个回调函数，而这个回调函数会把就绪的fd加入一个就绪链表）。epoll_wait的工作实际上就是在这个就绪链表中查看有没有就绪的fd（利用schedule_timeout()实现睡一会，判断一会的效果，和select实现中的第7步是类似的）。</p>
+<p>　　对于第三个缺点，epoll没有这个限制，它所支持的FD上限是最大可以打开文件的数目，这个数字一般远大于2048,举个例子,在1GB内存的机器上大约是10万左右，具体数目可以cat /proc/sys/fs/file-max察看,一般来说这个数目和系统内存关系很大。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://blog.csdn.net/daaikuaichuan/article/details/83862311" target="_blank" rel="noopener">https://blog.csdn.net/daaikuaichuan/article/details/83862311</a></p>
+<p><a href="https://www.cnblogs.com/aspirant/p/9166944.html" target="_blank" rel="noopener">https://www.cnblogs.com/aspirant/p/9166944.html</a></p>
+<p>《UNIX网络编程》I/O复用：select和poll函数</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/unix/" rel="tag"><i class="fa fa-tag"></i> unix</a>
+            
+              <a href="/tags/网络编程/" rel="tag"><i class="fa fa-tag"></i> 网络编程</a>
+            
+              <a href="/tags/IO复用/" rel="tag"><i class="fa fa-tag"></i> IO复用</a>
+            
+              <a href="/tags/select/" rel="tag"><i class="fa fa-tag"></i> select</a>
+            
+              <a href="/tags/poll/" rel="tag"><i class="fa fa-tag"></i> poll</a>
+            
+              <a href="/tags/epoll/" rel="tag"><i class="fa fa-tag"></i> epoll</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/10/Leetcode题解-Q233-数字1的个数/" rel="next" title="Leetcode题解-Q233-数字1的个数">
+                  <i class="fa fa-chevron-left"></i> Leetcode题解-Q233-数字1的个数
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IO模型"><span class="nav-number">1.</span> <span class="nav-text">IO模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#select函数"><span class="nav-number">2.</span> <span class="nav-text">select函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#poll函数"><span class="nav-number">3.</span> <span class="nav-text">poll函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll"><span class="nav-number">4.</span> <span class="nav-text">epoll</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数原型"><span class="nav-number">4.1.</span> <span class="nav-text">函数原型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">4.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#触发方式"><span class="nav-number">4.3.</span> <span class="nav-text">触发方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#select、poll、epoll对比"><span class="nav-number">5.</span> <span class="nav-text">select、poll、epoll对比</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#select的缺点"><span class="nav-number">5.1.</span> <span class="nav-text">select的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#poll的缺点"><span class="nav-number">5.2.</span> <span class="nav-text">poll的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epoll-1"><span class="nav-number">5.3.</span> <span class="nav-text">epoll</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/avatar.jpg"
+      alt="ChocoCLv">
+  <p class="site-author-name" itemprop="name">ChocoCLv</p>
+  <div class="site-description" itemprop="description">兔子🐇和窝边草🌱</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/ChocoCLv" title="GitHub &rarr; https://github.com/ChocoCLv" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:choco_cl@163.com" title="E-Mail &rarr; mailto:choco_cl@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yihuan18.github.io" title="https://yihuan18.github.io" rel="noopener" target="_blank">🐇</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ChocoCLv</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
