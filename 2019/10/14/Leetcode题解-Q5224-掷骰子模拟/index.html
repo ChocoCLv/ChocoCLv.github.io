@@ -56,22 +56,19 @@
   };
 </script>
 
-  <meta name="description" content="2019-9-10 电话面 2019-9-19 成都现场面">
+  <meta name="description" content="链接：https://leetcode-cn.com/problems/dice-roll-simulation">
+<meta name="keywords" content="leetcode,动态规划">
 <meta property="og:type" content="article">
-<meta property="og:title" content="招银网络科技面试拾遗">
-<meta property="og:url" content="http://yoursite.com/2019/09/16/招银网络科技面试拾遗/index.html">
+<meta property="og:title" content="Leetcode题解-Q5224-掷骰子模拟">
+<meta property="og:url" content="http://yoursite.com/2019/10/14/Leetcode题解-Q5224-掷骰子模拟/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="2019-9-10 电话面 2019-9-19 成都现场面">
+<meta property="og:description" content="链接：https://leetcode-cn.com/problems/dice-roll-simulation">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/imgs/1570622010765.png">
-<meta property="og:image" content="http://yoursite.com/imgs/1570621931748.png">
-<meta property="og:image" content="http://yoursite.com/imgs/1570621966544.png">
-<meta property="og:updated_time" content="2019-10-09T12:04:40.964Z">
+<meta property="og:updated_time" content="2019-10-14T08:54:46.132Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="招银网络科技面试拾遗">
-<meta name="twitter:description" content="2019-9-10 电话面 2019-9-19 成都现场面">
-<meta name="twitter:image" content="http://yoursite.com/imgs/1570622010765.png">
-  <link rel="canonical" href="http://yoursite.com/2019/09/16/招银网络科技面试拾遗/">
+<meta name="twitter:title" content="Leetcode题解-Q5224-掷骰子模拟">
+<meta name="twitter:description" content="链接：https://leetcode-cn.com/problems/dice-roll-simulation">
+  <link rel="canonical" href="http://yoursite.com/2019/10/14/Leetcode题解-Q5224-掷骰子模拟/">
 
 
 <script id="page-configurations">
@@ -85,7 +82,7 @@
   };
 </script>
 
-  <title>招银网络科技面试拾遗 | 窝边草</title>
+  <title>Leetcode题解-Q5224-掷骰子模拟 | 窝边草</title>
   
 
 
@@ -269,7 +266,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/招银网络科技面试拾遗/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/14/Leetcode题解-Q5224-掷骰子模拟/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ChocoCLv">
@@ -281,7 +278,7 @@
       <meta itemprop="name" content="窝边草">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">招银网络科技面试拾遗
+        <h1 class="post-title" itemprop="name headline">Leetcode题解-Q5224-掷骰子模拟
 
           
         </h1>
@@ -297,19 +294,11 @@
                 
               
 
-              <time title="创建时间：2019-09-16 00:27:40" itemprop="dateCreated datePublished" datetime="2019-09-16T00:27:40+08:00">2019-09-16</time>
+              <time title="创建时间：2019-10-14 16:23:16 / 修改时间：16:54:46" itemprop="dateCreated datePublished" datetime="2019-10-14T16:23:16+08:00">2019-10-14</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-09 20:04:40" itemprop="dateModified" datetime="2019-10-09T20:04:40+08:00">2019-10-09</time>
-              </span>
             
           
 
@@ -324,40 +313,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>2019-9-10 电话面 2019-9-19 成都现场面</p>
+        <p>链接：<a href="https://leetcode-cn.com/problems/dice-roll-simulation" target="_blank" rel="noopener">https://leetcode-cn.com/problems/dice-roll-simulation</a></p>
 <a id="more"></a>
 
-<h3 id="两个队列实现栈"><a href="#两个队列实现栈" class="headerlink" title="两个队列实现栈"></a>两个队列实现栈</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">import</span> java.util.Queue;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用两个队列实现一个栈</span></span><br><span class="line"><span class="comment"> * 只使用其中的一个队列存储所有数据</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackWithTwoQueues</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Queue&lt;T&gt; queueEmpty = <span class="keyword">new</span> LinkedList&lt;T&gt;();</span><br><span class="line">    <span class="keyword">private</span> Queue&lt;T&gt; queueValid = <span class="keyword">new</span> LinkedList&lt;T&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(T ele)</span> </span>&#123;</span><br><span class="line">        queueValid.add(ele);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (queueValid.isEmpty())</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (queueValid.size() != <span class="number">1</span>) &#123;</span><br><span class="line">            queueEmpty.add(queueValid.remove());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Queue&lt;T&gt; queue = queueValid;</span><br><span class="line">        queueValid = queueEmpty;</span><br><span class="line">        queueEmpty = queue;</span><br><span class="line">        <span class="keyword">return</span> queueEmpty.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="mybatis分页"><a href="#mybatis分页" class="headerlink" title="mybatis分页"></a>mybatis分页</h3><p><a href="https://www.cnblogs.com/aeolian/p/9229149.html" target="_blank" rel="noopener">mybatis的四种分页方式</a></p>
-<ul>
-<li>数组分页：查询出全部数据，然后再list中截取需要的部分。</li>
-<li>sql分页：limit offset</li>
-<li>拦截器分页</li>
-<li>RowBounds实现分页，与数组分页类似</li>
-</ul>
-<h3 id="mysql的架构"><a href="#mysql的架构" class="headerlink" title="mysql的架构"></a>mysql的架构</h3><p><img src="/imgs/1570622010765.png" alt="1570622010765"></p>
-<h3 id="http状态码-session-cookie"><a href="#http状态码-session-cookie" class="headerlink" title="http状态码 session cookie"></a>http状态码 session cookie</h3><h3 id="用于统计的SQL语句，创建表时字段类型的选择"><a href="#用于统计的SQL语句，创建表时字段类型的选择" class="headerlink" title="用于统计的SQL语句，创建表时字段类型的选择"></a>用于统计的SQL语句，创建表时字段类型的选择</h3><blockquote>
-<p>记住一个原则，越小的列会越快。如果一个表只会有几列罢了（比如说字典表，配置表），那么，我们就没有理由使用 INT 来做主键，使用 MEDIUMINT, SMALLINT 或是更小的 TINYINT 会更经济一些。如果你不需要记录时间，使用 DATE 要比 DATETIME 好得多。当然，你也需要留够足够的扩展空间。</p>
-</blockquote>
-<h3 id="几种时间类型的区别"><a href="#几种时间类型的区别" class="headerlink" title="几种时间类型的区别"></a>几种时间类型的区别</h3><p>存在TIME TIMESTAMP DATE DATETIME四种类型，</p>
-<p>TIME——“HH:MM:SS”</p>
-<p>DATE——‘YYYY-MM-DD’</p>
-<p>DATETIME——‘YYYY-MM-DD HH:MM:SS’</p>
+<h1 id="掷骰子模拟"><a href="#掷骰子模拟" class="headerlink" title="掷骰子模拟"></a>掷骰子模拟</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>有一个骰子模拟器会每次投掷的时候生成一个 1 到 6 的随机数。</p>
+<p>不过我们在使用它时有个约束，就是使得投掷骰子时，连续 掷出数字 i 的次数不能超过 rollMax[i]（i 从 1 开始编号）。</p>
+<p>现在，给你一个整数数组 rollMax 和一个整数 n，请你来计算掷 n 次骰子可得到的不同点数序列的数量。</p>
+<p>假如两个序列中至少存在一个元素不同，就认为这两个序列是不同的。由于答案可能很大，所以请返回 模 10^9 + 7 之后的结果。 </p>
+<p>示例 1：</p>
 <blockquote>
-<p><strong>TIMESTAMP</strong>是标准的unix timestamp，它存储的是1970-1-1到现在经过的秒数，4字节存储。mysql用这个类型还蛮方便的，一个是有很多内置的函数和trigger来处理它，比如<code>CURRENT_TIMESTAMP</code>宏，最关键的是在取数据的时候mysql会自动帮你处理DST和时区的问题。</p>
-<p><strong>DATETIME</strong>的范围更大，好像可以从0000-00-00 00:00:00到9999-12-31 23:59:59，8字节存储，当然mysql内部肯定也是用整数而不是字符串的（说了是8字节了），所以效率不是大问题。但DATETIME不带时区，比如我在程序里生成了一个2015-05-07 15:26:00的时间（实际上是+8时区的，但这个对象可能是timezone naive）的，存到mysql里，再从不同时区的地方拿出来，这个时间可能就混了。</p>
-<p>但TIMESTAMP也有两个很大的问题：</p>
-<ol>
-<li>4字节长度限制，它只能到2038年</li>
-<li>很多时候我们希望根据用户所在地的时区显示时间而不是光显示一个服务器时间</li>
-</ol>
-<p>所以比较好的做法是，数据库中使用<strong>DATETIME</strong>，然后存时间的时候一律用程序生成<strong>UTC</strong>时间（而不是local时区的时间）存进去，取出来的时候不管想显示服务器时间还是显示用户的时间都可以处理。</p>
+<p>输入：n = 2, rollMax = [1,1,2,2,2,3]<br>输出：34<br>解释：我们掷 2 次骰子，如果没有约束的话，共有 6 * 6 = 36 种可能的组合。但是根据 rollMax 数组，数字 1 和 2 最多连续出现一次，所以不会出现序列 (1,1) 和 (2,2)。因此，最终答案是 36-2 = 34。</p>
 </blockquote>
-<h3 id="浏览器缓存机制"><a href="#浏览器缓存机制" class="headerlink" title="浏览器缓存机制"></a>浏览器缓存机制</h3><p><a href="https://www.jianshu.com/p/54cc04190252" target="_blank" rel="noopener">深入理解浏览器的缓存机制</a></p>
-<p><img src="/imgs/1570621931748.png" alt="1570621931748"></p>
-<p>缓存机制流程</p>
-<p><img src="/imgs/1570621966544.png" alt="1570621966544"></p>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：n = 2, rollMax = [1,1,1,1,1,1]<br>输出：30</p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：n = 3, rollMax = [1,1,1,2,2,3]<br>输出：181</p>
+</blockquote>
+<p>提示：</p>
+<blockquote>
+<p>1 &lt;= n &lt;= 5000<br>rollMax.length == 6<br>1 &lt;= rollMax[i] &lt;= 15</p>
+</blockquote>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>典型的动态规划问题，OPT(n)与OPT(n-1)有关，由于题目要求<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">即dp\[i\]\[j\]\[k\]代表第i次掷出数字j，并且数字j在末尾已经连续出现了k次，这种约束下的组合数。</span><br><span class="line"></span><br><span class="line">状态转移：</span><br><span class="line">$$</span><br><span class="line">dp[i][j][k]=\left\&#123;</span><br><span class="line">\begin&#123;aligned&#125;</span><br><span class="line">  1, i=1 \\</span><br><span class="line">  dp[i-1][j][k-1],k&gt;1 \\</span><br><span class="line"> \sum_&#123;z=1,z\not=j&#125;^6\sum_&#123;c=1&#125;^&#123;rollMax[z]&#125; dp[i-1][z][c], k=1</span><br><span class="line">\end&#123;aligned&#125;</span><br><span class="line">\right.i\in[1,n],j\in[1,6],k\in[1,rollMax[j]]</span><br><span class="line">$$</span><br><span class="line">当k=1时，说明n-1掷出的不是j；当k&gt;1时，说明n-1掷出j，且前面连续出现了k-1次。</span><br><span class="line"></span><br><span class="line">## 代码</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">public class DieSimulator &#123;</span><br><span class="line">    static class Solution &#123;</span><br><span class="line">        public int dieSimulator(int n, int[] rollMax) &#123;</span><br><span class="line">            //dp[i][j][k]表示在第i次掷骰子，出现的点数为j，并且点数j在前面连续出现了k次的可能情况数量</span><br><span class="line">            long[][][] dp = new long[5001][7][16];</span><br><span class="line">            int mod = 1000000007;</span><br><span class="line">            for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">                if (i == 1) &#123;</span><br><span class="line">                    for (int j = 1; j &lt;= 6; j++) &#123;</span><br><span class="line">                        dp[1][j][1] = 1;</span><br><span class="line">                    &#125;</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">                for (int j = 1; j &lt;= 6; j++) &#123;</span><br><span class="line">                    for (int k = 1; k &lt;= rollMax[j - 1]; k++) &#123;</span><br><span class="line">                        if (k == 1) &#123;</span><br><span class="line">                            for (int z = 1; z &lt;= 6; z++) &#123;</span><br><span class="line">                                if (z != j) &#123;</span><br><span class="line">                                    for (int c = 1; c &lt;= rollMax[z - 1]; c++) &#123;</span><br><span class="line">                                        dp[i][j][k] = (dp[i - 1][z][c] + dp[i][j][k]) % mod;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            dp[i][j][k] = dp[i - 1][j][k - 1];</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            long res = 0;</span><br><span class="line">            for (int j = 1; j &lt;= 6; j++) &#123;</span><br><span class="line">                for (int k = 1; k &lt;= rollMax[j - 1]; k++) &#123;</span><br><span class="line">                    res = (res + dp[n][j][k]) % mod;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return (int) res;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -368,14 +347,25 @@
       
 
       <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/leetcode/" rel="tag"><i class="fa fa-tag"></i> leetcode</a>
+            
+              <a href="/tags/动态规划/" rel="tag"><i class="fa fa-tag"></i> 动态规划</a>
+            
+          </div>
+        
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/09/16/蘑菇街直播部门面试拾遗/" rel="next" title="蘑菇街直播部门面试拾遗">
-                  <i class="fa fa-chevron-left"></i> 蘑菇街直播部门面试拾遗
+                <a href="/2019/10/11/IO复用/" rel="next" title="IO复用">
+                  <i class="fa fa-chevron-left"></i> IO复用
                 </a>
               
             </div>
@@ -383,10 +373,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/09/17/热部署探秘/" rel="prev" title="热部署探秘">
-                  热部署探秘 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -435,7 +421,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#两个队列实现栈"><span class="nav-number">1.</span> <span class="nav-text">两个队列实现栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mybatis分页"><span class="nav-number">2.</span> <span class="nav-text">mybatis分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql的架构"><span class="nav-number">3.</span> <span class="nav-text">mysql的架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http状态码-session-cookie"><span class="nav-number">4.</span> <span class="nav-text">http状态码 session cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用于统计的SQL语句，创建表时字段类型的选择"><span class="nav-number">5.</span> <span class="nav-text">用于统计的SQL语句，创建表时字段类型的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#几种时间类型的区别"><span class="nav-number">6.</span> <span class="nav-text">几种时间类型的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器缓存机制"><span class="nav-number">7.</span> <span class="nav-text">浏览器缓存机制</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#掷骰子模拟"><span class="nav-number">1.</span> <span class="nav-text">掷骰子模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->

@@ -56,22 +56,19 @@
   };
 </script>
 
-  <meta name="description" content="2019-9-10 电话面 2019-9-19 成都现场面">
+  <meta name="description" content="题目分析">
+<meta name="keywords" content="leetcode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="招银网络科技面试拾遗">
-<meta property="og:url" content="http://yoursite.com/2019/09/16/招银网络科技面试拾遗/index.html">
+<meta property="og:title" content="Leetcode题解-&quot;Q5224-掷骰子模拟&quot;">
+<meta property="og:url" content="http://yoursite.com/2019/10/14/Q5224-掷骰子模拟/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="2019-9-10 电话面 2019-9-19 成都现场面">
+<meta property="og:description" content="题目分析">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/imgs/1570622010765.png">
-<meta property="og:image" content="http://yoursite.com/imgs/1570621931748.png">
-<meta property="og:image" content="http://yoursite.com/imgs/1570621966544.png">
-<meta property="og:updated_time" content="2019-10-09T12:04:40.964Z">
+<meta property="og:updated_time" content="2019-10-14T08:11:51.158Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="招银网络科技面试拾遗">
-<meta name="twitter:description" content="2019-9-10 电话面 2019-9-19 成都现场面">
-<meta name="twitter:image" content="http://yoursite.com/imgs/1570622010765.png">
-  <link rel="canonical" href="http://yoursite.com/2019/09/16/招银网络科技面试拾遗/">
+<meta name="twitter:title" content="Leetcode题解-&quot;Q5224-掷骰子模拟&quot;">
+<meta name="twitter:description" content="题目分析">
+  <link rel="canonical" href="http://yoursite.com/2019/10/14/Q5224-掷骰子模拟/">
 
 
 <script id="page-configurations">
@@ -85,7 +82,7 @@
   };
 </script>
 
-  <title>招银网络科技面试拾遗 | 窝边草</title>
+  <title>Leetcode题解-"Q5224-掷骰子模拟" | 窝边草</title>
   
 
 
@@ -269,7 +266,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/招银网络科技面试拾遗/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/14/Q5224-掷骰子模拟/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ChocoCLv">
@@ -281,7 +278,7 @@
       <meta itemprop="name" content="窝边草">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">招银网络科技面试拾遗
+        <h1 class="post-title" itemprop="name headline">Leetcode题解-"Q5224-掷骰子模拟"
 
           
         </h1>
@@ -297,20 +294,8 @@
                 
               
 
-              <time title="创建时间：2019-09-16 00:27:40" itemprop="dateCreated datePublished" datetime="2019-09-16T00:27:40+08:00">2019-09-16</time>
+              <time title="创建时间：2019-10-14 16:11:51" itemprop="dateCreated datePublished" datetime="2019-10-14T16:11:51+08:00">2019-10-14</time>
             </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-09 20:04:40" itemprop="dateModified" datetime="2019-10-09T20:04:40+08:00">2019-10-09</time>
-              </span>
-            
           
 
           
@@ -324,41 +309,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>2019-9-10 电话面 2019-9-19 成都现场面</p>
-<a id="more"></a>
-
-<h3 id="两个队列实现栈"><a href="#两个队列实现栈" class="headerlink" title="两个队列实现栈"></a>两个队列实现栈</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">import</span> java.util.Queue;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用两个队列实现一个栈</span></span><br><span class="line"><span class="comment"> * 只使用其中的一个队列存储所有数据</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackWithTwoQueues</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Queue&lt;T&gt; queueEmpty = <span class="keyword">new</span> LinkedList&lt;T&gt;();</span><br><span class="line">    <span class="keyword">private</span> Queue&lt;T&gt; queueValid = <span class="keyword">new</span> LinkedList&lt;T&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(T ele)</span> </span>&#123;</span><br><span class="line">        queueValid.add(ele);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (queueValid.isEmpty())</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (queueValid.size() != <span class="number">1</span>) &#123;</span><br><span class="line">            queueEmpty.add(queueValid.remove());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Queue&lt;T&gt; queue = queueValid;</span><br><span class="line">        queueValid = queueEmpty;</span><br><span class="line">        queueEmpty = queue;</span><br><span class="line">        <span class="keyword">return</span> queueEmpty.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="mybatis分页"><a href="#mybatis分页" class="headerlink" title="mybatis分页"></a>mybatis分页</h3><p><a href="https://www.cnblogs.com/aeolian/p/9229149.html" target="_blank" rel="noopener">mybatis的四种分页方式</a></p>
-<ul>
-<li>数组分页：查询出全部数据，然后再list中截取需要的部分。</li>
-<li>sql分页：limit offset</li>
-<li>拦截器分页</li>
-<li>RowBounds实现分页，与数组分页类似</li>
-</ul>
-<h3 id="mysql的架构"><a href="#mysql的架构" class="headerlink" title="mysql的架构"></a>mysql的架构</h3><p><img src="/imgs/1570622010765.png" alt="1570622010765"></p>
-<h3 id="http状态码-session-cookie"><a href="#http状态码-session-cookie" class="headerlink" title="http状态码 session cookie"></a>http状态码 session cookie</h3><h3 id="用于统计的SQL语句，创建表时字段类型的选择"><a href="#用于统计的SQL语句，创建表时字段类型的选择" class="headerlink" title="用于统计的SQL语句，创建表时字段类型的选择"></a>用于统计的SQL语句，创建表时字段类型的选择</h3><blockquote>
-<p>记住一个原则，越小的列会越快。如果一个表只会有几列罢了（比如说字典表，配置表），那么，我们就没有理由使用 INT 来做主键，使用 MEDIUMINT, SMALLINT 或是更小的 TINYINT 会更经济一些。如果你不需要记录时间，使用 DATE 要比 DATETIME 好得多。当然，你也需要留够足够的扩展空间。</p>
-</blockquote>
-<h3 id="几种时间类型的区别"><a href="#几种时间类型的区别" class="headerlink" title="几种时间类型的区别"></a>几种时间类型的区别</h3><p>存在TIME TIMESTAMP DATE DATETIME四种类型，</p>
-<p>TIME——“HH:MM:SS”</p>
-<p>DATE——‘YYYY-MM-DD’</p>
-<p>DATETIME——‘YYYY-MM-DD HH:MM:SS’</p>
-<blockquote>
-<p><strong>TIMESTAMP</strong>是标准的unix timestamp，它存储的是1970-1-1到现在经过的秒数，4字节存储。mysql用这个类型还蛮方便的，一个是有很多内置的函数和trigger来处理它，比如<code>CURRENT_TIMESTAMP</code>宏，最关键的是在取数据的时候mysql会自动帮你处理DST和时区的问题。</p>
-<p><strong>DATETIME</strong>的范围更大，好像可以从0000-00-00 00:00:00到9999-12-31 23:59:59，8字节存储，当然mysql内部肯定也是用整数而不是字符串的（说了是8字节了），所以效率不是大问题。但DATETIME不带时区，比如我在程序里生成了一个2015-05-07 15:26:00的时间（实际上是+8时区的，但这个对象可能是timezone naive）的，存到mysql里，再从不同时区的地方拿出来，这个时间可能就混了。</p>
-<p>但TIMESTAMP也有两个很大的问题：</p>
-<ol>
-<li>4字节长度限制，它只能到2038年</li>
-<li>很多时候我们希望根据用户所在地的时区显示时间而不是光显示一个服务器时间</li>
-</ol>
-<p>所以比较好的做法是，数据库中使用<strong>DATETIME</strong>，然后存时间的时候一律用程序生成<strong>UTC</strong>时间（而不是local时区的时间）存进去，取出来的时候不管想显示服务器时间还是显示用户的时间都可以处理。</p>
-</blockquote>
-<h3 id="浏览器缓存机制"><a href="#浏览器缓存机制" class="headerlink" title="浏览器缓存机制"></a>浏览器缓存机制</h3><p><a href="https://www.jianshu.com/p/54cc04190252" target="_blank" rel="noopener">深入理解浏览器的缓存机制</a></p>
-<p><img src="/imgs/1570621931748.png" alt="1570621931748"></p>
-<p>缓存机制流程</p>
-<p><img src="/imgs/1570621966544.png" alt="1570621966544"></p>
-
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2>
     </div>
 
     
@@ -368,14 +319,23 @@
       
 
       <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/leetcode/" rel="tag"><i class="fa fa-tag"></i> leetcode</a>
+            
+          </div>
+        
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/09/16/蘑菇街直播部门面试拾遗/" rel="next" title="蘑菇街直播部门面试拾遗">
-                  <i class="fa fa-chevron-left"></i> 蘑菇街直播部门面试拾遗
+                <a href="/2019/10/11/IO复用/" rel="next" title="IO复用">
+                  <i class="fa fa-chevron-left"></i> IO复用
                 </a>
               
             </div>
@@ -383,10 +343,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/09/17/热部署探秘/" rel="prev" title="热部署探秘">
-                  热部署探秘 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -435,7 +391,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#两个队列实现栈"><span class="nav-number">1.</span> <span class="nav-text">两个队列实现栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mybatis分页"><span class="nav-number">2.</span> <span class="nav-text">mybatis分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql的架构"><span class="nav-number">3.</span> <span class="nav-text">mysql的架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http状态码-session-cookie"><span class="nav-number">4.</span> <span class="nav-text">http状态码 session cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用于统计的SQL语句，创建表时字段类型的选择"><span class="nav-number">5.</span> <span class="nav-text">用于统计的SQL语句，创建表时字段类型的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#几种时间类型的区别"><span class="nav-number">6.</span> <span class="nav-text">几种时间类型的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器缓存机制"><span class="nav-number">7.</span> <span class="nav-text">浏览器缓存机制</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -466,7 +422,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
