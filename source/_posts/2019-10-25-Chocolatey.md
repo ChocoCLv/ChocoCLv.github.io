@@ -8,6 +8,8 @@ Windows下的包管理器Chocolatey的使用
 
 https://www.cnblogs.com/ys-wuhan/p/6395417.html
 
+<!--more-->
+
 1. 安装方法 https://chocolatey.org/docs/installation
 
 ```bash
