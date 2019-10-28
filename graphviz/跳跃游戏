@@ -1,0 +1,18 @@
+digraph G {
+    node[shape=box]
+    nums2[label=2]
+    nums3[label=3]
+    nums1_1[label=1]
+    nums1_2[label=1]
+    nums4[label=4]
+    //nums0[label=0]
+    //rankdir="LR"
+
+    nums2->nums3
+    nums2->nums1_1
+    nums3->nums1_1
+    nums3->nums1_2
+    nums3->nums4
+    nums1_1->nums1_2
+    nums1_2->nums4
+}

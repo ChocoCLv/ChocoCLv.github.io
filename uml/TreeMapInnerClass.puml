@@ -1,0 +1,40 @@
+@startuml TreeMapInnerClass
+' TreeMap 的内部类
+class AscendingSubMap<K,V>
+abstract class NavigableSubMap<K,V>
+abstract class DescendingKeyIterator
+abstract class PrivateEntryIterator<K>
+abstract class DescendingKeySpliterator<K,V>
+class DescendingSubMap<K,V>
+class  TreeMapSpliterator<K,V>
+class Entry<K,V> 
+class EntryIterator
+class EntrySet
+' 
+interface Iterator<T>
+interface Spliterator<K>
+class TreeMap
+TreeMap +--> AscendingSubMap
+TreeMap +--> NavigableSubMap
+TreeMap +--> DescendingKeyIterator
+TreeMap +--> PrivateEntryIterator
+TreeMap +--> DescendingKeySpliterator
+TreeMap +--> TreeMapSpliterator
+TreeMap +--> DescendingSubMap
+TreeMap +--> Entry
+TreeMap +--> EntryIterator
+TreeMap +--> EntrySet
+
+AscendingSubMap --|> NavigableSubMap
+DescendingKeyIterator --|> PrivateEntryIterator
+DescendingKeySpliterator --|> TreeMapSpliterator
+DescendingKeySpliterator ..|> Spliterator
+PrivateEntryIterator ..|> Iterator
+DescendingSubMap --|> NavigableSubMap
+NavigableSubMap --|> AbstractMap
+NavigableSubMap ..|> NavigableMap
+NavigableSubMap ..|> Serializable
+Entry ..|> java.util.Map.Entry
+EntryIterator --|> PrivateEntryIterator
+
+@enduml

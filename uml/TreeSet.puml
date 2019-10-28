@@ -1,0 +1,55 @@
+@startuml TreeSet
+interface NavigableSet<E>
+interface NavigableMap<K,V> {
+    ' + Map.Entry<K,V> lowerEntry(K key)
+    ' + K lowerKey(K key)
+    ' + Map.Entry<K,V> floorEntry(K key)
+    ' + K floorKey(K key)
+    ' + Map.Entry<K,V> ceilingEntry(K key)
+    ' + K ceilingKey(K key)
+    ' + Map.Entry<K,V> higherEntry(K key)
+    ' + K higherKey(K key)
+    ' + Map.Entry<K,V> firstEntry()
+}
+interface SortedMap<K,V>
+interface Map<K,V>
+interface Cloneable
+interface Serializable
+interface Set<E>
+interface Collection<E>
+interface SortedSet<E>
+
+abstract class AbstractCollection<E>
+abstract class AbstractSet<E> {
+    
+}
+class TreeSet<E> {
+    - NavigableMap<E,Object> m
+    ~ TreeSet(NavigableMap<E,Object> m)
+    + TreeSet()
+    + TreeSet(Comparator<? super E> comparator)
+    + TreeSet(Collection<? extends E> c)
+    + TreeSet(SortedSet<E> s)
+}
+class TreeMap
+
+TreeMap ..|> NavigableMap :实现
+
+SortedSet --|> Set :继承
+
+NavigableSet --|> SortedSet :继承
+
+NavigableMap --|> SortedMap :继承
+SortedMap --|> Map  :继承
+
+AbstractCollection ..|> Collection :实现
+
+AbstractSet --|> AbstractCollection :继承
+AbstractSet ..|> Set :实现
+
+TreeSet --|> AbstractSet :继承
+TreeSet ..|> NavigableSet :实现
+TreeSet ..|> Cloneable :实现
+TreeSet ..|> Serializable :实现
+TreeSet ..> TreeMap :依赖
+@enduml

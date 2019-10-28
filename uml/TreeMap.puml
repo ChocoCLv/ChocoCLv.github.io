@@ -1,0 +1,27 @@
+@startuml TreeMap
+interface NavigableMap<K,V> 
+interface SortedMap<K,V>
+interface Map<K,V>
+interface Cloneable
+interface Serializable
+
+abstract class AbstractMap<K,V>
+
+class TreeMap{
+    + TreeMap()
+    + TreeMap(Comparator<? super K> comparator)
+    + TreeMap(Map<? extends K, ? extends V> m)
+    + TreeMap(SortedMap<K, ? extends V> m)
+}
+
+NavigableMap --|> SortedMap :继承
+SortedMap --|> Map  :继承
+
+
+AbstractMap ..|> Map :实现
+
+TreeMap --|> AbstractMap :继承
+TreeMap ..|> NavigableMap :实现
+TreeMap ..|> Cloneable :实现
+TreeMap ..|> Serializable :实现
+@enduml
