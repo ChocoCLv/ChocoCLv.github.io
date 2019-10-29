@@ -1,0 +1,58 @@
+@startuml 容器
+interface Iterator
+interface Collection
+interface Map
+interface ListIterator
+interface List{
+    + add()
+}
+interface Set
+interface Queue
+
+Collection --> Iterator : 依赖
+Map --> Collection :依赖
+List --> ListIterator : 依赖
+
+ListIterator ..|> Iterator
+List ..|> Collection
+Set ..|> Collection
+Queue ..|> Collection
+
+class HashSet
+class TreeSet
+class LinkedHashSet
+class ArrayList
+class LinkedList
+class PriorityQueue
+
+ArrayList ..|> List
+LinkedList ..|> List
+LinkedList ..|> Queue
+PriorityQueue ..|> Queue
+
+HashSet --|> Set
+TreeSet --|> Set
+LinkedHashSet ..|> HashSet
+
+class HashMap
+class TreeMap
+class LinkedHashMap
+
+HashMap ..|> Map
+TreeMap ..|> Map
+LinkedHashMap --|> HashMap
+
+interface Comparable
+interface Comparator
+
+Comparable <--> Comparator
+
+package Utilities{
+    class Collections
+    class  Arrays
+}
+
+
+
+
+@enduml

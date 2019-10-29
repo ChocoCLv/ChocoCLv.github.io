@@ -1,0 +1,10 @@
+@startdot
+digraph G {
+    Producer1
+
+    subgraph leader {
+        Topic-part0
+        TopicA-part2
+    }
+}
+@enddot
