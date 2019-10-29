@@ -292,11 +292,19 @@
                 
               
 
-              <time title="创建时间：2019-10-28 15:20:22 / 修改时间：15:51:31" itemprop="dateCreated datePublished" datetime="2019-10-28T15:20:22+08:00">2019-10-28</time>
+              <time title="创建时间：2019-10-28 15:20:22" itemprop="dateCreated datePublished" datetime="2019-10-28T15:20:22+08:00">2019-10-28</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-29 15:01:46" itemprop="dateModified" datetime="2019-10-29T15:01:46+08:00">2019-10-29</time>
+              </span>
             
           
 
@@ -312,31 +320,15 @@
 
       
           <p>Kafka是一种高吞吐量/分布式/基于发布订阅的消息系统。</p>
-<h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
-<li>broker：Kafka服务器，负责消息存储和转发</li>
-<li>topic：消息类别，Kafka按照topic分类消息</li>
-<li>partition：topic的分区，一个topic包含多个partition，topic消息保存在各个partition上</li>
-<li>offset：消息在日志中的位置，在partition上的偏移量，也是消息的唯一序号</li>
-<li>Producer：消息生产者</li>
-<li>Consumer：消息消费者</li>
-<li>Consumer Group：每个Consumer必须属于一个group</li>
-<li>Zookeeper：保存集群broker topic partition等meta数据，负责broker故障发现，partition leader选举，负载均衡。</li>
-</ul>
-<h2 id="数据存储设计"><a href="#数据存储设计" class="headerlink" title="数据存储设计"></a>数据存储设计</h2><ol>
-<li>partition的数据文件</li>
-</ol>
-<p>partition的每条Message包含了以下三个属性：offset，MessageSize，data。</p>
-<p>offset表示Message在这个partition中的偏移量，不是该Message在partition数据文件中的实际存储位置，而是一个逻辑值。可以认为是partition中的MessageID。</p>
-<ol start="2">
-<li>数据文件分段segment（顺序读写，分段存储，二分查找）</li>
-</ol>
-<p>partition物理上由多个segment文件组成，每个segment大小相等，顺序读写。segment以该段中最小的offset命名。在查找指定offset的Message时可以用二分查找快速定位。</p>
-<ol start="3">
-<li>数据文件索引（分段索引，稀疏存储）</li>
-</ol>
-<p>为每个分段后的数据文件建立了索引文件，并没有为数据文件中的每条Message建立索引，而是每隔一定字节的数据建立索引。</p>
-<p>避免索引文件占用过多空间，从而将索引文件保留在内存中。</p>
-<h2 id="生产者设计"><a href="#生产者设计" class="headerlink" title="生产者设计"></a>生产者设计</h2><h2 id="消费者设计"><a href="#消费者设计" class="headerlink" title="消费者设计"></a>消费者设计</h2>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/10/28/Kafka核心知识点/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
