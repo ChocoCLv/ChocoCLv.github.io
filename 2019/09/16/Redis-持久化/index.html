@@ -327,8 +327,8 @@
       
         <p>Redis支持RDB和AOF持久化机制，注意持久化机制并不完全等同于主从复制原理。RDB将内存数据以文件保存在本地，会对数据进行压缩，适合备份、全量复制等场景。AOF以独立日志的方式记录每次写命令，类似mysql的binlog。解决了RDB的实时性问题。</p>
 <a id="more"></a>
-
 <h1 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h1><h2 id="触发机制"><a href="#触发机制" class="headerlink" title="触发机制"></a>触发机制</h2><p>将当前进程数据生成快照保存到硬盘。RDB持久化可以手动触发也可以自动触发。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -337,7 +337,8 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>手动触发</td>
 <td>save：阻塞当前服务器直到持久化完成，以废弃</td>
 <td></td>
@@ -365,11 +366,11 @@
 <tr>
 <td></td>
 <td>shutdown时如果没有开启AOF则bgsave</td>
-<td></td>
 </tr>
-</tbody></table>
-<h2 id="bgsave流程"><a href="#bgsave流程" class="headerlink" title="bgsave流程"></a>bgsave流程</h2><img src="/imgs/1568637625579.png" alt="1568637625579" style="zoom:50%;">
-
+</tbody>
+</table>
+</div>
+<h2 id="bgsave流程"><a href="#bgsave流程" class="headerlink" title="bgsave流程"></a>bgsave流程</h2><p><img src="/imgs/1568637625579.png" alt="1568637625579" style="zoom:50%;"></p>
 <h2 id="RDB文件的处理"><a href="#RDB文件的处理" class="headerlink" title="RDB文件的处理"></a>RDB文件的处理</h2><ul>
 <li>默认采用LZF算法进行压缩，压缩后的文件大小远远小于内存大小，默认开启</li>
 <li>加载损坏的RDB文件时拒绝启动</li>
@@ -385,8 +386,7 @@
 <li>存在多个版本的RDB文件格式</li>
 </ul>
 <h1 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h1><p>以独立日志的方式记录每次写命令，类似mysql的binlog。解决了RDB的实时性问题。</p>
-<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><img src="/imgs/1568721676828.png" alt="1568721676828" style="zoom:50%;">
-
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p><img src="/imgs/1568721676828.png" alt="1568721676828" style="zoom:50%;"></p>
 <ul>
 <li>AOF并不是直接将命令写入磁盘，而是先写入缓冲，通过提供不同的刷盘策略在性能和安全性方面做出平衡。</li>
 <li>刷盘策略有：实时刷盘；每秒刷盘；操作系统负责刷盘（存在page cache）</li>
@@ -412,8 +412,7 @@
 <li>在AOF重写期间不做刷盘</li>
 </ul>
 <h2 id="AOF刷盘阻塞"><a href="#AOF刷盘阻塞" class="headerlink" title="AOF刷盘阻塞"></a>AOF刷盘阻塞</h2><p>对于每秒刷盘的策略，redis使用子线程同步硬盘，如果硬盘资源繁忙，会造成主线程阻塞。</p>
-<img src="/imgs/1568723757563.png" alt="1568723757563" style="zoom: 33%;">
-
+<p><img src="/imgs/1568723757563.png" alt="1568723757563" style="zoom: 33%;"></p>
 <ul>
 <li>如果同步慢，会阻塞主线程</li>
 <li>最多丢失两秒数据</li>
@@ -520,7 +519,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -533,7 +532,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

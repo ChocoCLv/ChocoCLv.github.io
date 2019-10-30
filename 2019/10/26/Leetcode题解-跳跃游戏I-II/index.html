@@ -329,7 +329,6 @@
         <p>Q55 跳跃游戏I： <a href="https://leetcode-cn.com/problems/jump-game/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/jump-game/</a> </p>
 <p>Q45 跳跃游戏II： <a href="https://leetcode-cn.com/problems/jump-game-ii/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/jump-game-ii/</a> </p>
 <a id="more"></a>
-
 <h1 id="跳跃游戏I-amp-II"><a href="#跳跃游戏I-amp-II" class="headerlink" title="跳跃游戏I&amp;II"></a>跳跃游戏I&amp;II</h1><p>给定一个非负整数数组nums[]，nums[i]表示在位置i能跳到的最远距离。</p>
 <h2 id="跳跃游戏I"><a href="#跳跃游戏I" class="headerlink" title="跳跃游戏I"></a>跳跃游戏I</h2><p>给定nums[]，问能否跳到最后一个位置.</p>
 <p>示例 1:</p>
@@ -345,9 +344,10 @@
 <h3 id="递归（超时）"><a href="#递归（超时）" class="headerlink" title="递归（超时）"></a>递归（超时）</h3><p>从nums[0]出发，递归尝试step=1…nums[i]，直到当前index&gt;=nums.length-1，否则不能到达。</p>
 <p>这种方法过于暴力。</p>
 <h3 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h3><p>简单分析后发现，0的位置才会影响结果，如果数组元素全部非零，则一定可以到达最后一个位置。所以我们如果能跨过所有的0那么就能道道最后一个位置。</p>
-<p>从位置i出发最远可以到达的位置：<br>$$<br>from(i)=nums[i]+i<br>$$<br>所以需要从左向右遍历，记录当前可以到达的最远的位置。</p>
+<p>从位置i出发最远可以到达的位置：</p>
+<script type="math/tex; mode=display">
+from(i)=nums[i]+i</script><p>所以需要从左向右遍历，记录当前可以到达的最远的位置。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canJump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length - <span class="number">1</span>;i++)&#123;</span><br><span class="line">            <span class="comment">//是否能越过这个0</span></span><br><span class="line">            <span class="keyword">if</span>(nums[i] == <span class="number">0</span> &amp;&amp; max &lt;= i)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(max, i+nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="跳跃游戏II"><a href="#跳跃游戏II" class="headerlink" title="跳跃游戏II"></a>跳跃游戏II</h2><p>假设一定能到达最后一个位置，求最小跳跃次数</p>
 <h3 id="bfs"><a href="#bfs" class="headerlink" title="bfs"></a>bfs</h3><p>从i出发，可以到达i+1…i+nums[i]，即可以看成可达关系</p>
 <p><img src="/imgs/1572081547210.png" alt="1572081547210"></p>
@@ -355,12 +355,14 @@
 <p><img src="/imgs/1572083200620.png" alt="1572083200620"></p>
 <p>所以问题就变成了有向无权图的单源单宿最短路。可以直接使用bfs求解。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">jump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] steps = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            steps[i] = nums.length;</span><br><span class="line">        &#125;</span><br><span class="line">        steps[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;nums.length &amp;&amp; j&lt;=nums[i]+i;j++)&#123;</span><br><span class="line">                steps[j]=Math.min(steps[i]+<span class="number">1</span>, steps[j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> steps[nums.length-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>bfs时间复杂度为<br>$$<br>O(n+e),e \leq n*(n-1)/2  =&gt;  O(n^2)<br>$$</p>
-<h3 id="贪心-1"><a href="#贪心-1" class="headerlink" title="贪心"></a>贪心</h3><p>从i出发时，跳到[i, nums[i]+i]范围内下一次可以跳到的最远的位置。即<br>$$<br>max(nums[i]+i),i \in [i,nums[i]+i]<br>$$</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">jump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> end = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> maxPosition = <span class="number">0</span>; </span><br><span class="line">        <span class="keyword">int</span> steps = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length - <span class="number">1</span>; i++)&#123;</span><br><span class="line">            <span class="comment">//找能跳的最远的</span></span><br><span class="line">            maxPosition = Math.max(maxPosition, nums[i] + i); </span><br><span class="line">            <span class="keyword">if</span>( i == end)&#123; <span class="comment">//遇到边界，就更新边界，并且步数加一</span></span><br><span class="line">                end = maxPosition;</span><br><span class="line">                steps++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> steps;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>时间复杂度为<br>$$<br>O(n)<br>$$<br>反证法可简单证明该贪心算法的正确性。</p>
+<p>bfs时间复杂度为</p>
+<script type="math/tex; mode=display">
+O(n+e),e \leq n*(n-1)/2  =>  O(n^2)</script><h3 id="贪心-1"><a href="#贪心-1" class="headerlink" title="贪心"></a>贪心</h3><p>从i出发时，跳到[i, nums[i]+i]范围内下一次可以跳到的最远的位置。即</p>
+<script type="math/tex; mode=display">
+max(nums[i]+i),i \in [i,nums[i]+i]</script><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">jump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> end = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> maxPosition = <span class="number">0</span>; </span><br><span class="line">        <span class="keyword">int</span> steps = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length - <span class="number">1</span>; i++)&#123;</span><br><span class="line">            <span class="comment">//找能跳的最远的</span></span><br><span class="line">            maxPosition = Math.max(maxPosition, nums[i] + i); </span><br><span class="line">            <span class="keyword">if</span>( i == end)&#123; <span class="comment">//遇到边界，就更新边界，并且步数加一</span></span><br><span class="line">                end = maxPosition;</span><br><span class="line">                steps++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> steps;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>时间复杂度为</p>
+<script type="math/tex; mode=display">
+O(n)</script><p>反证法可简单证明该贪心算法的正确性。</p>
 
     </div>
 
@@ -469,7 +471,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -482,7 +484,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

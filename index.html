@@ -263,6 +263,95 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/29/二进制中1的个数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/10/29/二进制中1的个数/" class="post-title-link" itemprop="url">二进制中1的个数</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-29 15:12:14" itemprop="dateCreated datePublished" datetime="2019-10-29T15:12:14+08:00">2019-10-29</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-30 15:06:33" itemprop="dateModified" datetime="2019-10-30T15:06:33+08:00">2019-10-30</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>数字n的二进制中包含多少个1，1-n共出现多少个二进制1.</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/10/29/二进制中1的个数/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/28/Kafka核心知识点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -489,7 +578,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="常用容器的API"><a href="#常用容器的API" class="headerlink" title="常用容器的API"></a>常用容器的API</h1><p><img src="imgs/%E5%AE%B9%E5%99%A8.png" alt></p>
+          <h1 id="常用容器的API"><a href="#常用容器的API" class="headerlink" title="常用容器的API"></a>常用容器的API</h1><p><img src="imgs/容器.png" alt></p>
 
         
       
@@ -644,7 +733,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-26 17:01:09" itemprop="dateModified" datetime="2019-10-26T17:01:09+08:00">2019-10-26</time>
+                <time title="修改时间：2019-10-30 15:06:58" itemprop="dateModified" datetime="2019-10-30T15:06:58+08:00">2019-10-30</time>
               </span>
             
           
@@ -662,29 +751,15 @@
       
           <p>Windows下的包管理器Chocolatey的使用</p>
 <p><a href="https://www.cnblogs.com/ys-wuhan/p/6395417.html" target="_blank" rel="noopener">https://www.cnblogs.com/ys-wuhan/p/6395417.html</a></p>
-<ol>
-<li>安装方法 <a href="https://chocolatey.org/docs/installation" target="_blank" rel="noopener">https://chocolatey.org/docs/installation</a></li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cmd.exe</span></span><br><span class="line">@powershell -NoProfile -ExecutionPolicy Bypass -Command <span class="string">"iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"</span> &amp;&amp; SET <span class="string">"PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># powershell.exe</span></span><br><span class="line">iex ((New-Object System.Net.WebClient).DownloadString(<span class="string">'https://chocolatey.org/install.ps1'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># powershell v3+</span></span><br><span class="line">iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>代理设置</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">choco config <span class="built_in">set</span> proxy http://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>常用命令：<a href="https://chocolatey.org/docs/commands-reference" target="_blank" rel="noopener">https://chocolatey.org/docs/commands-reference</a></li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">choco search 关键字</span><br><span class="line"></span><br><span class="line">choco install 软件包名称</span><br><span class="line"></span><br><span class="line">choco upgrade 软件包名称</span><br><span class="line"></span><br><span class="line">choco uninstall 软件包名称</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li><p>仓库地址：<a href="https://chocolatey.org/packages/" target="_blank" rel="noopener">https://chocolatey.org/packages/</a></p>
-</li>
-<li><p>安装位置设置</p>
-<p>环境变量中增加 ChocolateyToolsLocation ： 想安装的地点</p>
-</li>
-</ol>
-
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/10/25/Chocolatey/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -1038,95 +1113,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/10/Leetcode题解-Q233-数字1的个数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ChocoCLv">
-      <meta itemprop="description" content="兔子🐇和窝边草🌱">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="窝边草">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/10/10/Leetcode题解-Q233-数字1的个数/" class="post-title-link" itemprop="url">Leetcode题解-Q233-数字1的个数</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-10 20:19:19" itemprop="dateCreated datePublished" datetime="2019-10-10T20:19:19+08:00">2019-10-10</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 16:26:00" itemprop="dateModified" datetime="2019-10-14T16:26:00+08:00">2019-10-14</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>链接：<a href="https://leetcode-cn.com/problems/number-of-digit-one/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/number-of-digit-one/</a></p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/10/10/Leetcode题解-Q233-数字1的个数/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1179,7 +1165,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1192,7 +1178,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1321,21 +1307,21 @@
   
     
       
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
         
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
       
     
       

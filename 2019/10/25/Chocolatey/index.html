@@ -56,17 +56,17 @@
   };
 </script>
 
-  <meta name="description" content="Windows下的包管理器Chocolatey的使用 https://www.cnblogs.com/ys-wuhan/p/6395417.html  安装方法 https://chocolatey.org/docs/installation  123456789# cmd.exe@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;ie">
+  <meta name="description" content="Windows下的包管理器Chocolatey的使用 https://www.cnblogs.com/ys-wuhan/p/6395417.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Chocolatey">
 <meta property="og:url" content="http://yoursite.com/2019/10/25/Chocolatey/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="Windows下的包管理器Chocolatey的使用 https://www.cnblogs.com/ys-wuhan/p/6395417.html  安装方法 https://chocolatey.org/docs/installation  123456789# cmd.exe@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;ie">
+<meta property="og:description" content="Windows下的包管理器Chocolatey的使用 https://www.cnblogs.com/ys-wuhan/p/6395417.html">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-26T09:01:09.272Z">
+<meta property="og:updated_time" content="2019-10-30T07:06:58.963Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chocolatey">
-<meta name="twitter:description" content="Windows下的包管理器Chocolatey的使用 https://www.cnblogs.com/ys-wuhan/p/6395417.html  安装方法 https://chocolatey.org/docs/installation  123456789# cmd.exe@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;ie">
+<meta name="twitter:description" content="Windows下的包管理器Chocolatey的使用 https://www.cnblogs.com/ys-wuhan/p/6395417.html">
   <link rel="canonical" href="http://yoursite.com/2019/10/25/Chocolatey/">
 
 
@@ -304,7 +304,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-26 17:01:09" itemprop="dateModified" datetime="2019-10-26T17:01:09+08:00">2019-10-26</time>
+                <time title="修改时间：2019-10-30 15:06:58" itemprop="dateModified" datetime="2019-10-30T15:06:58+08:00">2019-10-30</time>
               </span>
             
           
@@ -322,22 +322,20 @@
       
         <p>Windows下的包管理器Chocolatey的使用</p>
 <p><a href="https://www.cnblogs.com/ys-wuhan/p/6395417.html" target="_blank" rel="noopener">https://www.cnblogs.com/ys-wuhan/p/6395417.html</a></p>
+<a id="more"></a>
 <ol>
 <li>安装方法 <a href="https://chocolatey.org/docs/installation" target="_blank" rel="noopener">https://chocolatey.org/docs/installation</a></li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cmd.exe</span></span><br><span class="line">@powershell -NoProfile -ExecutionPolicy Bypass -Command <span class="string">"iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"</span> &amp;&amp; SET <span class="string">"PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># powershell.exe</span></span><br><span class="line">iex ((New-Object System.Net.WebClient).DownloadString(<span class="string">'https://chocolatey.org/install.ps1'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># powershell v3+</span></span><br><span class="line">iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
+<ol>
 <li>代理设置</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">choco config <span class="built_in">set</span> proxy http://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
+<ol>
 <li>常用命令：<a href="https://chocolatey.org/docs/commands-reference" target="_blank" rel="noopener">https://chocolatey.org/docs/commands-reference</a></li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">choco search 关键字</span><br><span class="line"></span><br><span class="line">choco install 软件包名称</span><br><span class="line"></span><br><span class="line">choco upgrade 软件包名称</span><br><span class="line"></span><br><span class="line">choco uninstall 软件包名称</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
+<ol>
 <li><p>仓库地址：<a href="https://chocolatey.org/packages/" target="_blank" rel="noopener">https://chocolatey.org/packages/</a></p>
 </li>
 <li><p>安装位置设置</p>
@@ -437,7 +435,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -450,7 +448,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

@@ -57,7 +57,7 @@
 </script>
 
   <meta name="description" content="Kafka是一种高吞吐量/分布式/基于发布订阅的消息系统。">
-<meta name="keywords" content="分布式,kafka,消息队列">
+<meta name="keywords" content="kafka,消息队列,分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kafka核心知识点">
 <meta property="og:url" content="http://yoursite.com/2019/10/28/Kafka核心知识点/index.html">
@@ -323,7 +323,6 @@
       
         <p>Kafka是一种高吞吐量/分布式/基于发布订阅的消息系统。</p>
 <a id="more"></a>
-
 <h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
 <li>broker：Kafka服务器，负责消息存储和转发</li>
 <li>topic：消息类别，Kafka按照topic分类消息</li>
@@ -339,11 +338,11 @@
 </ol>
 <p>partition的每条Message包含了以下三个属性：offset，MessageSize，data。</p>
 <p>offset表示Message在这个partition中的偏移量，不是该Message在partition数据文件中的实际存储位置，而是一个逻辑值。可以认为是partition中的MessageID。</p>
-<ol start="2">
+<ol>
 <li>数据文件分段segment（顺序读写，分段存储，二分查找）</li>
 </ol>
 <p>partition物理上由多个segment文件组成，每个segment大小相等，顺序读写。segment以该段中最小的offset命名。在查找指定offset的Message时可以用二分查找快速定位。</p>
-<ol start="3">
+<ol>
 <li>数据文件索引（分段索引，稀疏存储）</li>
 </ol>
 <p>为每个分段后的数据文件建立了索引文件，并没有为数据文件中的每条Message建立索引，而是每隔一定字节的数据建立索引。</p>
@@ -363,11 +362,11 @@
           
           <div class="post-tags">
             
-              <a href="/tags/分布式/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
-            
               <a href="/tags/kafka/" rel="tag"><i class="fa fa-tag"></i> kafka</a>
             
               <a href="/tags/消息队列/" rel="tag"><i class="fa fa-tag"></i> 消息队列</a>
+            
+              <a href="/tags/分布式/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
             
           </div>
         
@@ -386,6 +385,10 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/10/29/二进制中1的个数/" rel="prev" title="二进制中1的个数">
+                  二进制中1的个数 <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -452,7 +455,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -465,7 +468,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

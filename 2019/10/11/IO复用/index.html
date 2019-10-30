@@ -325,8 +325,8 @@
       
         <p>内核一旦发现进程指定的一个或多个I/O条件就绪，它就通知进程。这种能力称为I/O复用。</p>
 <a id="more"></a>
-
 <h1 id="IO模型"><a href="#IO模型" class="headerlink" title="IO模型"></a>IO模型</h1><p>Unix下5种IO模型：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -335,7 +335,8 @@
 <th>特点</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>阻塞式I/O</td>
 <td></td>
 <td></td>
@@ -360,21 +361,20 @@
 <td>告知内核启动某个操作，在整个操作（包括将数据从内核复制到用户空间）完成后通知</td>
 <td>通知何时I/O操作完成</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>前四种模型均为同步I/O。</p>
 <p>同步I/O：导致请求进程阻塞，直到I/O操作完成</p>
 <p>异步I/O：不导致请求进程阻塞。</p>
 <p><img src="/imgs/1570773791564.png" alt="1570773791564"></p>
 <h1 id="select函数"><a href="#select函数" class="headerlink" title="select函数"></a>select函数</h1><p>该函数允许进程指示内核等待多个事件中的任何一个发生，并只在有一个或多个事件发生或经历一段指定的时间后才唤醒它。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/select.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span><span class="params">(<span class="keyword">int</span> maxfdp1, fd_set *readset, fd_set *writeset, fd_set *exceptset, <span class="keyword">const</span> struct timeval *timeout)</span></span>;</span><br><span class="line"><span class="comment">//若有就绪描述符则返回数目，超时返回0，出错返回-1</span></span><br></pre></td></tr></table></figure>
-
 <p>当三个set均为空指针时，可以用作精度为us的定时器</p>
 <h1 id="poll函数"><a href="#poll函数" class="headerlink" title="poll函数"></a>poll函数</h1><p>poll的功能与select类似</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;poll.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//timeout单位：ms</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">poll</span><span class="params">(struct pollfd *fdarray, <span class="keyword">unsigned</span> <span class="keyword">long</span> nfds, <span class="keyword">int</span> timeout)</span></span>;</span><br><span class="line"><span class="comment">//若有就绪描述符则返回数目，超时返回0，出错返回-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> fd;</span><br><span class="line">    <span class="keyword">short</span> events;<span class="comment">//该描述符上感兴趣的事件</span></span><br><span class="line">    <span class="keyword">short</span> revents;<span class="comment">//该描述符上发生的事件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h1 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h1><p>不同于select和poll，epoll由三部分组成。</p>
 <h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 创建epoll句柄</span></span><br><span class="line"><span class="comment"> * size：最大socket fd数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 该函数用于控制某个epoll文件描述符上的事件，可以注册事件，修改事件，删除事件。</span></span><br><span class="line"><span class="comment"> * epfd：由 epoll_create 生成的epoll专用的文件描述符；</span></span><br><span class="line"><span class="comment"> * op：要进行的操作例如注册事件，可能的取值EPOLL_CTL_ADD 注册、EPOLL_CTL_MOD 修 改、EPOLL_CTL_DEL 删除</span></span><br><span class="line"><span class="comment"> * fd：关联的文件描述符；</span></span><br><span class="line"><span class="comment"> * event：指向epoll_event的指针；</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待事件触发，当超过timeout还没有事件触发时，就超时。</span></span><br><span class="line"><span class="comment"> * epfd:由epoll_create 生成的epoll专用的文件描述符；</span></span><br><span class="line"><span class="comment"> * epoll_event:用于回传代处理事件的数组；</span></span><br><span class="line"><span class="comment"> * maxevents:每次能处理的事件数；</span></span><br><span class="line"><span class="comment"> * timeout:等待I/O事件发生的超时值；-1相当于阻塞，0相当于非阻塞。一般用-1即可</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct epoll_event *events,<span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;  </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">uint32_t</span> events;   <span class="comment">/* Epoll events */</span></span><br><span class="line">  <span class="keyword">epoll_data_t</span> data;    <span class="comment">/* User data variable */</span></span><br><span class="line">&#125; __attribute__ ((__packed__));</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> epoll_data</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">void</span> *ptr;</span><br><span class="line">  <span class="keyword">int</span> fd;</span><br><span class="line">  <span class="keyword">uint32_t</span> u32;</span><br><span class="line">  <span class="keyword">uint64_t</span> u64;</span><br><span class="line">&#125; <span class="keyword">epoll_data_t</span>;</span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <p>对于epoll_wait</p>
 <p>等侍注册在epfd上的socket fd的事件的发生，如果发生则将发生的sokct fd和事件类型放入到events数组中。<br>并 且将注册在epfd上的socket fd的事件类型给清空，所以如果下一个循环你还要关注这个socket fd的话，则<strong>需要用epoll_ctl(epfd,EPOLL_CTL_MOD,listenfd,&amp;ev)来重新设置socket fd的事件类型</strong>。这时不用EPOLL_CTL_ADD,因为socket fd并未清空，只是事件类型清空。</p>
@@ -517,7 +517,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -530,7 +530,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

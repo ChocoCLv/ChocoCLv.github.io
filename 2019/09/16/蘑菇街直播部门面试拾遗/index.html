@@ -325,13 +325,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>蘑菇街直播部门的秋招面试回顾</p>
-<a id="more"></a>
-
+        <p>蘑菇街直播部门的秋招面试回顾<br><a id="more"></a></p>
 <h1 id="蘑菇街一面记录"><a href="#蘑菇街一面记录" class="headerlink" title="蘑菇街一面记录"></a>蘑菇街一面记录</h1><h2 id="不同序列化方式对比"><a href="#不同序列化方式对比" class="headerlink" title="不同序列化方式对比"></a>不同序列化方式对比</h2><p>序列化实际上就是将内存中的数据以一定格式表达出来，序列化后的数据可以存储在本地也可以在网络上传输。对于Java对象而言，序列化的内容可能会包括类的继承关系。</p>
 <p>序列化可以分为文本和二进制两种形式。</p>
 <p>其中Json/XML为文本格式，比如Spring中从xml加载bean的定义并实例化实际上就是一个使用xml反序列化的过程。文本格式的序列化可读性好，但是性能差。一般应用于前后端交互接口。</p>
 <p>对于RPC框架而言，需要追求极致性能，一般会考虑使用二进制序列化。二进制序列化往往会对数据进行压缩，使用尽可能小的数据量表达更多的信息。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -340,7 +339,8 @@
 <th>缺点</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>hessian</td>
 <td>默认支持跨语言</td>
 <td>较慢</td>
@@ -365,7 +365,9 @@
 <td>速度快，序列化后体积小</td>
 <td>跨语言支持较复杂</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <blockquote>
 <p>hsf/dubbo默认使用的hessian2改造后的hessian lite。</p>
 </blockquote>
@@ -382,6 +384,7 @@
 <li>LineBasedFrameDecoder是基于行来进行消息粘包拆包处理的。</li>
 </ul>
 <h2 id="代理的实现方式，以及对比"><a href="#代理的实现方式，以及对比" class="headerlink" title="代理的实现方式，以及对比"></a>代理的实现方式，以及对比</h2><p>静态代理 动态代理</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -389,7 +392,8 @@
 <th>特点</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>jdk</td>
 <td>被代理对象必须要实现接口，实际上是对接口的代理</td>
 </tr>
@@ -401,11 +405,14 @@
 <td>asm</td>
 <td>低级的字节码生成工具，还可以用于热部署、性能诊断和mock，参考<a href="https://tech.meituan.com/2019/09/05/java-bytecode-enhancement.html" target="_blank" rel="noopener">https://tech.meituan.com/2019/09/05/java-bytecode-enhancement.html</a></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>性能上asm&gt;cglib&gt;jdk</p>
 <p>在1.6和1.7的时候，JDK动态代理的速度要比CGLib动态代理的速度要慢，但是并没有教科书上的10倍差距，在JDK1.8的时候，JDK动态代理的速度已经比CGLib动态代理的速度快很多了</p>
 <h2 id="线程池参数设置问题"><a href="#线程池参数设置问题" class="headerlink" title="线程池参数设置问题"></a>线程池参数设置问题</h2><p>如何设置合适的值，io密集，cpu密集</p>
-<h3 id="线程池参数"><a href="#线程池参数" class="headerlink" title="线程池参数"></a>线程池参数</h3><table>
+<h3 id="线程池参数"><a href="#线程池参数" class="headerlink" title="线程池参数"></a>线程池参数</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>参数</th>
@@ -413,7 +420,8 @@
 <th>注意</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>corePoolSize</td>
 <td>核心线程数</td>
 <td></td>
@@ -443,7 +451,9 @@
 <td>任务队列</td>
 <td>注意设置队列长度</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="如何设置"><a href="#如何设置" class="headerlink" title="如何设置"></a>如何设置</h3><p>参数的设置跟系统的负载有直接的关系，下面为系统负载的相关参数：</p>
 <ul>
 <li>tasks，每秒需要处理的最大任务数量</li>
@@ -499,23 +509,26 @@
 <li>at least onece，consumer pull消息到本地，消费成功后提交ack</li>
 <li>重新消费消息</li>
 </ul>
-<p>[RocketMQ保证消息不丢失的手段](<a href="http://silence.work/2019/05/04/RocketMQ" target="_blank" rel="noopener">http://silence.work/2019/05/04/RocketMQ</a> Reliablity/)</p>
-<h2 id="对比notify-metaq"><a href="#对比notify-metaq" class="headerlink" title="对比notify/metaq"></a>对比notify/metaq</h2><table>
+<p><a href="http://silence.work/2019/05/04/RocketMQ Reliablity/" target="_blank" rel="noopener">RocketMQ保证消息不丢失的手段</a></p>
+<h2 id="对比notify-metaq"><a href="#对比notify-metaq" class="headerlink" title="对比notify/metaq"></a>对比notify/metaq</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>notify</th>
 <th>metaq</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>消息堆积能力强</td>
 <td>使用队列模型，借鉴metaq，侧重顺序消息</td>
 </tr>
 <tr>
 <td></td>
-<td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="iss的同时有大量任务需要调度怎么办"><a href="#iss的同时有大量任务需要调度怎么办" class="headerlink" title="iss的同时有大量任务需要调度怎么办"></a>iss的同时有大量任务需要调度怎么办</h2><p>//TODO<br>对于周期任务，比如周期为2s，当某次执行时间超过了两秒，怎么办</p>
 
     </div>
@@ -639,7 +652,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -652,7 +665,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

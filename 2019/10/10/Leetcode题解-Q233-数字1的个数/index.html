@@ -323,7 +323,6 @@
       
         <p>链接：<a href="https://leetcode-cn.com/problems/number-of-digit-one/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/number-of-digit-one/</a></p>
 <a id="more"></a>
-
 <h1 id="数字1的个数"><a href="#数字1的个数" class="headerlink" title="数字1的个数"></a>数字1的个数</h1><p><strong>华为现场面试遇到该题</strong></p>
 <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个整数 n，计算所有小于等于 n 的非负整数中数字 1 出现的个数。</p>
 <p>示例:</p>
@@ -331,8 +330,11 @@
 <p>输入: 13<br>输出: 6<br>解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。</p>
 </blockquote>
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>两种思路</p>
-<p>横向：遍历1~n，转换为字符串后统计1的个数，时间复杂度为<br>$$<br>O(n\times log_{10}(n))<br>$$<br>纵向：分别统计每一位出现1的次数，时间复杂度为<br>$$<br>O(log_{10}(n))<br>$$</p>
-<h2 id="数学法"><a href="#数学法" class="headerlink" title="数学法"></a>数学法</h2><p>考虑’1’ 在 个位，十位，百位，… 出现的情况，找规律</p>
+<p>横向：遍历1~n，转换为字符串后统计1的个数，时间复杂度为</p>
+<script type="math/tex; mode=display">
+O(n\times log_{10}(n))</script><p>纵向：分别统计每一位出现1的次数，时间复杂度为</p>
+<script type="math/tex; mode=display">
+O(log_{10}(n))</script><h2 id="数学法"><a href="#数学法" class="headerlink" title="数学法"></a>数学法</h2><p>考虑’1’ 在 个位，十位，百位，… 出现的情况，找规律</p>
 <ol>
 <li>个位：(n/10) + (n%10 != 0)</li>
 <li>十位：(n/100)*10 + min(max(n%100 - 10 + 1, 0), 10)</li>
@@ -345,9 +347,10 @@
 </ul>
 <p>所以 count(hundred of 16xyz) = 1600 + min(max(xyz-100 + 1, 0), 100)</p>
 <p>其中max(xyz-100 + 1, 0 )是考虑到x可能为0.</p>
-<p>最终有<br>$$<br>count(n) = (n/(i<em>10))</em>i + min(max((n % (i<em>10)) -i+1,0),i),i\in {1,10,100…}<br>$$<br>每(i</em>10)个数，i位上的1出现i次。</p>
+<p>最终有</p>
+<script type="math/tex; mode=display">
+count(n) = (n/(i*10))*i + min(max((n \% (i*10)) -i+1,0),i),i\in {1,10,100...}</script><p>每(i*10)个数，i位上的1出现i次。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countDigitOne</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">1</span>; i &lt;= n; i *= <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="keyword">long</span> divider = i * <span class="number">10</span>;</span><br><span class="line">            count += (n / divider) * i + Math.min(Math.max(n % divider - i + <span class="number">1</span>, <span class="number">0</span>), i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -454,7 +457,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -467,7 +470,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

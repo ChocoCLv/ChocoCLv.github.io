@@ -324,11 +324,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>2019-9-10 电话面 2019-9-19 成都现场面</p>
-<a id="more"></a>
-
+        <p>2019-9-10 电话面 2019-9-19 成都现场面<br><a id="more"></a></p>
 <h3 id="两个队列实现栈"><a href="#两个队列实现栈" class="headerlink" title="两个队列实现栈"></a>两个队列实现栈</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">import</span> java.util.Queue;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用两个队列实现一个栈</span></span><br><span class="line"><span class="comment"> * 只使用其中的一个队列存储所有数据</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackWithTwoQueues</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Queue&lt;T&gt; queueEmpty = <span class="keyword">new</span> LinkedList&lt;T&gt;();</span><br><span class="line">    <span class="keyword">private</span> Queue&lt;T&gt; queueValid = <span class="keyword">new</span> LinkedList&lt;T&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(T ele)</span> </span>&#123;</span><br><span class="line">        queueValid.add(ele);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (queueValid.isEmpty())</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (queueValid.size() != <span class="number">1</span>) &#123;</span><br><span class="line">            queueEmpty.add(queueValid.remove());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Queue&lt;T&gt; queue = queueValid;</span><br><span class="line">        queueValid = queueEmpty;</span><br><span class="line">        queueEmpty = queue;</span><br><span class="line">        <span class="keyword">return</span> queueEmpty.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="mybatis分页"><a href="#mybatis分页" class="headerlink" title="mybatis分页"></a>mybatis分页</h3><p><a href="https://www.cnblogs.com/aeolian/p/9229149.html" target="_blank" rel="noopener">mybatis的四种分页方式</a></p>
 <ul>
 <li>数组分页：查询出全部数据，然后再list中截取需要的部分。</li>
@@ -453,7 +450,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -466,7 +463,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

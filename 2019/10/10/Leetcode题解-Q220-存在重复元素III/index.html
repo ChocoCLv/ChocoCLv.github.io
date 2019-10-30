@@ -323,7 +323,6 @@
       
         <p>链接：<a href="https://leetcode-cn.com/problems/contains-duplicate-iii" target="_blank" rel="noopener">https://leetcode-cn.com/problems/contains-duplicate-iii</a></p>
 <a id="more"></a>
-
 <h1 id="存在重复元素III"><a href="#存在重复元素III" class="headerlink" title="存在重复元素III"></a>存在重复元素III</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个整数数组，判断数组中是否有两个不同的索引 i 和 j，使得 nums [i] 和 nums [j] 的差的绝对值最大为 t，并且 i 和 j 之间的差的绝对值最大为 ķ。</p>
 <p>示例 1:</p>
 <blockquote>
@@ -340,13 +339,18 @@
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>判断数组中是否存在距离不超过k的两个元素，他们的差值大小不大于t。</p>
 <p>换句话说即在大小为min(k+1, n)的窗口中存在两个元素的不大于t。</p>
 <p><del>最开始理解错误，理解成了大小为k+1的窗口中任意两个元素的差值不大于t。这时即可使用滑动窗口的最大值/最小值的解法，找到一个窗口使得max-min &lt;= t。</del></p>
-<h2 id="暴力解法"><a href="#暴力解法" class="headerlink" title="暴力解法"></a>暴力解法</h2><p>遍历计算<br>$$<br>|num[i] - nums[j]|\leq t，i \in [0,n), j \in [i+1 , i+k]<br>$$</p>
-<p>时间复杂度为<br>$$<br>O(n\times min(k,n))<br>$$<br>空间复杂度为<br>$$<br>O(1)<br>$$</p>
-<h2 id="二叉搜索树优化"><a href="#二叉搜索树优化" class="headerlink" title="二叉搜索树优化"></a>二叉搜索树优化</h2><p>暴力解法中i的遍历是必要的，即窗口的移动。</p>
-<p>窗口的移动伴随着头部元素的移除和尾部元素的加入，在新增元素后，已有元素的差值是不变的，新增了<br>$$<br>|nums[i]-nums[i-j]|,j\in [1,k]<br>$$<br>即nums[i-j]为原来窗口的值，如果nums[i-j]是有序的，那我们只需要找到nums[i]相邻的值即可更新当前窗口的最小插值。所以需要保持窗口元素的有序性。</p>
+<h2 id="暴力解法"><a href="#暴力解法" class="headerlink" title="暴力解法"></a>暴力解法</h2><p>遍历计算</p>
+<script type="math/tex; mode=display">
+|num[i] - nums[j]|\leq t，i \in [0,n), j \in [i+1 , i+k]</script><p>时间复杂度为</p>
+<script type="math/tex; mode=display">
+O(n\times min(k,n))</script><p>空间复杂度为</p>
+<script type="math/tex; mode=display">
+O(1)</script><h2 id="二叉搜索树优化"><a href="#二叉搜索树优化" class="headerlink" title="二叉搜索树优化"></a>二叉搜索树优化</h2><p>暴力解法中i的遍历是必要的，即窗口的移动。</p>
+<p>窗口的移动伴随着头部元素的移除和尾部元素的加入，在新增元素后，已有元素的差值是不变的，新增了</p>
+<script type="math/tex; mode=display">
+|nums[i]-nums[i-j]|,j\in [1,k]</script><p>即nums[i-j]为原来窗口的值，如果nums[i-j]是有序的，那我们只需要找到nums[i]相邻的值即可更新当前窗口的最小插值。所以需要保持窗口元素的有序性。</p>
 <p>AVL树能很好的满足我们的需求，在Java中TreeSet（红黑树）实现了这一数据结构。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">containsNearbyAlmostDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k, <span class="keyword">int</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length &lt; <span class="number">2</span> || k &lt; <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeSet&lt;Integer&gt; set = <span class="keyword">new</span> TreeSet&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            Integer pre = set.ceiling(nums[i]);</span><br><span class="line">            <span class="keyword">if</span> (pre != <span class="keyword">null</span> &amp;&amp; pre &lt;= nums[i] + t) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">            Integer succ = set.floor(nums[i]);</span><br><span class="line">            <span class="keyword">if</span> (succ != <span class="keyword">null</span> &amp;&amp; nums[i] &lt;= succ + t) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">            set.add(nums[i]);</span><br><span class="line">            <span class="keyword">if</span> (set.size() &gt; k) &#123;</span><br><span class="line">                set.remove(nums[i - k]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -455,7 +459,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -468,7 +472,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
