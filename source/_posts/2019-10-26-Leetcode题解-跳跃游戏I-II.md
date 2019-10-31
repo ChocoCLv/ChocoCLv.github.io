@@ -6,6 +6,7 @@ tags:
 - leetcode
 - 贪心
 - bfs
+- 算法
 ---
 
 
