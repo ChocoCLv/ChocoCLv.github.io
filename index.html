@@ -263,6 +263,192 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/30/非递归-前序-中序-后序-遍历二叉树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/10/30/非递归-前序-中序-后序-遍历二叉树/" class="post-title-link" itemprop="url">非递归[前序/中序/后序]遍历二叉树</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-30 15:16:44" itemprop="dateCreated datePublished" datetime="2019-10-30T15:16:44+08:00">2019-10-30</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-31 16:22:21" itemprop="dateModified" datetime="2019-10-31T16:22:21+08:00">2019-10-31</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="二叉树遍历"><a href="#二叉树遍历" class="headerlink" title="二叉树遍历"></a>二叉树遍历</h1><h2 id="前序"><a href="#前序" class="headerlink" title="前序"></a>前序</h2><p>根-&gt;左-&gt;右</p>
+<ol>
+<li><p>递归</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traversalWithRecursion</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.print(root.val + <span class="string">" "</span>);</span><br><span class="line">    traversalWithRecursion(root.left);</span><br><span class="line">    traversalWithRecursion(root.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非递归</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traversalWithoutRecursion</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">       Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">       stack.push(root);</span><br><span class="line">       <span class="keyword">while</span> (!stack.empty()) &#123;</span><br><span class="line">           TreeNode curNode = stack.pop();</span><br><span class="line">           System.out.print(curNode.val + <span class="string">" "</span>);</span><br><span class="line">           <span class="comment">//手动入栈代替递归函数栈</span></span><br><span class="line">           <span class="keyword">if</span> (curNode.right != <span class="keyword">null</span>) stack.push(curNode.right);</span><br><span class="line">           <span class="keyword">if</span> (curNode.left != <span class="keyword">null</span>) stack.push(curNode.left);</span><br><span class="line">       &#125;</span><br><span class="line">       System.out.println();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="中序"><a href="#中序" class="headerlink" title="中序"></a>中序</h2><p>左-&gt;根-&gt;右</p>
+<ol>
+<li><p>递归</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traversalWithRecursion</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       traversalWithRecursion(root.left);</span><br><span class="line">       System.out.print(root.val + <span class="string">" "</span>);</span><br><span class="line">       traversalWithRecursion(root.right);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>非递归</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traversalWithoutRecursion</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (root == <span class="keyword">null</span>)</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">       <span class="keyword">while</span> (!stack.isEmpty() || root != <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">if</span> (root != <span class="keyword">null</span>) &#123;</span><br><span class="line">               <span class="comment">//traversalWithRecursion(root.left);</span></span><br><span class="line">               stack.push(root);</span><br><span class="line">               root = root.left;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               root = stack.pop();</span><br><span class="line">               System.out.print(root.val + <span class="string">" "</span>);</span><br><span class="line">               root = root.right;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="后序"><a href="#后序" class="headerlink" title="后序"></a>后序</h2><p>左-&gt;右-&gt;根</p>
+<ol>
+<li><p>递归</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traversalWithRecursion</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    traversalWithRecursion(root.left);</span><br><span class="line">    traversalWithRecursion(root.right);</span><br><span class="line">    System.out.print(root.val + <span class="string">" "</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>非递归</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traversalWithoutRecursion</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">       Stack&lt;TreeNode&gt; stack1 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">       Stack&lt;TreeNode&gt; stack2 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">   </span><br><span class="line">       stack1.push(root);</span><br><span class="line">   </span><br><span class="line">       <span class="keyword">while</span> (!stack1.empty()) &#123;</span><br><span class="line">           root = stack1.pop();</span><br><span class="line">           stack2.push(root);</span><br><span class="line">           <span class="keyword">if</span> (root.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">               stack1.push(root.left);</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">if</span> (root.right != <span class="keyword">null</span>) &#123;</span><br><span class="line">               stack1.push(root.right);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   </span><br><span class="line">       <span class="keyword">while</span> (!stack2.empty()) &#123;</span><br><span class="line">           System.out.print(stack2.pop().val+<span class="string">" "</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p><img src="/imgs/1572509383732.png" alt="1572509383732"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">InOrder</span><br><span class="line">4 2 6 5 1 8 3 7 </span><br><span class="line">4 2 6 5 1 8 3 7 </span><br><span class="line">PreOder</span><br><span class="line">1 2 4 5 6 3 8 7 </span><br><span class="line">1 2 4 5 6 3 8 7 </span><br><span class="line"></span><br><span class="line">PostOrder</span><br><span class="line">4 6 5 2 8 7 3 1 </span><br><span class="line">4 6 5 2 8 7 3 1</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/30/hexo中添加latex支持/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/10/30/hexo中添加latex支持/" class="post-title-link" itemprop="url">hexo中添加latex支持</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-30 15:14:13 / 修改时间：15:14:52" itemprop="dateCreated datePublished" datetime="2019-10-30T15:14:13+08:00">2019-10-30</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a href="https://www.jianshu.com/p/68e6f82d88b7" target="_blank" rel="noopener">https://www.jianshu.com/p/68e6f82d88b7</a></p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/29/二进制中1的个数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -303,7 +489,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-30 15:09:12" itemprop="dateModified" datetime="2019-10-30T15:09:12+08:00">2019-10-30</time>
+                <time title="修改时间：2019-10-30 15:13:24" itemprop="dateModified" datetime="2019-10-30T15:13:24+08:00">2019-10-30</time>
               </span>
             
           
@@ -935,189 +1121,11 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/14/Leetcode题解-Q5224-掷骰子模拟/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ChocoCLv">
-      <meta itemprop="description" content="兔子🐇和窝边草🌱">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="窝边草">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/10/14/Leetcode题解-Q5224-掷骰子模拟/" class="post-title-link" itemprop="url">Leetcode题解-Q5224-掷骰子模拟</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-14 16:23:16" itemprop="dateCreated datePublished" datetime="2019-10-14T16:23:16+08:00">2019-10-14</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-30 15:08:44" itemprop="dateModified" datetime="2019-10-30T15:08:44+08:00">2019-10-30</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>链接：<a href="https://leetcode-cn.com/problems/dice-roll-simulation" target="_blank" rel="noopener">https://leetcode-cn.com/problems/dice-roll-simulation</a></p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/10/14/Leetcode题解-Q5224-掷骰子模拟/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/11/IO复用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ChocoCLv">
-      <meta itemprop="description" content="兔子🐇和窝边草🌱">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="窝边草">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/10/11/IO复用/" class="post-title-link" itemprop="url">IO复用</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-11 13:37:10" itemprop="dateCreated datePublished" datetime="2019-10-11T13:37:10+08:00">2019-10-11</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-12 10:28:52" itemprop="dateModified" datetime="2019-10-12T10:28:52+08:00">2019-10-12</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>内核一旦发现进程指定的一个或多个I/O条件就绪，它就通知进程。这种能力称为I/O复用。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/10/11/IO复用/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1165,7 +1173,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1178,7 +1186,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1307,11 +1315,11 @@
   
     
       
+    
+      
+    
+      
         
-      
-    
-      
-    
       
     
       
