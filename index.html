@@ -263,6 +263,110 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/31/Leetcode题解-缺失数字-寻找重复数-缺失的第一个正数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/10/31/Leetcode题解-缺失数字-寻找重复数-缺失的第一个正数/" class="post-title-link" itemprop="url">Leetcode题解-缺失数字&寻找重复数&缺失的第一个正数</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-31 20:09:29 / 修改时间：20:39:14" itemprop="dateCreated datePublished" datetime="2019-10-31T20:09:29+08:00">2019-10-31</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Q41 缺失的第一个正数 <a href="https://leetcode-cn.com/problems/first-missing-positive/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/first-missing-positive/</a> </p>
+<p>Q287 寻找重复数  <a href="https://leetcode-cn.com/problems/find-the-duplicate-number/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/find-the-duplicate-number/</a> </p>
+<p>Q268 缺失数字  <a href="https://leetcode-cn.com/problems/missing-number/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/missing-number/</a> </p>
+<h1 id="缺失的第一个正数"><a href="#缺失的第一个正数" class="headerlink" title="缺失的第一个正数"></a>缺失的第一个正数</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p> 给定一个未排序的整数数组，找出其中没有出现的最小的正整数。 </p>
+<p>示例 1:</p>
+<blockquote>
+<p>输入: [1,2,0]<br>输出: 3</p>
+</blockquote>
+<p>示例 2:</p>
+<blockquote>
+<p>输入: [3,4,-1,1]<br>输出: 2</p>
+</blockquote>
+<p>示例 3:</p>
+<blockquote>
+<p>输入: [7,8,9,11,12]<br>输出: 1</p>
+</blockquote>
+<p> <strong>算法的时间复杂度应为O(<em>n</em>)，并且只能使用常数级别的空间。</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">firstMissingPositive</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> N = nums.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N;)&#123;</span><br><span class="line">           	<span class="keyword">int</span> t = nums[i];</span><br><span class="line">            <span class="keyword">if</span>(t &gt; <span class="number">0</span> &amp;&amp; t &lt;= N &amp;&amp; t != i+<span class="number">1</span> &amp;&amp; nums[t-<span class="number">1</span>] != t)&#123;</span><br><span class="line">                swap(nums, i, nums[i]-<span class="number">1</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; N;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] != i+<span class="number">1</span>)&#123;</span><br><span class="line">               <span class="keyword">return</span> i+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> N+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[i];</span><br><span class="line">        nums[i] = nums[j];</span><br><span class="line">        nums[j] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="寻找重复数"><a href="#寻找重复数" class="headerlink" title="寻找重复数"></a>寻找重复数</h1><h2 id="题目-1"><a href="#题目-1" class="headerlink" title="题目"></a>题目</h2><p>给定一个包含 n + 1 个整数的数组 nums，其数字都在 1 到 n 之间（包括 1 和 n），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。</p>
+<p>示例 1:</p>
+<blockquote>
+<p>输入: [1,3,4,2,2]<br>输出: 2</p>
+</blockquote>
+<p>示例 2:</p>
+<blockquote>
+<p>输入: [3,1,3,4,2]<br>输出: 3</p>
+</blockquote>
+<p>说明：</p>
+<blockquote>
+<p>不能更改原数组（假设数组是只读的）。<br>只能使用额外的 O(1) 的空间。<br>时间复杂度小于 O(n2) 。<br>数组中只有一个重复的数字，但它可能不止重复出现一次。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不考虑【不能更改原数组】的限制</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.length;</span><br><span class="line">        <span class="comment">//put i in nums[i-1]</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(nums[i]-<span class="number">1</span> != i)&#123;</span><br><span class="line">                <span class="keyword">if</span>(!swap(nums, i, nums[i]-<span class="number">1</span>))&#123;</span><br><span class="line">                    <span class="keyword">return</span> nums[i];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums[i]==nums[j])&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[i];</span><br><span class="line">        nums[i] = nums[j];</span><br><span class="line">        nums[j] = tmp;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/30/非递归-前序-中序-后序-遍历二叉树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1054,74 +1158,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/14/Leetcode题解-Q5225-最大相等频率/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ChocoCLv">
-      <meta itemprop="description" content="兔子🐇和窝边草🌱">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="窝边草">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/10/14/Leetcode题解-Q5225-最大相等频率/" class="post-title-link" itemprop="url">Leetcode题解-Q5225-最大相等频率</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-14 17:08:03" itemprop="dateCreated datePublished" datetime="2019-10-14T17:08:03+08:00">2019-10-14</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1174,7 +1210,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1255,6 +1291,29 @@
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+  
+</div>
 
 
 
@@ -1320,9 +1379,9 @@
       
     
       
-        
-      
     
+      
+        
       
     
       
