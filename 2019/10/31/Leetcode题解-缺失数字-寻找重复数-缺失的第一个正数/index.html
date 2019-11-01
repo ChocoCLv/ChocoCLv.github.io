@@ -57,16 +57,23 @@
 </script>
 
   <meta name="description" content="Q41 缺失的第一个正数 https://leetcode-cn.com/problems/first-missing-positive/  Q287 寻找重复数  https://leetcode-cn.com/problems/find-the-duplicate-number/  Q268 缺失数字  https://leetcode-cn.com/problems/missing-numb">
+<meta name="keywords" content="算法,位运算,鸽笼定理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode题解-缺失数字&amp;寻找重复数&amp;缺失的第一个正数">
 <meta property="og:url" content="http://yoursite.com/2019/10/31/Leetcode题解-缺失数字-寻找重复数-缺失的第一个正数/index.html">
 <meta property="og:site_name" content="窝边草">
 <meta property="og:description" content="Q41 缺失的第一个正数 https://leetcode-cn.com/problems/first-missing-positive/  Q287 寻找重复数  https://leetcode-cn.com/problems/find-the-duplicate-number/  Q268 缺失数字  https://leetcode-cn.com/problems/missing-numb">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-01T06:25:34.569Z">
+<meta property="og:image" content="http://yoursite.com/imgs/1572594110000.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1572594259894.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1572594944006.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1572595448935.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1572595565801.png">
+<meta property="og:updated_time" content="2019-11-01T08:31:02.303Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode题解-缺失数字&amp;寻找重复数&amp;缺失的第一个正数">
 <meta name="twitter:description" content="Q41 缺失的第一个正数 https://leetcode-cn.com/problems/first-missing-positive/  Q287 寻找重复数  https://leetcode-cn.com/problems/find-the-duplicate-number/  Q268 缺失数字  https://leetcode-cn.com/problems/missing-numb">
+<meta name="twitter:image" content="http://yoursite.com/imgs/1572594110000.png">
   <link rel="canonical" href="http://yoursite.com/2019/10/31/Leetcode题解-缺失数字-寻找重复数-缺失的第一个正数/">
 
 
@@ -304,7 +311,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-01 14:25:34" itemprop="dateModified" datetime="2019-11-01T14:25:34+08:00">2019-11-01</time>
+                <time title="修改时间：2019-11-01 16:31:02" itemprop="dateModified" datetime="2019-11-01T16:31:02+08:00">2019-11-01</time>
               </span>
             
           
@@ -360,6 +367,14 @@
 <p>输入: [7,8,9,11,12]<br>输出: 1</p>
 </blockquote>
 <p> <strong>算法的时间复杂度应为O(<em>n</em>)，并且只能使用常数级别的空间。</strong> </p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>找到第一个缺失的正整数，即从1开始寻找，直到i不在数组中。</p>
+<p>遍历数组，如果nums[i]是合法的，则将nums[i]-1放到i上，即nums[1]=2,nums[0]=1。</p>
+<script type="math/tex; mode=display">
+nums[i] \in [1,nums.length]</script><p>以示例2为例：</p>
+<p><img src="/imgs/1572594110000.png" alt="1572594110000"></p>
+<p>遍历完成后</p>
+<p><img src="/imgs/1572594259894.png" alt="1572594259894"></p>
+<p>再次遍历，遇到的第一个不合法的位置，对应的value即为第一个缺失的正整数。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">firstMissingPositive</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> N = nums.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N;)&#123;</span><br><span class="line">           	<span class="keyword">int</span> t = nums[i];</span><br><span class="line">            <span class="keyword">if</span>(t &gt; <span class="number">0</span> &amp;&amp; t &lt;= N &amp;&amp; t != i+<span class="number">1</span> &amp;&amp; nums[t-<span class="number">1</span>] != t)&#123;</span><br><span class="line">                swap(nums, i, nums[i]-<span class="number">1</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; N;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] != i+<span class="number">1</span>)&#123;</span><br><span class="line">               <span class="keyword">return</span> i+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> N+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[i];</span><br><span class="line">        nums[i] = nums[j];</span><br><span class="line">        nums[j] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="寻找重复数"><a href="#寻找重复数" class="headerlink" title="寻找重复数"></a>寻找重复数</h1><h2 id="题目-1"><a href="#题目-1" class="headerlink" title="题目"></a>题目</h2><p>给定一个包含 n + 1 个整数的数组 nums，其数字都在 1 到 n 之间（包括 1 和 n），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。</p>
 <p>示例 1:</p>
@@ -374,7 +389,39 @@
 <blockquote>
 <p>不能更改原数组（假设数组是只读的）。<br>只能使用额外的 O(1) 的空间。<br>时间复杂度小于 O(n2) 。<br>数组中只有一个重复的数字，但它可能不止重复出现一次。</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不考虑【不能更改原数组】的限制</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.length;</span><br><span class="line">        <span class="comment">//put i in nums[i-1]</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(nums[i]-<span class="number">1</span> != i)&#123;</span><br><span class="line">                <span class="keyword">if</span>(!swap(nums, i, nums[i]-<span class="number">1</span>))&#123;</span><br><span class="line">                    <span class="keyword">return</span> nums[i];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums[i]==nums[j])&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[i];</span><br><span class="line">        nums[i] = nums[j];</span><br><span class="line">        nums[j] = tmp;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h2><h3 id="鸽笼"><a href="#鸽笼" class="headerlink" title="鸽笼"></a>鸽笼</h3><p>思路与上一题类似，使得nums[i]-1=i。数组中所有数字都是合法的，但是存在重复数字，所以在交换前判断是否重复。这样就能找到重复数字。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不满足【不能更改原数组】的限制</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.length;</span><br><span class="line">        <span class="comment">//put i-1 in nums[i]</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(nums[i]-<span class="number">1</span> != i)&#123;</span><br><span class="line">                <span class="keyword">if</span>(!swap(nums, i, nums[i]-<span class="number">1</span>))&#123;</span><br><span class="line">                    <span class="keyword">return</span> nums[i];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums[i]==nums[j])&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[i];</span><br><span class="line">        nums[i] = nums[j];</span><br><span class="line">        nums[j] = tmp;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h3><p>直接使用Set判断是否重复。</p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p>排序后判断相邻两个数字是否相等。</p>
+<h3 id="链表找环"><a href="#链表找环" class="headerlink" title="链表找环"></a>链表找环</h3><p><img src="/imgs/1572594944006.png" alt="1572594944006"></p>
+<p>在第一种解法中实际上隐含了将i与nums[i]对应起来，对于一个单元包括Index和value，value可以对应到链表的next。</p>
+<script type="math/tex; mode=display">
+nums[i] \in [1, n-1]</script><p><img src="/imgs/1572595448935.png" alt="1572595448935"></p>
+<p><img src="/imgs/1572595565801.png" alt="1572595565801"></p>
+<p>题目中说明了只有一个数字重复，则只有一个点的入度大于1，且这个点即为重复数字。</p>
+<script type="math/tex; mode=display">
+d[i]=
+\begin{cases}
+  0  \\\\
+  1 \\\\
+ k, & k>1,k为重复次数
+\end{cases}</script><p>转化成在链表中找环入口的问题，快慢指针解决即可。</p>
+<p>这种解法可满足题目的时间复杂度和空间复杂度要求。</p>
+<h1 id="缺失数字"><a href="#缺失数字" class="headerlink" title="缺失数字"></a>缺失数字</h1><h2 id="题目-2"><a href="#题目-2" class="headerlink" title="题目"></a>题目</h2><p>给定一个包含 0, 1, 2, …, n 中 n 个数的序列，找出 0 .. n 中没有出现在序列中的那个数。</p>
+<p>示例 1:</p>
+<blockquote>
+<p>输入: [3,0,1]<br>输出: 2</p>
+</blockquote>
+<p>示例 2:</p>
+<blockquote>
+<p>输入: [9,6,4,2,3,5,7,0,1]<br>输出: 8</p>
+</blockquote>
+<h2 id="分析-2"><a href="#分析-2" class="headerlink" title="分析"></a>分析</h2><h3 id="鸽笼-1"><a href="#鸽笼-1" class="headerlink" title="鸽笼"></a>鸽笼</h3><p>同样的思路，只不过nums[i]从0开始取值，可使用单独的变量存储最大值，nums[i]==i。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">missingNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> MAX = nums.length;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//0-n-1, n(max_holder)</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAX;)&#123;</span><br><span class="line">            <span class="keyword">int</span> t = nums[i];</span><br><span class="line">            <span class="keyword">if</span>(t == MAX)&#123;</span><br><span class="line">                i++;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(t != i)&#123;</span><br><span class="line">                swap(nums, i, t);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAX; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] != i)&#123;</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> MAX;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[i];</span><br><span class="line">        nums[i] = nums[j];</span><br><span class="line">        nums[j] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h3><p>题目标签提示可用位运算解决。</p>
+<p>数组长度为n，nums[i]取值范围为[0,n]，并且没有重复数字，只有一个数字没出现。</p>
+<p>那么连续异或[0,n]以及nums[i]，只有一个数字出现一次，其他都出现两次。最后的结果就是缺失的数字</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">missingNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; nums.length; i++)&#123;</span><br><span class="line">            result ^= i;</span><br><span class="line">            result ^= nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result^nums.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -385,6 +432,19 @@
       
 
       <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/算法/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+            
+              <a href="/tags/位运算/" rel="tag"><i class="fa fa-tag"></i> 位运算</a>
+            
+              <a href="/tags/鸽笼定理/" rel="tag"><i class="fa fa-tag"></i> 鸽笼定理</a>
+            
+          </div>
+        
 
         
 
@@ -451,7 +511,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#缺失的第一个正数"><span class="nav-number">1.</span> <span class="nav-text">缺失的第一个正数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.1.</span> <span class="nav-text">题目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#寻找重复数"><span class="nav-number">2.</span> <span class="nav-text">寻找重复数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目-1"><span class="nav-number">2.1.</span> <span class="nav-text">题目</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#缺失的第一个正数"><span class="nav-number">1.</span> <span class="nav-text">缺失的第一个正数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#寻找重复数"><span class="nav-number">2.</span> <span class="nav-text">寻找重复数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目-1"><span class="nav-number">2.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-1"><span class="nav-number">2.2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#鸽笼"><span class="nav-number">2.2.1.</span> <span class="nav-text">鸽笼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashSet"><span class="nav-number">2.2.2.</span> <span class="nav-text">HashSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序"><span class="nav-number">2.2.3.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表找环"><span class="nav-number">2.2.4.</span> <span class="nav-text">链表找环</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缺失数字"><span class="nav-number">3.</span> <span class="nav-text">缺失数字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目-2"><span class="nav-number">3.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-2"><span class="nav-number">3.2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#鸽笼-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">鸽笼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#位运算"><span class="nav-number">3.2.2.</span> <span class="nav-text">位运算</span></a></li></ol></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -482,7 +542,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
