@@ -1,13 +1,72 @@
 @startuml 容器
+hide members
 interface Iterator
 interface Collection
 interface Map
 interface ListIterator
-interface List{
-    + add()
+interface List {
+    + int size()
+    + boolean isEmpty()
+    + Iterator<E> iterator()
+    + boolean contains(Object o)
+    + boolean containsAll(Collection<?> c)
+
+    + Object[] toArray()
+    + <T> T[] toArray(T[] a)
+
+    + boolean add(E e)
+    + void add(int index, E element)
+    + boolean addAll(Collection<? extends E> c)
+    + boolean addAll(int index, Collection<? extends E> c)
+
+    + boolean remove(Object o)
+    + boolean removeAll(Collection<?> c)
+
+    + E get(int index)
+    + E set(int index, E element)
+    + E remove(int index)
+    + int indexOf(Object o)
+    + int lastIndexOf(Object o)
+    + void sort(Comparator<? super E> c)
+
+    + boolean retainAll(Collection<?> c) // 取交集
+    + void replaceAll(UnaryOperator<E> operator)
+    + void clear()
+    + boolean equals(Object o)
+    + int hashCode()
+    + ListIterator<E> listIterator()
+    + ListIterator<E> listIterator(int index)
+    + List<E> subList(int fromIndex, int toIndex) //view
+    + Spliterator<E> spliterator() //用于多线程并发迭代处理
+
 }
-interface Set
-interface Queue
+interface Set {
+    + int size()
+    + boolean isEmpty()
+    + boolean contains(Object o)
+    + Iterator<E> iterator()
+    + Object[] toArray()
+    + <T> T[] toArray(T[] a)
+    + boolean add(E e)
+    + boolean addAll(Collection<? extends E> c)
+    + boolean remove(Object o)
+    + boolean containsAll(Collection<?> c)
+    + boolean retainAll(Collection<?> c)
+    + boolean removeAll(Collection<?> c)
+    + void clear()
+    + Spliterator<E> spliterator()
+    + boolean equals(Object o)
+    + int hashCode()
+}
+
+interface Queue {
+    + boolean add(E e)
+    + boolean offer(E e)
+    + E remove() //返回队首并删除 or Exception
+    + E poll() //返回队首并删除 or null
+    + E element() //返回队首 or Exception
+    + E peek() //返回队首 or null
+}
 
 Collection --> Iterator : 依赖
 Map --> Collection :依赖
