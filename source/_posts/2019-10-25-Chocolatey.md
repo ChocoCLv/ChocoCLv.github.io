@@ -27,7 +27,7 @@ iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex
 2. 代理设置
 
 ```bash
-choco config set proxy http://localhost:8888
+choco config set proxy http://127.0.0.1:1080
 ```
 
 3. 常用命令：https://chocolatey.org/docs/commands-reference

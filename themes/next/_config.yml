@@ -653,16 +653,16 @@ changyan:
 # You can get your appid and appkey from https://leancloud.cn
 # For more information: https://valine.js.org, https://github.com/xCss/Valine
 valine:
-  enable: false # When enable is set to be true, leancloud_visitors is recommended to be closed for the re-initialization problem within different leancloud adk version
-  appid: # Your leancloud application appid
-  appkey: # Your leancloud application appkey
-  notify: false # Mail notifier. See: https://github.com/xCss/Valine/wiki
-  verify: false # Verification code
+  enable: true # When enable is set to be true, leancloud_visitors is recommended to be closed for the re-initialization problem within different leancloud adk version
+  appid: GwHoR7bLobe4hKkOCAWxciu9-gzGzoHsz # Your leancloud application appid
+  appkey: Jh8cJAls7JYaw9FeidM0gtVQ # Your leancloud application appkey
+  notify: true # Mail notifier. See: https://github.com/xCss/Valine/wiki
+  verify: true # Verification code
   placeholder: Just go go # Comment box placeholder
   avatar: mm # Gravatar style
   guest_info: nick,mail,link # Custom comment header
   pageSize: 10 # Pagination size
-  language: zh-CN # Language, available values: en, zh-cn
+  language: zh-cn # Language, available values: en, zh-cn
   visitor: false # leancloud-counter-security is not supported for now. When visitor is set to be true, appid and appkey are recommended to be the same as leancloud_visitors' for counter compatibility. Article reading statistic https://valine.js.org/visitor.html
   comment_count: true # If false, comment count will only be displayed in post page, not in home page
   #post_meta_order: 0
@@ -780,7 +780,7 @@ firestore:
 # Show Views / Visitors of the website / page with busuanzi.
 # Get more information on http://ibruce.info/2015/04/04/busuanzi
 busuanzi_count:
-  enable: false
+  enable: true
   total_visitors: true
   total_visitors_icon: user
   total_views: true
@@ -1048,7 +1048,7 @@ vendors:
   # Example:
   # valine: //cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js
   # valine: //cdnjs.cloudflare.com/ajax/libs/valine/1.3.4/Valine.min.js
-  valine:
+  valine: https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js
 
   # Gitalk
   # Example:
