@@ -56,19 +56,22 @@
   };
 </script>
 
-  <meta name="description" content="Kafka是一种高吞吐量/分布式/基于发布订阅的消息系统。">
-<meta name="keywords" content="kafka,消息队列,分布式">
+  <meta name="description" content="前言开发人员经常会面临下面一些场景：  新人入职，需要学习已有系统，作为 landing 的一部分，如何学习？ 被拉过去参与一个陌生系统的迭代开发或者系统维护（bugfix），如何快速上手？ 同事离职或转岗，需要把系统交接给你，怎么去接？ 内心 os：这是一口锅吗？   这样的场景多了，就需要去梳理常见问题以及应对方法，方便后续遇到类似场景可以快速应对。本文总结熟悉系统主要分三部分：业务学习、技术">
+<meta name="keywords" content="系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kafka核心知识点">
-<meta property="og:url" content="http://yoursite.com/2019/10/28/Kafka核心知识点/index.html">
+<meta property="og:title" content="（转）如何熟悉一个系统？（内含知识大图）">
+<meta property="og:url" content="http://yoursite.com/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="Kafka是一种高吞吐量/分布式/基于发布订阅的消息系统。">
+<meta property="og:description" content="前言开发人员经常会面临下面一些场景：  新人入职，需要学习已有系统，作为 landing 的一部分，如何学习？ 被拉过去参与一个陌生系统的迭代开发或者系统维护（bugfix），如何快速上手？ 同事离职或转岗，需要把系统交接给你，怎么去接？ 内心 os：这是一口锅吗？   这样的场景多了，就需要去梳理常见问题以及应对方法，方便后续遇到类似场景可以快速应对。本文总结熟悉系统主要分三部分：业务学习、技术">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-29T07:01:46.363Z">
+<meta property="og:image" content="https://static001.infoq.cn/resource/image/cb/bb/cbf60fd42b79fabeea36ed0523beeebb.png">
+<meta property="og:image" content="https://static001.infoq.cn/resource/image/ca/c9/cae86d822ba70f54bde8e38ca6557ac9.png">
+<meta property="og:updated_time" content="2020-01-31T08:43:44.063Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kafka核心知识点">
-<meta name="twitter:description" content="Kafka是一种高吞吐量/分布式/基于发布订阅的消息系统。">
-  <link rel="canonical" href="http://yoursite.com/2019/10/28/Kafka核心知识点/">
+<meta name="twitter:title" content="（转）如何熟悉一个系统？（内含知识大图）">
+<meta name="twitter:description" content="前言开发人员经常会面临下面一些场景：  新人入职，需要学习已有系统，作为 landing 的一部分，如何学习？ 被拉过去参与一个陌生系统的迭代开发或者系统维护（bugfix），如何快速上手？ 同事离职或转岗，需要把系统交接给你，怎么去接？ 内心 os：这是一口锅吗？   这样的场景多了，就需要去梳理常见问题以及应对方法，方便后续遇到类似场景可以快速应对。本文总结熟悉系统主要分三部分：业务学习、技术">
+<meta name="twitter:image" content="https://static001.infoq.cn/resource/image/cb/bb/cbf60fd42b79fabeea36ed0523beeebb.png">
+  <link rel="canonical" href="http://yoursite.com/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/">
 
 
 <script id="page-configurations">
@@ -82,7 +85,7 @@
   };
 </script>
 
-  <title>Kafka核心知识点 | 窝边草</title>
+  <title>（转）如何熟悉一个系统？（内含知识大图） | 窝边草</title>
   
 
 
@@ -266,7 +269,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/28/Kafka核心知识点/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ChocoCLv">
@@ -278,7 +281,7 @@
       <meta itemprop="name" content="窝边草">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Kafka核心知识点
+        <h1 class="post-title" itemprop="name headline">（转）如何熟悉一个系统？（内含知识大图）
 
           
         </h1>
@@ -294,19 +297,11 @@
                 
               
 
-              <time title="创建时间：2019-10-28 15:20:22" itemprop="dateCreated datePublished" datetime="2019-10-28T15:20:22+08:00">2019-10-28</time>
+              <time title="创建时间：2020-01-31 16:41:38 / 修改时间：16:43:44" itemprop="dateCreated datePublished" datetime="2020-01-31T16:41:38+08:00">2020-01-31</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-29 15:01:46" itemprop="dateModified" datetime="2019-10-29T15:01:46+08:00">2019-10-29</time>
-              </span>
             
           
 
@@ -329,7 +324,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/10/28/Kafka核心知识点/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/10/28/Kafka核心知识点/" itemprop="commentCount"></span></a>
+    <a title="valine" href="/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -343,33 +338,101 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Kafka是一种高吞吐量/分布式/基于发布订阅的消息系统。</p>
-<a id="more"></a>
-<h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
-<li>broker：Kafka服务器，负责消息存储和转发</li>
-<li>topic：消息类别，Kafka按照topic分类消息</li>
-<li>partition：topic的分区，一个topic包含多个partition，topic消息保存在各个partition上</li>
-<li>offset：消息在日志中的位置，在partition上的偏移量，也是消息的唯一序号</li>
-<li>Producer：消息生产者</li>
-<li>Consumer：消息消费者</li>
-<li>Consumer Group：每个Consumer必须属于一个group</li>
-<li>Zookeeper：保存集群broker topic partition等meta数据，负责broker故障发现，partition leader选举，负载均衡。</li>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>开发人员经常会面临下面一些场景：</p>
+<ul>
+<li>新人入职，需要学习已有系统，作为 landing 的一部分，如何学习？</li>
+<li>被拉过去参与一个陌生系统的迭代开发或者系统维护（bugfix），如何快速上手？</li>
+<li>同事离职或转岗，需要把系统交接给你，怎么去接？ 内心 os：这是一口锅吗？</li>
 </ul>
-<h2 id="数据存储设计"><a href="#数据存储设计" class="headerlink" title="数据存储设计"></a>数据存储设计</h2><ol>
-<li>partition的数据文件</li>
-</ol>
-<p>partition的每条Message包含了以下三个属性：offset，MessageSize，data。</p>
-<p>offset表示Message在这个partition中的偏移量，不是该Message在partition数据文件中的实际存储位置，而是一个逻辑值。可以认为是partition中的MessageID。</p>
-<ol>
-<li>数据文件分段segment（顺序读写，分段存储，二分查找）</li>
-</ol>
-<p>partition物理上由多个segment文件组成，每个segment大小相等，顺序读写。segment以该段中最小的offset命名。在查找指定offset的Message时可以用二分查找快速定位。</p>
-<ol>
-<li>数据文件索引（分段索引，稀疏存储）</li>
-</ol>
-<p>为每个分段后的数据文件建立了索引文件，并没有为数据文件中的每条Message建立索引，而是每隔一定字节的数据建立索引。</p>
-<p>避免索引文件占用过多空间，从而将索引文件保留在内存中。</p>
-<h2 id="生产者设计"><a href="#生产者设计" class="headerlink" title="生产者设计"></a>生产者设计</h2><h2 id="消费者设计"><a href="#消费者设计" class="headerlink" title="消费者设计"></a>消费者设计</h2>
+<p><img src="https://static001.infoq.cn/resource/image/cb/bb/cbf60fd42b79fabeea36ed0523beeebb.png" alt></p>
+<p>这样的场景多了，就需要去梳理常见问题以及应对方法，方便后续遇到类似场景可以快速应对。本文总结熟悉系统主要分三部分：业务学习、技术学习、实战。每部分会梳理一些在学习过程中需要解答的问题，这些问题随着经验的积累需要逐步补充完善。</p>
+<a id="more"></a>
+<h2 id="业务学习"><a href="#业务学习" class="headerlink" title="业务学习"></a>业务学习</h2><p>业务学习就是从业务角度去学习系统，我们需要了解系统的客户是谁、使用人是谁、带来了什么价值，系统提供了哪些功能等。</p>
+<p>不清楚业务，就等于不知道系统在干什么。技术是为业务落地而服务，清楚了业务才知道怎样用技术更好地服务业务，所以业务学习是熟悉一个系统的首要任务。这块主要的学习方式有跟产品、运营、开发沟通，学习产品设计文档文档、PRD、自己使用系统，还有一些常见图，如产品功能架构图、业务流程图、功能树，用例图等。</p>
+<p>常见问题：</p>
+<ul>
+<li>系统所在行业的情况是怎样？</li>
+<li>系统的目标用户是谁？比如是给公司高层做决策用？给运营或客服用？还是互联网用户用？</li>
+<li>平均有多少人在使用？高峰期有多少人在用？</li>
+<li>系统有什么业务价值？有哪些指标可以衡量系统业务价值？</li>
+<li>系统有哪些功能模块？</li>
+<li>系统有哪些领域概念？梳理下系统的领域模型；</li>
+<li>系统的关键业务流程有哪些？关键业务流程是怎样？</li>
+<li>系统的非功能性需求有哪些？如性能、质量、扩展性、安全性等；</li>
+<li>系统未来的发展规划是怎样？</li>
+</ul>
+<h2 id="技术学习"><a href="#技术学习" class="headerlink" title="技术学习"></a>技术学习</h2><p>技术学习主要学习系统的架构、如何实现、系统的运维等。描述一个系统的架构有五视图方法论。</p>
+<p>五视图分别是：</p>
+<ul>
+<li>逻辑架构</li>
+<li>开发架构</li>
+<li>运行架构</li>
+<li>物理架构</li>
+<li>数据架构</li>
+</ul>
+<h3 id="1-逻辑架构"><a href="#1-逻辑架构" class="headerlink" title="1. 逻辑架构"></a>1. 逻辑架构</h3><p>逻辑架构着重考虑功能需求，系统应当向用户提供什么样的服务，关注点主要是行为或职责的划分。</p>
+<p>常用表达图形，静态图有包图、类图、对象图；动态图有序列图、协作图、状态图、活动图。逻辑架构的核心设计任务是模块划分、接口定义、领域模型细化。</p>
+<p>常见问题：</p>
+<ul>
+<li>有哪些子系统或模块？系统之间是什么样的关系？</li>
+<li>对外上下游接口有哪些？对接人是谁？</li>
+<li>关键业务流程怎么实现的？用类图、序列图等方式表达出来。</li>
+</ul>
+<h3 id="2-开发架构"><a href="#2-开发架构" class="headerlink" title="2. 开发架构"></a>2. 开发架构</h3><p>开发架构关主要关注系统源代码、第三方 SDK、使用的框架、中间件、工具包。</p>
+<p>常见问题：</p>
+<ul>
+<li>代码在哪？</li>
+<li>包怎么划分的？怎么分层？如 mvc、controller-service-dao；</li>
+<li>用了什么框架，如 ssh、dubbo；</li>
+<li>用了哪些工具包？如 apache commons、guava；</li>
+<li>用了哪些中间件？如 metaq、tair、schedulerX、Diamond；</li>
+<li>依赖哪些平台？如权限平台、流程引擎等。</li>
+</ul>
+<h3 id="3-运行架构"><a href="#3-运行架构" class="headerlink" title="3. 运行架构"></a>3. 运行架构</h3><p>运行架构的着重考虑运行期质量属性，关注点是系统的并发、同步、通信等问题，这势必涉及到进程、线程、对象等运行时概念，以及相关的并发、同步、通信等。</p>
+<p>常见问题：</p>
+<ul>
+<li>系统能支撑多少 qps？峰值 qps 多少？</li>
+<li>与上下游系统怎么交互的？rpc？http？同步还是异步？</li>
+</ul>
+<h3 id="4-物理架构"><a href="#4-物理架构" class="headerlink" title="4. 物理架构"></a>4. 物理架构</h3><p>物理架构的设计着重考虑安装和部署需求，关注点是目标程序及其依赖的运行库和系统软件最终如何安装或部署到物理机器，以及如何部署机器和网络来配合软件系统的可靠性、可伸缩性、持续可用性、性能和安全性等要求。</p>
+<p>常见问题：</p>
+<ul>
+<li>系统如何发布部署？有哪些部署环境？</li>
+<li>系统有多少台机器？</li>
+<li>系统部署怎么部署的？关注接入层，部署方式，如集群部署、分布式部署等</li>
+<li>有没有容器化？</li>
+<li>有没有多机房部署？</li>
+</ul>
+<h3 id="5-数据架构"><a href="#5-数据架构" class="headerlink" title="5. 数据架构"></a>5. 数据架构</h3><p>数据架构的设计着重考虑数据需求，关注点是持久化数据的存储方案，不仅包括实体及实体关系数据存储格式，还可能包括数据传递、数据复制、数据同步等策略。</p>
+<p>常见问题：</p>
+<ul>
+<li>数据存储在哪？用了什么数据库，如 oracle、mysql；</li>
+<li>梳理 E-R 图；</li>
+<li>数据量有多少？是否有分库分表？</li>
+<li>用了哪些 nosql 库？</li>
+<li>有哪些数据同步任务？</li>
+<li>大数据框架的使用情况如何？</li>
+</ul>
+<h3 id="6-系统运维"><a href="#6-系统运维" class="headerlink" title="6. 系统运维"></a>6. 系统运维</h3><p>系统运维重点关注什么时候会出问题，出了问题怎么解决。</p>
+<p>常见问题：</p>
+<ul>
+<li>什么时间容易出问题？比如电商 双 11，对系统的压力很大，这时候很容易出问题；</li>
+<li>对关键功能是否有监控？需要看系统有配置了哪些报警项，监控了哪些方面；</li>
+<li>出了问题怎么解决？日志在哪？是否有全链路跟踪？是否有一些紧急操作，比如开关配置、降级、限流配置；</li>
+<li>系统有哪些坑？找开发同学回顾历史问题，以免踩坑。通过同事总结的 case，或者与负责的产品、运营、技术与了解。系统总会有一些坑，需要把这些坑填上。历史代码经过多次迭代总会导致复杂度高（分支、嵌套、循环很多），存在设计漏洞，性能隐患等，很难维护，这些就需要我们去重构了。记住有一句话：填的坑越大，能力越大；</li>
+<li>运营、客服反馈的常见问题有哪些？</li>
+</ul>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>熟悉了系统的业务和技术后，就要实战了，通过实战进一步加深对系统的熟悉程度。实践可以通过做需求、修 bug、重构等方式，亲自动手编码、调试、测试、上线。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>已有系统通常经历了从 0 到 N 的建设过程，熟悉系统其实是一个逆向推导过程，也是一个学习架构、阅读源码的过程。</p>
+<p>在学习的过程中最好能带上思考，比如为什么要这么设计？为什么要用这个中间件？是否有更好的编码方式？哪些地方可以优化等，以此达到一个深入熟悉的过程。</p>
+<p><strong>附：总结图</strong></p>
+<p><img src="https://static001.infoq.cn/resource/image/ca/c9/cae86d822ba70f54bde8e38ca6557ac9.png" alt></p>
+<p><strong>作者介绍</strong>：</p>
+<p>唐志龙（鲲龙），阿里巴巴高级开发工程师</p>
+<p><strong>本文转载自公众号阿里巴巴云原生（ID：Alicloudnative）。</strong></p>
+<p><strong>原文链接</strong>：</p>
+<p><a href="https://mp.weixin.qq.com/s/J8eK-qRMkmHEQZ_dVts9aQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/J8eK-qRMkmHEQZ_dVts9aQ</a></p>
+
     </div>
 
     
@@ -384,11 +447,7 @@
           
           <div class="post-tags">
             
-              <a href="/tags/kafka/" rel="tag"><i class="fa fa-tag"></i> kafka</a>
-            
-              <a href="/tags/消息队列/" rel="tag"><i class="fa fa-tag"></i> 消息队列</a>
-            
-              <a href="/tags/分布式/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
+              <a href="/tags/系统/" rel="tag"><i class="fa fa-tag"></i> 系统</a>
             
           </div>
         
@@ -398,8 +457,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/10/28/Zookeeper核心知识点/" rel="next" title="Zookeeper核心知识点">
-                  <i class="fa fa-chevron-left"></i> Zookeeper核心知识点
+                <a href="/2019/11/04/转载：人脸识别的挑战问题和解决技术/" rel="next" title="转载：人脸识别的挑战问题和解决技术">
+                  <i class="fa fa-chevron-left"></i> 转载：人脸识别的挑战问题和解决技术
                 </a>
               
             </div>
@@ -407,10 +466,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/10/29/二进制中1的个数/" rel="prev" title="二进制中1的个数">
-                  二进制中1的个数 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -462,7 +517,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka"><span class="nav-number">1.</span> <span class="nav-text">Kafka</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据存储设计"><span class="nav-number">1.2.</span> <span class="nav-text">数据存储设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产者设计"><span class="nav-number">1.3.</span> <span class="nav-text">生产者设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消费者设计"><span class="nav-number">1.4.</span> <span class="nav-text">消费者设计</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务学习"><span class="nav-number">2.</span> <span class="nav-text">业务学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术学习"><span class="nav-number">3.</span> <span class="nav-text">技术学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-逻辑架构"><span class="nav-number">3.1.</span> <span class="nav-text">1. 逻辑架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-开发架构"><span class="nav-number">3.2.</span> <span class="nav-text">2. 开发架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-运行架构"><span class="nav-number">3.3.</span> <span class="nav-text">3. 运行架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-物理架构"><span class="nav-number">3.4.</span> <span class="nav-text">4. 物理架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-数据架构"><span class="nav-number">3.5.</span> <span class="nav-text">5. 数据架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-系统运维"><span class="nav-number">3.6.</span> <span class="nav-text">6. 系统运维</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">4.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
