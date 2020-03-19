@@ -1,0 +1,48 @@
+@startuml face_recognition_v2_seq
+hide footbox
+FaceRecognitionApp -> FaceRecognitionApp: start()
+activate FaceRecognitionApp
+'''获取视频数据
+FaceRecognitionApp -> VideoProcessor :get_frame()
+activate VideoProcessor
+VideoProcessor --> FaceRecognitionApp : frame
+deactivate VideoProcessor
+
+FaceRecognitionApp -> FaceRecognizer : recognize(frame)
+activate FaceRecognizer
+
+' '''人脸识别细节
+' FaceRecognizer -> FaceDetector: detect(frame)
+' activate FaceDetector
+' FaceDetector --> FaceRecognizer: faces
+' deactivate FaceDetector
+' FaceRecognizer -> PoseDetector: detect(frame)
+' activate PoseDetector
+' PoseDetector --> FaceRecognizer: poses
+' deactivate PoseDetector
+' FaceRecognizer -> Encoder: generate_embeddings(faces)
+' activate Encoder
+' Encoder --> FaceRecognizer: embeddiings
+' deactivate Encoder
+' FaceRecognizer->Identifier: identify(embeddings, poses)
+' activate Identifier
+' Identifier --> FaceRecognizer: result
+' deactivate Identifier
+' '''人脸识别处理结束
+
+FaceRecognizer --> FaceRecognitionApp: result
+deactivate FaceRecognizer
+FaceRecognitionApp -> ResultProcessor: process(result)
+activate ResultProcessor
+ResultProcessor -> ResultHandler: handle(result)
+activate ResultHandler
+ResultHandler -> ResultFilter: filter(result)
+activate ResultFilter
+ResultFilter --> ResultHandler: filtered
+deactivate ResultFilter
+ResultHandler -> ResultHandler: _handle(result)
+ResultHandler -->ResultProcessor
+deactivate ResultHandler
+ResultProcessor -->FaceRecognitionApp
+deactivate ResultProcessor
+
