@@ -263,6 +263,109 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/Go-Windows开发配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/03/20/Go-Windows开发配置/" class="post-title-link" itemprop="url">Go:Windows开发配置</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-20 20:15:37 / 修改时间：20:28:04" itemprop="dateCreated datePublished" datetime="2020-03-20T20:15:37+08:00">2020-03-20</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/03/20/Go-Windows开发配置/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/03/20/Go-Windows开发配置/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><p> <a href="https://golang.org/dl/" target="_blank" rel="noopener">https://golang.org/dl/</a> </p>
+<p>安装路径为$GOROOT</p>
+<h1 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h1><p>安装完成后会自动在系统变量Path里增加$GOROOT/bin</p>
+<p>手动在用户变量里增加GOPATH，对应Go的工作目录，并在该目录下新建三个文件夹<code>bin</code>,<code>src</code>,<code>pkg</code></p>
+<p><img src="/imgs/1584706830706.png" alt="1584706830706"></p>
+<p>在1.13版本之后可通过下面的方式配置go的环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go env -w GOPROXY=https://goproxy.io,direct</span><br><span class="line"><span class="comment"># Set environment variable allow bypassing the proxy for selected modules</span></span><br><span class="line">go env -w GOPRIVATE=*.corp.example.com</span><br><span class="line">go env -w GO111MODULE=on</span><br></pre></td></tr></table></figure>
+<p>经测试，经proxy配置为<code>https://goproxy.io,direct</code>时go get命令较快</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p><code>go version</code> <code>go env</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">D:\Project\web\blog&gt;go version</span><br><span class="line">go version go1.14.1 windows/amd64</span><br><span class="line"></span><br><span class="line">D:\Project\web\blog&gt;go env</span><br><span class="line"><span class="built_in">set</span> GO111MODULE=on</span><br><span class="line"><span class="built_in">set</span> GOARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOBIN=</span><br><span class="line"><span class="built_in">set</span> GOCACHE=C:\Users\choco\AppData\Local\go-build</span><br><span class="line"><span class="built_in">set</span> GOENV=C:\Users\choco\AppData\Roaming\go\env</span><br><span class="line"><span class="built_in">set</span> GOEXE=.exe</span><br><span class="line"><span class="built_in">set</span> GOFLAGS=</span><br><span class="line"><span class="built_in">set</span> GOHOSTARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOHOSTOS=windows</span><br><span class="line"><span class="built_in">set</span> GOINSECURE=</span><br><span class="line"><span class="built_in">set</span> GONOPROXY=</span><br><span class="line"><span class="built_in">set</span> GONOSUMDB=</span><br><span class="line"><span class="built_in">set</span> GOOS=windows</span><br><span class="line"><span class="built_in">set</span> GOPATH=D:\Project\go</span><br><span class="line"><span class="built_in">set</span> GOPRIVATE=</span><br><span class="line"><span class="built_in">set</span> GOPROXY=https://goproxy.io,direct</span><br><span class="line"><span class="built_in">set</span> GOROOT=c:\go</span><br><span class="line"><span class="built_in">set</span> GOSUMDB=sum.golang.org</span><br><span class="line"><span class="built_in">set</span> GOTMPDIR=</span><br><span class="line"><span class="built_in">set</span> GOTOOLDIR=c:\go\pkg\tool\windows_amd64</span><br><span class="line"><span class="built_in">set</span> GCCGO=gccgo</span><br><span class="line"><span class="built_in">set</span> AR=ar</span><br><span class="line"><span class="built_in">set</span> CC=gcc</span><br><span class="line"><span class="built_in">set</span> CXX=g++</span><br><span class="line"><span class="built_in">set</span> CGO_ENABLED=1</span><br><span class="line"><span class="built_in">set</span> GOMOD=NUL</span><br><span class="line"><span class="built_in">set</span> CGO_CFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_CPPFLAGS=</span><br><span class="line"><span class="built_in">set</span> CGO_CXXFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_FFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_LDFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> PKG_CONFIG=pkg-config</span><br><span class="line"><span class="built_in">set</span> GOGCCFLAGS=-m64 -mthreads -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=C:\Users\choco\AppData\Local\Temp\go-build035265762=/tmp/go-build -gno-record-gcc-switches</span><br></pre></td></tr></table></figure>
+<h1 id="vscode"><a href="#vscode" class="headerlink" title="vscode"></a>vscode</h1><p>安装下面的插件</p>
+<p><img src="/imgs/1584707140314.png" alt="1584707140314"></p>
+<p><code>ctrl+shift+p</code></p>
+<p><img src="/imgs/1584707168653.png" alt="1584707168653"></p>
+<p>可将下面的选项全选</p>
+<p><img src="/imgs/1584707188615.png" alt="1584707188615"></p>
+<p>可能会有部分安装失败，这部分可在将proxy配置为<code>https://goproxy.io,direct</code>后在终端内分别安装，即<code>go get -v golang.org/x/tools/cmd/gomports</code><img src="/imgs/1584707216660.png" alt="1584707216660"></p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/19/Go-基本语法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -292,11 +395,19 @@
                 
               
 
-              <time title="创建时间：2020-03-19 18:21:41 / 修改时间：22:20:26" itemprop="dateCreated datePublished" datetime="2020-03-19T18:21:41+08:00">2020-03-19</time>
+              <time title="创建时间：2020-03-19 18:21:41" itemprop="dateCreated datePublished" datetime="2020-03-19T18:21:41+08:00">2020-03-19</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-20 21:42:58" itemprop="dateModified" datetime="2020-03-20T21:42:58+08:00">2020-03-20</time>
+              </span>
             
           
 
@@ -1149,101 +1260,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/28/Zookeeper核心知识点/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ChocoCLv">
-      <meta itemprop="description" content="兔子🐇和窝边草🌱">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="窝边草">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/10/28/Zookeeper核心知识点/" class="post-title-link" itemprop="url">Zookeeper核心知识点</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-28 13:58:35 / 修改时间：15:22:15" itemprop="dateCreated datePublished" datetime="2019-10-28T13:58:35+08:00">2019-10-28</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/10/28/Zookeeper核心知识点/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/10/28/Zookeeper核心知识点/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> Zookeeper 是一个分布式协调服务，可用于服务发现，分布式锁，分布式领导选举，配置管理等。 Zookeeper 提供了一个类似于 Linux 文件系统的树形结构（可认为是轻量级的内存文件系统，但 只适合存少量信息，完全不适合存储大量文件或者大文件），同时提供了对于每个节点的监控与 通知机制。 </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/10/28/Zookeeper核心知识点/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1296,7 +1312,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1475,9 +1491,9 @@
       
     
       
-        
-      
     
+      
+        
       
     
       

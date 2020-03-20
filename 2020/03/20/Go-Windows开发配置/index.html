@@ -56,18 +56,24 @@
   };
 </script>
 
-  <meta name="description" content="//TODO 不使用新的类加载器加载修改后的class，而是使用instrument机制直接修改虚拟机中的类，那已有的实例对象的行为会改变吗？">
+  <meta name="description" content="下载安装 https://golang.org/dl/  安装路径为$GOROOT 环境变量配置安装完成后会自动在系统变量Path里增加$GOROOT/bin 手动在用户变量里增加GOPATH，对应Go的工作目录，并在该目录下新建三个文件夹bin,src,pkg  在1.13版本之后可通过下面的方式配置go的环境变量 1234go env -w GOPROXY=https://goproxy.io">
 <meta property="og:type" content="article">
-<meta property="og:title" content="热部署探秘">
-<meta property="og:url" content="http://yoursite.com/2019/09/17/热部署探秘/index.html">
+<meta property="og:title" content="Go:Windows开发配置">
+<meta property="og:url" content="http://yoursite.com/2020/03/20/Go-Windows开发配置/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="//TODO 不使用新的类加载器加载修改后的class，而是使用instrument机制直接修改虚拟机中的类，那已有的实例对象的行为会改变吗？">
+<meta property="og:description" content="下载安装 https://golang.org/dl/  安装路径为$GOROOT 环境变量配置安装完成后会自动在系统变量Path里增加$GOROOT/bin 手动在用户变量里增加GOPATH，对应Go的工作目录，并在该目录下新建三个文件夹bin,src,pkg  在1.13版本之后可通过下面的方式配置go的环境变量 1234go env -w GOPROXY=https://goproxy.io">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-18T14:48:25.057Z">
+<meta property="og:image" content="http://yoursite.com/imgs/1584706830706.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1584707140314.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1584707168653.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1584707188615.png">
+<meta property="og:image" content="http://yoursite.com/imgs/1584707216660.png">
+<meta property="og:updated_time" content="2020-03-20T12:28:04.809Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="热部署探秘">
-<meta name="twitter:description" content="//TODO 不使用新的类加载器加载修改后的class，而是使用instrument机制直接修改虚拟机中的类，那已有的实例对象的行为会改变吗？">
-  <link rel="canonical" href="http://yoursite.com/2019/09/17/热部署探秘/">
+<meta name="twitter:title" content="Go:Windows开发配置">
+<meta name="twitter:description" content="下载安装 https://golang.org/dl/  安装路径为$GOROOT 环境变量配置安装完成后会自动在系统变量Path里增加$GOROOT/bin 手动在用户变量里增加GOPATH，对应Go的工作目录，并在该目录下新建三个文件夹bin,src,pkg  在1.13版本之后可通过下面的方式配置go的环境变量 1234go env -w GOPROXY=https://goproxy.io">
+<meta name="twitter:image" content="http://yoursite.com/imgs/1584706830706.png">
+  <link rel="canonical" href="http://yoursite.com/2020/03/20/Go-Windows开发配置/">
 
 
 <script id="page-configurations">
@@ -81,7 +87,7 @@
   };
 </script>
 
-  <title>热部署探秘 | 窝边草</title>
+  <title>Go:Windows开发配置 | 窝边草</title>
   
 
 
@@ -265,7 +271,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/17/热部署探秘/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/Go-Windows开发配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ChocoCLv">
@@ -277,7 +283,7 @@
       <meta itemprop="name" content="窝边草">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">热部署探秘
+        <h1 class="post-title" itemprop="name headline">Go:Windows开发配置
 
           
         </h1>
@@ -293,19 +299,11 @@
                 
               
 
-              <time title="创建时间：2019-09-17 11:18:38" itemprop="dateCreated datePublished" datetime="2019-09-17T11:18:38+08:00">2019-09-17</time>
+              <time title="创建时间：2020-03-20 20:15:37 / 修改时间：20:28:04" itemprop="dateCreated datePublished" datetime="2020-03-20T20:15:37+08:00">2020-03-20</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-18 22:48:25" itemprop="dateModified" datetime="2019-09-18T22:48:25+08:00">2019-09-18</time>
-              </span>
             
           
 
@@ -328,7 +326,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/09/17/热部署探秘/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/17/热部署探秘/" itemprop="commentCount"></span></a>
+    <a title="valine" href="/2020/03/20/Go-Windows开发配置/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/03/20/Go-Windows开发配置/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -342,8 +340,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>//TODO</p>
-<p>不使用新的类加载器加载修改后的class，而是使用instrument机制直接修改虚拟机中的类，那已有的实例对象的行为会改变吗？</p>
+        <h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><p> <a href="https://golang.org/dl/" target="_blank" rel="noopener">https://golang.org/dl/</a> </p>
+<p>安装路径为$GOROOT</p>
+<h1 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h1><p>安装完成后会自动在系统变量Path里增加$GOROOT/bin</p>
+<p>手动在用户变量里增加GOPATH，对应Go的工作目录，并在该目录下新建三个文件夹<code>bin</code>,<code>src</code>,<code>pkg</code></p>
+<p><img src="/imgs/1584706830706.png" alt="1584706830706"></p>
+<p>在1.13版本之后可通过下面的方式配置go的环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go env -w GOPROXY=https://goproxy.io,direct</span><br><span class="line"><span class="comment"># Set environment variable allow bypassing the proxy for selected modules</span></span><br><span class="line">go env -w GOPRIVATE=*.corp.example.com</span><br><span class="line">go env -w GO111MODULE=on</span><br></pre></td></tr></table></figure>
+<p>经测试，经proxy配置为<code>https://goproxy.io,direct</code>时go get命令较快</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p><code>go version</code> <code>go env</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">D:\Project\web\blog&gt;go version</span><br><span class="line">go version go1.14.1 windows/amd64</span><br><span class="line"></span><br><span class="line">D:\Project\web\blog&gt;go env</span><br><span class="line"><span class="built_in">set</span> GO111MODULE=on</span><br><span class="line"><span class="built_in">set</span> GOARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOBIN=</span><br><span class="line"><span class="built_in">set</span> GOCACHE=C:\Users\choco\AppData\Local\go-build</span><br><span class="line"><span class="built_in">set</span> GOENV=C:\Users\choco\AppData\Roaming\go\env</span><br><span class="line"><span class="built_in">set</span> GOEXE=.exe</span><br><span class="line"><span class="built_in">set</span> GOFLAGS=</span><br><span class="line"><span class="built_in">set</span> GOHOSTARCH=amd64</span><br><span class="line"><span class="built_in">set</span> GOHOSTOS=windows</span><br><span class="line"><span class="built_in">set</span> GOINSECURE=</span><br><span class="line"><span class="built_in">set</span> GONOPROXY=</span><br><span class="line"><span class="built_in">set</span> GONOSUMDB=</span><br><span class="line"><span class="built_in">set</span> GOOS=windows</span><br><span class="line"><span class="built_in">set</span> GOPATH=D:\Project\go</span><br><span class="line"><span class="built_in">set</span> GOPRIVATE=</span><br><span class="line"><span class="built_in">set</span> GOPROXY=https://goproxy.io,direct</span><br><span class="line"><span class="built_in">set</span> GOROOT=c:\go</span><br><span class="line"><span class="built_in">set</span> GOSUMDB=sum.golang.org</span><br><span class="line"><span class="built_in">set</span> GOTMPDIR=</span><br><span class="line"><span class="built_in">set</span> GOTOOLDIR=c:\go\pkg\tool\windows_amd64</span><br><span class="line"><span class="built_in">set</span> GCCGO=gccgo</span><br><span class="line"><span class="built_in">set</span> AR=ar</span><br><span class="line"><span class="built_in">set</span> CC=gcc</span><br><span class="line"><span class="built_in">set</span> CXX=g++</span><br><span class="line"><span class="built_in">set</span> CGO_ENABLED=1</span><br><span class="line"><span class="built_in">set</span> GOMOD=NUL</span><br><span class="line"><span class="built_in">set</span> CGO_CFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_CPPFLAGS=</span><br><span class="line"><span class="built_in">set</span> CGO_CXXFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_FFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> CGO_LDFLAGS=-g -O2</span><br><span class="line"><span class="built_in">set</span> PKG_CONFIG=pkg-config</span><br><span class="line"><span class="built_in">set</span> GOGCCFLAGS=-m64 -mthreads -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=C:\Users\choco\AppData\Local\Temp\go-build035265762=/tmp/go-build -gno-record-gcc-switches</span><br></pre></td></tr></table></figure>
+<h1 id="vscode"><a href="#vscode" class="headerlink" title="vscode"></a>vscode</h1><p>安装下面的插件</p>
+<p><img src="/imgs/1584707140314.png" alt="1584707140314"></p>
+<p><code>ctrl+shift+p</code></p>
+<p><img src="/imgs/1584707168653.png" alt="1584707168653"></p>
+<p>可将下面的选项全选</p>
+<p><img src="/imgs/1584707188615.png" alt="1584707188615"></p>
+<p>可能会有部分安装失败，这部分可在将proxy配置为<code>https://goproxy.io,direct</code>后在终端内分别安装，即<code>go get -v golang.org/x/tools/cmd/gomports</code><img src="/imgs/1584707216660.png" alt="1584707216660"></p>
 
     </div>
 
@@ -360,8 +373,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/09/16/招银网络科技面试拾遗/" rel="next" title="招银网络科技面试拾遗">
-                  <i class="fa fa-chevron-left"></i> 招银网络科技面试拾遗
+                <a href="/2020/03/19/Go-基本语法/" rel="next" title="Go:基本语法">
+                  <i class="fa fa-chevron-left"></i> Go:基本语法
                 </a>
               
             </div>
@@ -369,10 +382,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/09/18/关于hashmap的那点事儿/" rel="prev" title="关于hashmap的那点事儿">
-                  关于hashmap的那点事儿 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -424,6 +433,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#下载安装"><span class="nav-number">1.</span> <span class="nav-text">下载安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境变量配置"><span class="nav-number">2.</span> <span class="nav-text">环境变量配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">3.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vscode"><span class="nav-number">4.</span> <span class="nav-text">vscode</span></a></li></ol></div>
+        
       </div>
       <!--/noindex-->
 
