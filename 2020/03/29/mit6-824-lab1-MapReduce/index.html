@@ -56,17 +56,17 @@
   };
 </script>
 
-  <meta name="description" content="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html 任务实现一个包含Master和Worker两部分的分布式MapReduce系统，1个master和多个并行处理工作的worker。 在真实的系统中worker工作在不同的机器上，但是在这个lab中，它们工作在同一台机器上。 worker通过RPC与master通信，每个worker会向master请">
+  <meta name="description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mit6.824-lab1-MapReduce">
 <meta property="og:url" content="http://yoursite.com/2020/03/29/mit6-824-lab1-MapReduce/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html 任务实现一个包含Master和Worker两部分的分布式MapReduce系统，1个master和多个并行处理工作的worker。 在真实的系统中worker工作在不同的机器上，但是在这个lab中，它们工作在同一台机器上。 worker通过RPC与master通信，每个worker会向master请">
+<meta property="og:description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-03-29T14:27:48.690Z">
+<meta property="og:updated_time" content="2020-03-29T14:28:41.784Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mit6.824-lab1-MapReduce">
-<meta name="twitter:description" content="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html 任务实现一个包含Master和Worker两部分的分布式MapReduce系统，1个master和多个并行处理工作的worker。 在真实的系统中worker工作在不同的机器上，但是在这个lab中，它们工作在同一台机器上。 worker通过RPC与master通信，每个worker会向master请">
+<meta name="twitter:description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
   <link rel="canonical" href="http://yoursite.com/2020/03/29/mit6-824-lab1-MapReduce/">
 
 
@@ -293,7 +293,7 @@
                 
               
 
-              <time title="创建时间：2020-03-29 21:40:37 / 修改时间：22:27:48" itemprop="dateCreated datePublished" datetime="2020-03-29T21:40:37+08:00">2020-03-29</time>
+              <time title="创建时间：2020-03-29 21:40:37 / 修改时间：22:28:41" itemprop="dateCreated datePublished" datetime="2020-03-29T21:40:37+08:00">2020-03-29</time>
             </span>
           
             
@@ -334,7 +334,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a href="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html" target="_blank" rel="noopener">https://pdos.csail.mit.edu/6.824/labs/lab-mr.html</a></p>
+        <p>实验说明：<a href="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html" target="_blank" rel="noopener">https://pdos.csail.mit.edu/6.824/labs/lab-mr.html</a></p>
+<p>MapReduce论文：<a href="https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf" target="_blank" rel="noopener">https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf</a></p>
+<a id="more"></a>
 <h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>实现一个包含Master和Worker两部分的分布式MapReduce系统，1个master和多个并行处理工作的worker。</p>
 <p>在真实的系统中worker工作在不同的机器上，但是在这个lab中，它们工作在同一台机器上。</p>
 <p>worker通过RPC与master通信，每个worker会向master请求一个任务，从一个或多个文件中读取数据作为任务的输入，任务执行完成后将输入写入一个或多个文件中。</p>
