@@ -56,19 +56,18 @@
   };
 </script>
 
-  <meta name="description" content="数字n的二进制中包含多少个1，1-n共出现多少个二进制1.">
-<meta name="keywords" content="面试题,算法,拼多多,位运算,剑指offer">
+  <meta name="description" content="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html 任务实现一个包含Master和Worker两部分的分布式MapReduce系统，1个master和多个并行处理工作的worker。 在真实的系统中worker工作在不同的机器上，但是在这个lab中，它们工作在同一台机器上。 worker通过RPC与master通信，每个worker会向master请">
 <meta property="og:type" content="article">
-<meta property="og:title" content="二进制中1的个数">
-<meta property="og:url" content="http://yoursite.com/2019/10/29/二进制中1的个数/index.html">
+<meta property="og:title" content="mit6.824-lab1-MapReduce">
+<meta property="og:url" content="http://yoursite.com/2020/03/29/mit6-824-lab1-MapReduce/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="数字n的二进制中包含多少个1，1-n共出现多少个二进制1.">
+<meta property="og:description" content="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html 任务实现一个包含Master和Worker两部分的分布式MapReduce系统，1个master和多个并行处理工作的worker。 在真实的系统中worker工作在不同的机器上，但是在这个lab中，它们工作在同一台机器上。 worker通过RPC与master通信，每个worker会向master请">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-30T07:13:24.134Z">
+<meta property="og:updated_time" content="2020-03-29T14:27:48.690Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="二进制中1的个数">
-<meta name="twitter:description" content="数字n的二进制中包含多少个1，1-n共出现多少个二进制1.">
-  <link rel="canonical" href="http://yoursite.com/2019/10/29/二进制中1的个数/">
+<meta name="twitter:title" content="mit6.824-lab1-MapReduce">
+<meta name="twitter:description" content="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html 任务实现一个包含Master和Worker两部分的分布式MapReduce系统，1个master和多个并行处理工作的worker。 在真实的系统中worker工作在不同的机器上，但是在这个lab中，它们工作在同一台机器上。 worker通过RPC与master通信，每个worker会向master请">
+  <link rel="canonical" href="http://yoursite.com/2020/03/29/mit6-824-lab1-MapReduce/">
 
 
 <script id="page-configurations">
@@ -82,7 +81,7 @@
   };
 </script>
 
-  <title>二进制中1的个数 | 窝边草</title>
+  <title>mit6.824-lab1-MapReduce | 窝边草</title>
   
 
 
@@ -266,7 +265,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/29/二进制中1的个数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/29/mit6-824-lab1-MapReduce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ChocoCLv">
@@ -278,7 +277,7 @@
       <meta itemprop="name" content="窝边草">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">二进制中1的个数
+        <h1 class="post-title" itemprop="name headline">mit6.824-lab1-MapReduce
 
           
         </h1>
@@ -294,19 +293,11 @@
                 
               
 
-              <time title="创建时间：2019-10-29 15:12:14" itemprop="dateCreated datePublished" datetime="2019-10-29T15:12:14+08:00">2019-10-29</time>
+              <time title="创建时间：2020-03-29 21:40:37 / 修改时间：22:27:48" itemprop="dateCreated datePublished" datetime="2020-03-29T21:40:37+08:00">2020-03-29</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-30 15:13:24" itemprop="dateModified" datetime="2019-10-30T15:13:24+08:00">2019-10-30</time>
-              </span>
             
           
 
@@ -329,7 +320,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/10/29/二进制中1的个数/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/10/29/二进制中1的个数/" itemprop="commentCount"></span></a>
+    <a title="valine" href="/2020/03/29/mit6-824-lab1-MapReduce/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/03/29/mit6-824-lab1-MapReduce/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -343,15 +334,64 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>数字n的二进制中包含多少个1，1-n共出现多少个二进制1.</p>
-<a id="more"></a>
-<h1 id="二进制中1的个数"><a href="#二进制中1的个数" class="headerlink" title="二进制中1的个数"></a>二进制中1的个数</h1><p>输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。 </p>
-<p><strong>n&amp;(n-1)可以去掉n的一个二进制1.只有0的二进制没有1.</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">NumberOf1</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n != <span class="number">0</span>)&#123;</span><br><span class="line">            n=n &amp; (n - <span class="number">1</span>);</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="1-n中有多少个二进制1"><a href="#1-n中有多少个二进制1" class="headerlink" title="1~n中有多少个二进制1"></a>1~n中有多少个二进制1</h2><p>n&gt;1.</p>
-<p>令dp[i]表示数字i中包含二进制1的数量，有</p>
-<script type="math/tex; mode=display">
-dp[i]=dp[i\&(i-1)] + 1,i > i\&(i-1)</script><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] p = <span class="keyword">new</span> <span class="keyword">int</span>[x+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= x;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        dp[i] = dp[i&amp;(i-<span class="number">1</span>)]+<span class="number">1</span>;</span><br><span class="line">        sum += dp[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p><a href="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html" target="_blank" rel="noopener">https://pdos.csail.mit.edu/6.824/labs/lab-mr.html</a></p>
+<h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>实现一个包含Master和Worker两部分的分布式MapReduce系统，1个master和多个并行处理工作的worker。</p>
+<p>在真实的系统中worker工作在不同的机器上，但是在这个lab中，它们工作在同一台机器上。</p>
+<p>worker通过RPC与master通信，每个worker会向master请求一个任务，从一个或多个文件中读取数据作为任务的输入，任务执行完成后将输入写入一个或多个文件中。</p>
+<p>master需要注意如果一个worker没有在规定的时间内完成任务，则需要将该任务分发给其他worker执行。</p>
+<p><code>main/mrmaster.go</code>和<code>main/mrworker.go</code>不需要修改，你需要将代码实现在<code>mr/master.go</code>,<code>mr/worker.go</code>和<code>mr/rpc.go</code>中。</p>
+<p>当worker和master运行完成后，输出文件命名为<code>mr-out-*.</code>。完成整个实验完成后使用下面的命令测试结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cat mr-out-* | sort | more</span><br><span class="line">A 509</span><br><span class="line">ABOUT 2</span><br><span class="line">ACT 8</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>本实验提供了测试脚本<code>main/test-mr.sh</code>，该脚本要求每个reduce任务将结果写在不同的文件，命名为<code>mr-out-X</code></p>
+<p>你可以修改<code>mr/master.go</code>中的Done函数确定当前任务是否完成，从而master能及时结束。</p>
+<h2 id="一些细节要求"><a href="#一些细节要求" class="headerlink" title="一些细节要求"></a>一些细节要求</h2><ul>
+<li><p>map阶段需要将中间输出结果分散到数量为<code>nReduce</code>的reduce任务中。</p>
+</li>
+<li><p>worker的实现需要将第X个reduce任务的输出写入文件<code>mr-out-X</code></p>
+</li>
+<li><p>每次Reduce函数调用的输出对应<code>mr-out-X</code>中的一行</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// this is the correct format for each line of Reduce output.</span></span><br><span class="line">fmt.Fprintf(ofile, <span class="string">"%v %v\n"</span>, intermediate[i].Key, output)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>worker需要将中间Map的输出文件写入当前目录，随后reduce task将读取这些文件</p>
+</li>
+<li><p><code>main/mrmaster.go</code>需要<code>mr/master.go</code>实现<code>Done()</code>方法，该方法返回<code>True</code>当整个MapReduce任务已完成，随后<code>mrmaster.go</code>结束。</p>
+</li>
+<li><p>当整个任务完成时，worker进程也需要退出，可以使用<code>call()</code>的返回值进行判断，即如果一个worker与master联系失败了，则可以认为master已经退出，任务完成。或者master在退出前显式发送退出指令给worker。</p>
+</li>
+</ul>
+<h2 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h2><ul>
+<li><p>先修改<code>mr/worker.go</code>的<code>Worker()</code>，发送一个RPC到master，请求一个任务，然后修改master响应这个请求并返回一个尚未开始处理的map任务。然后修改worker读取该文件并像<code>mrsequential.go</code>那样调用Map函数。</p>
+</li>
+<li><p>该任务中使用到的Map函数和Reduce函数通过Go plugin加载，<code>wc.so</code></p>
+</li>
+<li><p>如果修改了<code>mr/</code>目录下的内容，则需要重新执行<code>go build -buildmode=plugin ../mrapps/wc.go</code>。</p>
+</li>
+<li><p>这个实验需要worker共享一个文件系统，即所有的worker在同一台机器上运行。如果在不同机器上运行，则需要GFS这样的全局文件系统。</p>
+</li>
+<li><p>一个可行的中间文件命名为<code>mr-X-Y</code>，其中X是Map任务的序号，Y为Reduce任务的序号。</p>
+</li>
+<li><p>worker的map任务代码需要在文件中存储中间产生的key/value对，从而reduce任务可以正确读取这些文件。一种可行的实现方式为，使用<code>encoding/json</code>包进行读写。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">enc := json.NewEncoder(file)</span><br><span class="line"><span class="keyword">for</span> _, kv := ... &#123;</span><br><span class="line">	err := enc.Encode(&amp;kv)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dec := json.NewDecoder(file)</span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> kv KeyValue</span><br><span class="line">	<span class="keyword">if</span> err := dec.Decode(&amp;kv); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">	kva = <span class="built_in">append</span>(kva, kv)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>worker任务的map部分可以使用<code>worker.go</code>中的<code>ihash(key)</code>方法来为给定的key选择reduce task</p>
+</li>
+<li><p>可以从<code>mrsquential.go</code>中借鉴部分代码，来读取Map的输入文件，对中间kv对进行排序，以及在文件中存储Reduce的输出。</p>
+</li>
+<li><p>master是一个可并发工作的RPC server，所以要记得对共享数据加锁。</p>
+</li>
+<li><p>Use Go’s race detector, with <code>go build -race</code> and <code>go run -race</code>. <code>test-mr.sh</code> has a comment that shows you how to enable the race detector for the tests.</p>
+</li>
+<li><p>worker有时需要等待，reduce任务在map任务结束之前不能开始，一种可行的方式为worker周期性向master请求任务，并且在相邻请求之间使用<code>time.sleep()</code>。另一种方法为在master的<code>handler</code>中使用<code>time.sleep()</code>或者<code>sync.Cond</code>进行等待，直到可以分发下一个任务。</p>
+</li>
+<li><p>master并不能区分crashed workers、挂起的workers以及执行缓慢的workers。你只能让master为每个任务等待一定的时间，超时后重新分配该任务到其他worker。在这个实验中等待时间为10s，超时后master需要人为该worker已经停止工作。</p>
+</li>
+<li><p>可以使用<code>mrapps/crash.go</code>来测试worker崩溃的场景，该插件使Map、Reduce随机退出。</p>
+</li>
+<li><p>为确保在崩溃时不会有人看到部分写入的文件，MapReduce论文提到了使用临时文件并在完全写入后自动重命名它的技巧。 您可以使用<code>ioutil.TempFile</code>创建一个临时文件，并使用<code>os.Rename</code>原子地对其进行重命名。</p>
+</li>
+<li><p><code>test-mr.sh</code>在子目录<code>mr-tmp</code>中工作。</p>
+</li>
+</ul>
 
     </div>
 
@@ -362,31 +402,14 @@ dp[i]=dp[i\&(i-1)] + 1,i > i\&(i-1)</script><figure class="highlight java"><tabl
       
 
       <footer class="post-footer">
-          
-            
-          
-          <div class="post-tags">
-            
-              <a href="/tags/面试题/" rel="tag"><i class="fa fa-tag"></i> 面试题</a>
-            
-              <a href="/tags/算法/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
-            
-              <a href="/tags/拼多多/" rel="tag"><i class="fa fa-tag"></i> 拼多多</a>
-            
-              <a href="/tags/位运算/" rel="tag"><i class="fa fa-tag"></i> 位运算</a>
-            
-              <a href="/tags/剑指offer/" rel="tag"><i class="fa fa-tag"></i> 剑指offer</a>
-            
-          </div>
-        
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/10/28/Kafka核心知识点/" rel="next" title="Kafka核心知识点">
-                  <i class="fa fa-chevron-left"></i> Kafka核心知识点
+                <a href="/2020/03/23/Go-Writing-Web-Applications/" rel="next" title="Go:Writing Web Applications">
+                  <i class="fa fa-chevron-left"></i> Go:Writing Web Applications
                 </a>
               
             </div>
@@ -394,10 +417,6 @@ dp[i]=dp[i\&(i-1)] + 1,i > i\&(i-1)</script><figure class="highlight java"><tabl
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/10/30/hexo中添加latex支持/" rel="prev" title="hexo中添加latex支持">
-                  hexo中添加latex支持 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -449,7 +468,7 @@ dp[i]=dp[i\&(i-1)] + 1,i > i\&(i-1)</script><figure class="highlight java"><tabl
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二进制中1的个数"><span class="nav-number">1.</span> <span class="nav-text">二进制中1的个数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-n中有多少个二进制1"><span class="nav-number">1.1.</span> <span class="nav-text">1~n中有多少个二进制1</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#任务"><span class="nav-number">1.</span> <span class="nav-text">任务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些细节要求"><span class="nav-number">1.1.</span> <span class="nav-text">一些细节要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提示"><span class="nav-number">1.2.</span> <span class="nav-text">提示</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -629,56 +648,6 @@ dp[i]=dp[i\&(i-1)] + 1,i > i\&(i-1)</script><figure class="highlight java"><tabl
 
   
 
-  
-    
-      
-<script type="text/x-mathjax-config">
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') {
-          next = next.nextSibling;
-        }
-        if (next && next.nodeName.toLowerCase() === 'br') {
-          next.parentNode.removeChild(next);
-        }
-      }
-    });
-  });
-
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
-      if (element.nodeName.toLowerCase() == 'li') {
-        element = element.parentNode;
-      }
-      element.classList.add('has-jax');
-    }
-  });
-</script>
-<script>
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
-    MathJax.Hub.Typeset();
-  }, window.MathJax);
-</script>
-
-    
   
 
   
