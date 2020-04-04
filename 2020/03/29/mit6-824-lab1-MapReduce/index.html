@@ -57,13 +57,14 @@
 </script>
 
   <meta name="description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
+<meta name="keywords" content="golang,6.824,MapReduce">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mit6.824-lab1-MapReduce">
 <meta property="og:url" content="http://yoursite.com/2020/03/29/mit6-824-lab1-MapReduce/index.html">
 <meta property="og:site_name" content="窝边草">
 <meta property="og:description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-03-29T14:28:41.784Z">
+<meta property="og:updated_time" content="2020-04-04T08:31:00.760Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mit6.824-lab1-MapReduce">
 <meta name="twitter:description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
@@ -293,11 +294,19 @@
                 
               
 
-              <time title="创建时间：2020-03-29 21:40:37 / 修改时间：22:28:41" itemprop="dateCreated datePublished" datetime="2020-03-29T21:40:37+08:00">2020-03-29</time>
+              <time title="创建时间：2020-03-29 21:40:37" itemprop="dateCreated datePublished" datetime="2020-03-29T21:40:37+08:00">2020-03-29</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-04 16:31:00" itemprop="dateModified" datetime="2020-04-04T16:31:00+08:00">2020-04-04</time>
+              </span>
             
           
 
@@ -394,6 +403,13 @@
 <li><p><code>test-mr.sh</code>在子目录<code>mr-tmp</code>中工作。</p>
 </li>
 </ul>
+<h1 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h1><h2 id="任务分发策略"><a href="#任务分发策略" class="headerlink" title="任务分发策略"></a>任务分发策略</h2><h3 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h3><p>系统的输入为多个文件，Master将文件分发到不同worker进行Map处理，每个worker将结果输出为文件，Master将中间文件分发到不同worker进行reduce处理，worker输出也为文件，文件的每一行为不同单词的统计结果。<strong>如何制定文件分发的策略，最终达到同一个单词由同一个worker处理，保证每一行的结果均为全局结果。</strong></p>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>根据提示，将中间文件命名为mr-X-Y，其中X为Map任务的序号，Y为Reduce任务的序号，最终产生的中间文件数量最多为$X \times Y$。</p>
+<h2 id="rpc交互"><a href="#rpc交互" class="headerlink" title="rpc交互"></a>rpc交互</h2><p>worker由master分发任务，涉及到几个交互。</p>
+<ul>
+<li>worker请求Map任务</li>
+<li>worker请求Reduce任务</li>
+</ul>
 
     </div>
 
@@ -404,6 +420,19 @@
       
 
       <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/golang/" rel="tag"><i class="fa fa-tag"></i> golang</a>
+            
+              <a href="/tags/6-824/" rel="tag"><i class="fa fa-tag"></i> 6.824</a>
+            
+              <a href="/tags/MapReduce/" rel="tag"><i class="fa fa-tag"></i> MapReduce</a>
+            
+          </div>
+        
 
         
 
@@ -470,7 +499,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#任务"><span class="nav-number">1.</span> <span class="nav-text">任务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些细节要求"><span class="nav-number">1.1.</span> <span class="nav-text">一些细节要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提示"><span class="nav-number">1.2.</span> <span class="nav-text">提示</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#任务"><span class="nav-number">1.</span> <span class="nav-text">任务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些细节要求"><span class="nav-number">1.1.</span> <span class="nav-text">一些细节要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提示"><span class="nav-number">1.2.</span> <span class="nav-text">提示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键问题"><span class="nav-number">2.</span> <span class="nav-text">关键问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#任务分发策略"><span class="nav-number">2.1.</span> <span class="nav-text">任务分发策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题说明"><span class="nav-number">2.1.1.</span> <span class="nav-text">问题说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案"><span class="nav-number">2.1.2.</span> <span class="nav-text">方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rpc交互"><span class="nav-number">2.2.</span> <span class="nav-text">rpc交互</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -501,7 +530,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -650,6 +679,56 @@
 
   
 
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
   
 
   
