@@ -37,7 +37,55 @@ TreeMap是一种基于红黑树实现的Map结构，Map的元素存储在红黑�
 
 <img src="/imgs/1572003543338.png" alt="1572003543338" style="zoom:50%;" />
 
-
+## API
+```Java
+// 返回(大于等输入key)的最小的key/entry,不存在返回null
+Entry<K, V>                ceilingEntry(K key)
+K                          ceilingKey(K key)
+void                       clear()
+Object                     clone()
+// 返回comparator
+Comparator<? super K>      comparator()
+boolean                    containsKey(Object key)
+// 降序返回key/map
+NavigableSet<K>            descendingKeySet()
+NavigableMap<K, V>         descendingMap()
+Set<Entry<K, V>>           entrySet()
+// 返回第一个key/entry
+Entry<K, V>                firstEntry()
+K                          firstKey()
+// 返回(小于等于输入key)的最大的key/entry,不存在返回null
+Entry<K, V>                floorEntry(K key)
+K                          floorKey(K key)
+V                          get(Object key)
+// 返回优先级高于指定k的部分map,inclusive为是否包含当前key
+NavigableMap<K, V>         headMap(K to, boolean inclusive)
+SortedMap<K, V>            headMap(K toExclusive)
+// 返回大于给定key的第一个节点
+Entry<K, V>                higherEntry(K key)
+K                          higherKey(K key)
+boolean                    isEmpty()
+Set<K>                     keySet()
+// 最后一个key/entry
+Entry<K, V>                lastEntry()
+K                          lastKey()
+// 返回小于给定key的第一个节点
+Entry<K, V>                lowerEntry(K key)
+K                          lowerKey(K key)
+// 返回NavigableSet,可以导航..有low/high等方法
+NavigableSet<K>            navigableKeySet()
+// 弹出第一个key/entry
+Entry<K, V>                pollFirstEntry()
+Entry<K, V>                pollLastEntry()
+V                          put(K key, V value)
+V                          remove(Object key)
+int                        size()
+SortedMap<K, V>            subMap(K fromInclusive, K toExclusive)
+NavigableMap<K, V>         subMap(K from, boolean fromInclusive, K to, boolean toInclusive)
+// 返回尾部map,小于给定k,inclusive为控制是否包含
+NavigableMap<K, V>         tailMap(K from, boolean inclusive)
+SortedMap<K, V>            tailMap(K fromInclusive)
+```
 
 # TreeSet 
 
@@ -57,3 +105,39 @@ TreeMap是一种基于红黑树实现的Map结构，Map的元素存储在红黑�
 
 <img src="/imgs/1572000336972.png" alt="1572000336972" style="zoom:50%;" />
 
+```Java
+boolean                   add(E object)
+boolean                   addAll(Collection<? extends E> collection)
+void                      clear()
+Object                    clone()
+boolean                   contains(Object object)
+// 返回第一个/最后一个元素
+E                         first()
+E                         last()
+boolean                   isEmpty()
+// 弹出第一个或者最后一个元素
+E                         pollFirst()
+E                         pollLast()
+// 返回大于/小于给定元素的元素
+E                         higher(E e)
+E                         lower(E e)
+// 返回小于/大于给定元素的最大/最小的一个
+E                         floor(E e)
+E                         ceiling(E e)
+boolean                   remove(Object object)
+int                       size()
+Comparator<? super E>     comparator()
+Iterator<E>               iterator()
+// 降序遍历
+Iterator<E>               descendingIterator()
+// 返回大于/小于给定元素的所有元素集合,endInclusive为是否包含的控制量
+SortedSet<E>              headSet(E end)
+NavigableSet<E>           headSet(E end, boolean endInclusive)
+SortedSet<E>              tailSet(E start)
+NavigableSet<E>           tailSet(E start, boolean startInclusive)
+// 降序的set
+NavigableSet<E>           descendingSet()
+// 子集合
+SortedSet<E>              subSet(E start, E end)
+NavigableSet<E>           subSet(E start, boolean startInclusive, E end, boolean endInclusive)
+```

@@ -1,0 +1,78 @@
+@startuml face_recognition_v2
+left to right direction
+class FaceRecognitionApp{
+    - VideoProcessor videoProcessor
+    - FaceRecognizer faceRecognizer
+    - ResultProcessor resultProcessor
+    + __init__(self)
+}
+interface VideoProcessor{
+    +{abstract} __init__(self, video_file)
+    + {abstract}  start_processing(self)
+    + {abstract}  stop_processing(self)
+    + {abstract}  get_frame(self)
+}
+
+interface FaceDetector{
+    + {abstract}__init__(self, face_crop_size=160)
+    + {abstract}detect(self, image)
+}
+
+interface Encoder{
+    + {abstract}__init__(self)
+    + {abstract}generate_embedding(self, face)
+}
+
+interface Identifier{
+    + {abstract}__init__(self, sample_dir)
+    + {abstract}identify(self, face)
+}
+
+interface PoseDetector{
+    + {abstract}__init__(self)
+    + {abstract}detect(self, image)
+}
+
+interface FaceRecognizer{
+    - Identifier identifier
+    - FaceDetector face_detector
+    - PoseDetector pose_detector
+    - Encoder encoder
+    + {abstract}  __init__(self)
+    + {abstract}  recognize(self)
+}
+
+interface Result{
+    + {abstract}__init__(self)
+}
+
+interface ResultFilter{
+    + {abstract} filter(result)
+}
+
+interface ResultHandler{
+    - ResultFilter resultFilter
+    + {abstract}handle(result)
+}
+
+interface ResultProcessor{
+    - ResultHandler[] resultHanlders
+    + {abstract}__init__(self, handlers=None)
+    + {abstract}registHandler(self, handler)
+    + {abstract}process(self, result)
+}
+
+ResultProcessor o-- ResultHandler
+FaceRecognizer <-- FaceDetector
+FaceRecognizer <-- PoseDetector
+FaceRecognizer <-- Identifier
+FaceRecognizer <-- Encoder
+
+FaceRecognitionApp <-- VideoProcessor
+FaceRecognitionApp <-- FaceRecognizer
+FaceRecognitionApp <-- ResultProcessor
+
+
+ResultHandler <... Result
+ResultHandler <-- ResultFilter
+@enduml

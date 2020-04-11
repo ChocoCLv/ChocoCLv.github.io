@@ -1,0 +1,31 @@
+@startuml dataset
+class PoseDataset{
+    + __init__(self, root, transform=None, includes=[], excludes=[])
+    - _find_classes(self, dir)
+}
+class torchvision.datasets.ImageFolder{
+    + __init__(self, root, loader, extensions=None, transform=None,
+                 target_transform=None, is_valid_file=None)
+}
+class torchvision.datasets.DatasetFolder{
+    + __init__(self, root, loader, extensions=None, transform=None,
+                 target_transform=None, is_valid_file=None)
+    + __getitem__(self, index)
+    + __len__(self)
+    - _find_classes(self, dir)
+}
+
+abstract class torchvision.datasets.VisionDataset{
+    + __init__(self, root, transforms=None, transform=None, target_transform=None)
+    + {abstract} __getitem__(self, index)
+    + {abstract} __len__(self)
+}
+abstract class torch.utils.data.Dataset{
+    {abstract} __getitem__(self, index)
+    - __add__(self, other)
+}
+
+PoseDataset --|> torchvision.datasets.ImageFolder
+torchvision.datasets.ImageFolder --|> torchvision.datasets.DatasetFolder
+torchvision.datasets.DatasetFolder --|> torchvision.datasets.VisionDataset
+torchvision.datasets.VisionDataset --|> torch.utils.data.Dataset
