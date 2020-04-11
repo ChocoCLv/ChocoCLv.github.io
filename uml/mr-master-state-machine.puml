@@ -1,0 +1,5 @@
+@startuml
+hide empty description
+[*] --> Master
+
+@enduml

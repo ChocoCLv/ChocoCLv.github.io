@@ -57,17 +57,19 @@
 </script>
 
   <meta name="description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
-<meta name="keywords" content="golang,6.824,MapReduce">
+<meta name="keywords" content="MapReduce,6.824,golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mit6.824-lab1-MapReduce">
 <meta property="og:url" content="http://yoursite.com/2020/03/29/mit6-824-lab1-MapReduce/index.html">
 <meta property="og:site_name" content="窝边草">
 <meta property="og:description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-04T08:31:00.760Z">
+<meta property="og:image" content="http://yoursite.com/2020/03/29/imgs/image-20200409221439432.png">
+<meta property="og:updated_time" content="2020-04-11T08:18:42.866Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mit6.824-lab1-MapReduce">
 <meta name="twitter:description" content="实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html MapReduce论文：https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/29/imgs/image-20200409221439432.png">
   <link rel="canonical" href="http://yoursite.com/2020/03/29/mit6-824-lab1-MapReduce/">
 
 
@@ -305,7 +307,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-04 16:31:00" itemprop="dateModified" datetime="2020-04-04T16:31:00+08:00">2020-04-04</time>
+                <time title="修改时间：2020-04-11 16:18:42" itemprop="dateModified" datetime="2020-04-11T16:18:42+08:00">2020-04-11</time>
               </span>
             
           
@@ -404,12 +406,38 @@
 </li>
 </ul>
 <h1 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h1><h2 id="任务分发策略"><a href="#任务分发策略" class="headerlink" title="任务分发策略"></a>任务分发策略</h2><h3 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h3><p>系统的输入为多个文件，Master将文件分发到不同worker进行Map处理，每个worker将结果输出为文件，Master将中间文件分发到不同worker进行reduce处理，worker输出也为文件，文件的每一行为不同单词的统计结果。<strong>如何制定文件分发的策略，最终达到同一个单词由同一个worker处理，保证每一行的结果均为全局结果。</strong></p>
-<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>根据提示，将中间文件命名为mr-X-Y，其中X为Map任务的序号，Y为Reduce任务的序号，最终产生的中间文件数量最多为$X \times Y$。</p>
-<h2 id="rpc交互"><a href="#rpc交互" class="headerlink" title="rpc交互"></a>rpc交互</h2><p>worker由master分发任务，涉及到几个交互。</p>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>根据提示，将中间文件命名为mr-X-Y，其中X为Map任务的序号，Y为Reduce任务的序号，最终产生的中间文件数量最多为$n(X) \times n(Y)$。</p>
+<p>reduce任务在读取完其负责的所有中间文件后对key进行排序，之后再调用reduce function，所以每次调用对应一行。</p>
+<h2 id="rpc交互"><a href="#rpc交互" class="headerlink" title="rpc交互"></a>rpc交互</h2><p>worker由master分发任务，涉及到几个交互。只能确保有1个Master，Master不知道会有多少个Worker。</p>
+<p>使用worker主动pull的方式与master通信。</p>
 <ul>
-<li>worker请求Map任务</li>
-<li>worker请求Reduce任务</li>
+<li><del>worker向master注册</del></li>
+<li><del>worker请求Map任务</del></li>
+<li><del>worker请求Reduce任务</del></li>
+<li>worker请求任务</li>
 </ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//任务类型定义</span></span><br><span class="line"><span class="keyword">type</span> _taskTypeEnum <span class="keyword">struct</span> &#123;</span><br><span class="line">	m    <span class="keyword">uint8</span><span class="comment">//map 任务</span></span><br><span class="line">	r    <span class="keyword">uint8</span><span class="comment">//reduce 任务</span></span><br><span class="line">	wait <span class="keyword">uint8</span><span class="comment">//当前没有idle状态的任务，master等到其他worker执行结束</span></span><br><span class="line">	end  <span class="keyword">uint8</span><span class="comment">//map任务reduce任务都已执行完毕，worker收到该类型的任务后可直接退出</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	<span class="comment">//TaskTypeEnum 用于指示此次分配的任务类型，取值为map reduce end wait。</span></span><br><span class="line">	TaskTypeEnum = _taskTypeEnum&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">////worker请求分配任务</span></span><br><span class="line"><span class="comment">//TaskRequestArgs ...</span></span><br><span class="line"><span class="keyword">type</span> TaskRequestArgs <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//TaskRequestReply ...</span></span><br><span class="line"><span class="keyword">type</span> TaskRequestReply <span class="keyword">struct</span> &#123;</span><br><span class="line">	TaskType   <span class="keyword">uint8</span></span><br><span class="line">	TaskID     <span class="keyword">int</span></span><br><span class="line">	SourceFile <span class="keyword">string</span></span><br><span class="line">	InterFiles []<span class="keyword">string</span></span><br><span class="line">	NReduce    <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>worker上报任务执行结果</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">////worker 返回任务执行结果</span></span><br><span class="line"><span class="comment">//TaskResultArgs ...</span></span><br><span class="line"><span class="keyword">type</span> TaskResultArgs <span class="keyword">struct</span> &#123;</span><br><span class="line">	TaskType   <span class="keyword">uint8</span></span><br><span class="line">	TaskID     <span class="keyword">int</span></span><br><span class="line">	InterFiles []<span class="keyword">string</span></span><br><span class="line">	FinalFiles []<span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//TaskResultReply ...</span></span><br><span class="line"><span class="keyword">type</span> TaskResultReply <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Master状态信息"><a href="#Master状态信息" class="headerlink" title="Master状态信息"></a>Master状态信息</h2><p>Master分为map阶段、reduce阶段和over阶段。worker向master请求任务时，master根据目前所处的阶段分配不同类型的任务。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> masterPhase <span class="keyword">uint8</span></span><br><span class="line"><span class="keyword">type</span> _masterPhaseEnum <span class="keyword">struct</span> &#123;</span><br><span class="line">	m    masterPhase<span class="comment">//分配map任务</span></span><br><span class="line">	r    masterPhase<span class="comment">//分配reduce任务</span></span><br><span class="line">	over masterPhase<span class="comment">//分配end任务，worker结束运行</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> masterPhaseEnum = _masterPhaseEnum&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>包括上述的阶段状态，还有信息都记录在Master结构体里。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Master结构体 保存Map Reduce任务状态</span></span><br><span class="line"><span class="keyword">type</span> Master <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">//taskInfos[i].id = i</span></span><br><span class="line">	p               masterPhase<span class="comment">//master阶段</span></span><br><span class="line">	mapTaskInfos    []*taskInfo</span><br><span class="line">	reduceTaskInfos []*taskInfo</span><br><span class="line">	TIMEOUT         time.Duration<span class="comment">//认为任务执行失败的超时时间</span></span><br><span class="line">	taskLeftNum     <span class="keyword">int</span>	<span class="comment">//当前阶段剩余任务数量</span></span><br><span class="line">	nReduce         <span class="keyword">int</span>	<span class="comment">//reduce任务数</span></span><br><span class="line">    <span class="comment">//对master数据并发访问，需要加锁</span></span><br><span class="line">	mutex           sync.Mutex</span><br><span class="line">	pMutex          sync.RWMutex</span><br><span class="line">	tlnMutex        sync.RWMutex</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="map、reduce任务状态"><a href="#map、reduce任务状态" class="headerlink" title="map、reduce任务状态"></a>map、reduce任务状态</h2><p>由master维护不同任务的状态</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> _taskStateEnum <span class="keyword">struct</span> &#123;</span><br><span class="line">	idle       <span class="keyword">int32</span><span class="comment">//该任务等待分配</span></span><br><span class="line">	inProgress <span class="keyword">int32</span><span class="comment">//该任务正在处理中</span></span><br><span class="line">	completed  <span class="keyword">int32</span><span class="comment">//任务已完成</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> taskStateEnum   = _taskStateEnum&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>任务除了状态信息我还有其他需要记录的数据</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> taskInfo <span class="keyword">struct</span> &#123;</span><br><span class="line">	id <span class="keyword">int</span></span><br><span class="line">	s  <span class="keyword">int32</span> <span class="comment">//任务状态</span></span><br><span class="line">	t  <span class="keyword">uint8</span> <span class="comment">//任务类型</span></span><br><span class="line">	<span class="comment">//在定时任务中检查任务是否超时</span></span><br><span class="line">	expectOverTime time.Time</span><br><span class="line">	<span class="comment">//互斥更新当前task状态</span></span><br><span class="line">	sMutex     *sync.RWMutex</span><br><span class="line">	timeMutex  *sync.RWMutex</span><br><span class="line">	mutex      *sync.Mutex</span><br><span class="line">	sourceFile <span class="keyword">string</span></span><br><span class="line">	interFiles []<span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="nReduce"><a href="#nReduce" class="headerlink" title="nReduce"></a>nReduce</h2><p>论文中提到Map任务数为M，Reduce任务数为R。R为本实验中的参数nReduce，M为本实验中输入的文件数量。</p>
+<p>worker数量为W，worker即可承担Map任务，也可承担Reduce任务。</p>
+<p>对应到线程池参数上，M、R均为任务数，W为线程数量。</p>
+<h1 id="实现上遇到的问题"><a href="#实现上遇到的问题" class="headerlink" title="实现上遇到的问题"></a>实现上遇到的问题</h1><h2 id="master状态更新"><a href="#master状态更新" class="headerlink" title="master状态更新"></a>master状态更新</h2><p>处理完上报结果后再更新状态，否则会出现在处理最后一个map任务时就将master状态置为r，导致给其他worker分配reduce任务，分配到最后一个map任务对应的reduce任务时即会出现data race。</p>
+<p><img src="../imgs/image-20200409221439432.png" alt="image-20200409221439432"></p>
+<h2 id><a href="#" class="headerlink" title=" "></a> </h2><h2 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h2><p>map阶段将中间结果写入在文件中，reduce使用如下的代码读取单词。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">reader := bufio.NewReader(file)</span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">    <span class="comment">//str包含换行符，导致某些类型的任务拼接stra[1]时存在多余的换行符。所以需要将'\n'删除。</span></span><br><span class="line">    <span class="comment">//output = strings.ReplaceAll(output, "\n", "")</span></span><br><span class="line">    str, err := reader.ReadString(<span class="string">'\n'</span>)</span><br><span class="line">    <span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">    	<span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    stra := strings.Split(str, <span class="string">" "</span>)</span><br><span class="line">    intermediate = <span class="built_in">append</span>(intermediate, KeyValue&#123;stra[<span class="number">0</span>], stra[<span class="number">1</span>]&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="data-race"><a href="#data-race" class="headerlink" title="data race"></a>data race</h2><p>目前对golang的并发编程还不熟悉，直接对所有并发访问的变脸都使用mutex加锁处理。</p>
 
     </div>
 
@@ -425,11 +453,11 @@
           
           <div class="post-tags">
             
-              <a href="/tags/golang/" rel="tag"><i class="fa fa-tag"></i> golang</a>
+              <a href="/tags/MapReduce/" rel="tag"><i class="fa fa-tag"></i> MapReduce</a>
             
               <a href="/tags/6-824/" rel="tag"><i class="fa fa-tag"></i> 6.824</a>
             
-              <a href="/tags/MapReduce/" rel="tag"><i class="fa fa-tag"></i> MapReduce</a>
+              <a href="/tags/golang/" rel="tag"><i class="fa fa-tag"></i> golang</a>
             
           </div>
         
@@ -448,6 +476,10 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/04/04/MapReduce-Simplified-Data-Processing-on-Large-Clusters/" rel="prev" title="MapReduce: Simplified Data Processing on Large Clusters">
+                  MapReduce: Simplified Data Processing on Large Clusters <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -499,7 +531,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#任务"><span class="nav-number">1.</span> <span class="nav-text">任务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些细节要求"><span class="nav-number">1.1.</span> <span class="nav-text">一些细节要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提示"><span class="nav-number">1.2.</span> <span class="nav-text">提示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键问题"><span class="nav-number">2.</span> <span class="nav-text">关键问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#任务分发策略"><span class="nav-number">2.1.</span> <span class="nav-text">任务分发策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题说明"><span class="nav-number">2.1.1.</span> <span class="nav-text">问题说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案"><span class="nav-number">2.1.2.</span> <span class="nav-text">方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rpc交互"><span class="nav-number">2.2.</span> <span class="nav-text">rpc交互</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#任务"><span class="nav-number">1.</span> <span class="nav-text">任务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些细节要求"><span class="nav-number">1.1.</span> <span class="nav-text">一些细节要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提示"><span class="nav-number">1.2.</span> <span class="nav-text">提示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键问题"><span class="nav-number">2.</span> <span class="nav-text">关键问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#任务分发策略"><span class="nav-number">2.1.</span> <span class="nav-text">任务分发策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题说明"><span class="nav-number">2.1.1.</span> <span class="nav-text">问题说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案"><span class="nav-number">2.1.2.</span> <span class="nav-text">方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rpc交互"><span class="nav-number">2.2.</span> <span class="nav-text">rpc交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Master状态信息"><span class="nav-number">2.3.</span> <span class="nav-text">Master状态信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map、reduce任务状态"><span class="nav-number">2.4.</span> <span class="nav-text">map、reduce任务状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nReduce"><span class="nav-number">2.5.</span> <span class="nav-text">nReduce</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现上遇到的问题"><span class="nav-number">3.</span> <span class="nav-text">实现上遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#master状态更新"><span class="nav-number">3.1.</span> <span class="nav-text">master状态更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-number">3.2.</span> <span class="nav-text"> </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件读取"><span class="nav-number">3.3.</span> <span class="nav-text">文件读取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data-race"><span class="nav-number">3.4.</span> <span class="nav-text">data race</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -517,7 +549,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -530,7 +562,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
