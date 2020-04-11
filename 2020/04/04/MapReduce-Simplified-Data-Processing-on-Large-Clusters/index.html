@@ -56,19 +56,19 @@
   };
 </script>
 
-  <meta name="description" content="摘要引言基本编程模型及示例Google的实现工作流  用户侧的MapReduce库先将输入文件分成M片，每片大小为16~64MB（具体大小可控制）。然后在集群机器上的程序副本开始执行。 集群中的一个机器为master角色，其余机器为worker，worker由master分配任务。存在M个Map任务和R个Reduce任务需要分配。master为空闲的worker分配map任务或reduce任务。">
+  <meta name="description" content="MapReduce论文阅读 https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
 <meta name="keywords" content="经典论文,MapReduce">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MapReduce: Simplified Data Processing on Large Clusters">
 <meta property="og:url" content="http://yoursite.com/2020/04/04/MapReduce-Simplified-Data-Processing-on-Large-Clusters/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="摘要引言基本编程模型及示例Google的实现工作流  用户侧的MapReduce库先将输入文件分成M片，每片大小为16~64MB（具体大小可控制）。然后在集群机器上的程序副本开始执行。 集群中的一个机器为master角色，其余机器为worker，worker由master分配任务。存在M个Map任务和R个Reduce任务需要分配。master为空闲的worker分配map任务或reduce任务。">
+<meta property="og:description" content="MapReduce论文阅读 https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/imgs/image-20200404200106604.png">
-<meta property="og:updated_time" content="2020-04-08T02:58:28.727Z">
+<meta property="og:updated_time" content="2020-04-11T08:36:27.677Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MapReduce: Simplified Data Processing on Large Clusters">
-<meta name="twitter:description" content="摘要引言基本编程模型及示例Google的实现工作流  用户侧的MapReduce库先将输入文件分成M片，每片大小为16~64MB（具体大小可控制）。然后在集群机器上的程序副本开始执行。 集群中的一个机器为master角色，其余机器为worker，worker由master分配任务。存在M个Map任务和R个Reduce任务需要分配。master为空闲的worker分配map任务或reduce任务。">
+<meta name="twitter:description" content="MapReduce论文阅读 https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">
 <meta name="twitter:image" content="http://yoursite.com/imgs/image-20200404200106604.png">
   <link rel="canonical" href="http://yoursite.com/2020/04/04/MapReduce-Simplified-Data-Processing-on-Large-Clusters/">
 
@@ -307,7 +307,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 10:58:28" itemprop="dateModified" datetime="2020-04-08T10:58:28+08:00">2020-04-08</time>
+                <time title="修改时间：2020-04-11 16:36:27" itemprop="dateModified" datetime="2020-04-11T16:36:27+08:00">2020-04-11</time>
               </span>
             
           
@@ -345,7 +345,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h1 id="基本编程模型及示例"><a href="#基本编程模型及示例" class="headerlink" title="基本编程模型及示例"></a>基本编程模型及示例</h1><h1 id="Google的实现"><a href="#Google的实现" class="headerlink" title="Google的实现"></a>Google的实现</h1><h2 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h2><p><img src="/imgs/image-20200404200106604.png" alt="MapReduce workflow"></p>
+        <p>MapReduce论文阅读</p>
+<p><a href="https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf" target="_blank" rel="noopener">https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf</a></p>
+<a id="more"></a>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h1 id="基本编程模型及示例"><a href="#基本编程模型及示例" class="headerlink" title="基本编程模型及示例"></a>基本编程模型及示例</h1><h1 id="Google的实现"><a href="#Google的实现" class="headerlink" title="Google的实现"></a>Google的实现</h1><h2 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h2><p><img src="/imgs/image-20200404200106604.png" alt="MapReduce workflow"></p>
 <ol>
 <li>用户侧的<code>MapReduce</code>库先将输入文件分成M片，每片大小为16~64MB（具体大小可控制）。然后在集群机器上的程序副本开始执行。</li>
 <li>集群中的一个机器为<code>master</code>角色，其余机器为<code>worker</code>，<code>worker</code>由<code>master</code>分配任务。存在<code>M</code>个<code>Map</code>任务和<code>R</code>个<code>Reduce</code>任务需要分配。<code>master</code>为空闲的<code>worker</code>分配<code>map</code>任务或<code>reduce</code>任务。</li>
