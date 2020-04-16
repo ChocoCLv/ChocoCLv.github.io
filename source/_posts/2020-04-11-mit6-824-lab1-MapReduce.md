@@ -5,6 +5,9 @@ typora-root-url: ../../source/
 date: 2020-04-11 17:31:38
 mathjax: true
 tags:
+- 6.824
+- MapReduce
+- go
 ---
 
 实验说明：https://pdos.csail.mit.edu/6.824/labs/lab-mr.html
