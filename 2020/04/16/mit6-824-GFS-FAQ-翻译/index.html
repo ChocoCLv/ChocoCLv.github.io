@@ -56,18 +56,19 @@
   };
 </script>
 
-  <meta name="description" content="兔子🐇和窝边草🌱">
-<meta property="og:type" content="website">
-<meta property="og:title" content="search">
-<meta property="og:url" content="http://yoursite.com/search/index.html">
+  <meta name="description" content="GFS常见问题1. 为什么原子性的记录只保证最少一次，而不是精确的一次？ 12&amp;gt; Q: Why is atomic record append at-least-once, rather than exactly once?&amp;gt;  3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故">
+<meta name="keywords" content="6.824,GFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mit6.824-GFS-FAQ(翻译)">
+<meta property="og:url" content="http://yoursite.com/2020/04/16/mit6-824-GFS-FAQ-翻译/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="兔子🐇和窝边草🌱">
+<meta property="og:description" content="GFS常见问题1. 为什么原子性的记录只保证最少一次，而不是精确的一次？ 12&amp;gt; Q: Why is atomic record append at-least-once, rather than exactly once?&amp;gt;  3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-17T16:30:40.353Z">
+<meta property="og:updated_time" content="2020-04-16T12:49:50.931Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="search">
-<meta name="twitter:description" content="兔子🐇和窝边草🌱">
-  <link rel="canonical" href="http://yoursite.com/search/">
+<meta name="twitter:title" content="mit6.824-GFS-FAQ(翻译)">
+<meta name="twitter:description" content="GFS常见问题1. 为什么原子性的记录只保证最少一次，而不是精确的一次？ 12&amp;gt; Q: Why is atomic record append at-least-once, rather than exactly once?&amp;gt;  3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故">
+  <link rel="canonical" href="http://yoursite.com/2020/04/16/mit6-824-GFS-FAQ-翻译/">
 
 
 <script id="page-configurations">
@@ -75,13 +76,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
-    isPage: true,
+    isPost: true,
+    isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>search | 窝边草</title>
+  <title>mit6.824-GFS-FAQ(翻译) | 窝边草</title>
   
 
 
@@ -221,27 +222,6 @@
 
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
 </nav>
   <div class="site-search">
     <div class="popup search-popup">
@@ -281,40 +261,141 @@
             
 
   <div id="posts" class="posts-expand">
-    
-    
-    
-    <div class="post-block page">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/mit6-824-GFS-FAQ-翻译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">mit6.824-GFS-FAQ(翻译)
 
-<h1 class="post-title" itemprop="name headline">search
+          
+        </h1>
 
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
 
-<div class="post-meta">
+              
+                
+              
+
+              <time title="创建时间：2020-04-16 20:38:19 / 修改时间：20:49:50" itemprop="dateCreated datePublished" datetime="2020-04-16T20:38:19+08:00">2020-04-16</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/04/16/mit6-824-GFS-FAQ-翻译/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/mit6-824-GFS-FAQ-翻译/" itemprop="commentCount"></span></a>
+  </span>
+  
   
 
-</div>
+        </div>
+      </header>
 
-</header>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-      
-      
-      <div class="post-body">
-        
-          
-        
-      </div>
-      
-      
-      
+        <h1 id="GFS常见问题"><a href="#GFS常见问题" class="headerlink" title="GFS常见问题"></a>GFS常见问题</h1><h2 id="1-为什么原子性的记录只保证最少一次，而不是精确的一次？"><a href="#1-为什么原子性的记录只保证最少一次，而不是精确的一次？" class="headerlink" title="1. 为什么原子性的记录只保证最少一次，而不是精确的一次？"></a>1. 为什么原子性的记录只保证最少一次，而不是精确的一次？</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: Why is atomic record append at-least-once, rather than exactly once?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故障（例如，原始故障之间的主要故障请求和客户的重试）。 您将在实验3中实现这样的设计，在复杂性和性能上付出相当大的代价。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Section 3.1, Step 7, says that if a write fails at one of the secondaries, the client re-tries the write. That will cause the data to be appended more than once at the non-failed replicas. A different design could probably detect duplicate client requests despite arbitrary failures (e.g. a primary failure between the original request and the client&apos;s retry). You&apos;ll implement such a design in Lab 3, at considerable expense in complexity and performance.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="2-应用程序如何知道块的哪些部分是padding，哪些是重复的记录"><a href="#2-应用程序如何知道块的哪些部分是padding，哪些是重复的记录" class="headerlink" title="2. 应用程序如何知道块的哪些部分是padding，哪些是重复的记录"></a>2. 应用程序如何知道块的哪些部分是padding，哪些是重复的记录</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: How does an application know what sections of a chunk consist of</span><br><span class="line">&gt; padding and duplicate records?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>为了检测填充，应用程序可以输入可预测的幻数在有效记录的开头，或包含可能会出现的校验和仅当记录有效时才有效。 该应用程序可以检测通过在记录中包含唯一ID进行重复。 然后，如果它读取一个与先前的记录具有相同ID的记录，它知道它们彼此重复。 GFS为应用程序提供了一个库处理这些情况。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; To detect padding, applications can put a predictable magic number at the start of a valid record, or include a checksum that will likely only be valid if the record is valid. The application can detect duplicates by including unique IDs in records. Then, if it reads a</span><br><span class="line">&gt; record that has the same ID as an earlier record, it knows that they are duplicates of each other. GFS provides a library for applications that handles these cases.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></blockquote>
+
     </div>
-    
 
     
     
     
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/6-824/" rel="tag"><i class="fa fa-tag"></i> 6.824</a>
+            
+              <a href="/tags/GFS/" rel="tag"><i class="fa fa-tag"></i> GFS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/04/11/mit6-824-lab1-MapReduce/" rel="next" title="mit6.824-lab1-MapReduce">
+                  <i class="fa fa-chevron-left"></i> mit6.824-lab1-MapReduce
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
   </div>
 
 
@@ -354,6 +435,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS常见问题"><span class="nav-number">1.</span> <span class="nav-text">GFS常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-为什么原子性的记录只保证最少一次，而不是精确的一次？"><span class="nav-number">1.1.</span> <span class="nav-text">1. 为什么原子性的记录只保证最少一次，而不是精确的一次？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-应用程序如何知道块的哪些部分是padding，哪些是重复的记录"><span class="nav-number">1.2.</span> <span class="nav-text">2. 应用程序如何知道块的哪些部分是padding，哪些是重复的记录</span></a></li></ol></li></ol></div>
+        
       </div>
       <!--/noindex-->
 

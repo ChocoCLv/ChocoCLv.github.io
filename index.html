@@ -263,6 +263,105 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/mit6-824-GFS-FAQ-翻译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/04/16/mit6-824-GFS-FAQ-翻译/" class="post-title-link" itemprop="url">mit6.824-GFS-FAQ(翻译)</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-16 20:38:19 / 修改时间：20:49:50" itemprop="dateCreated datePublished" datetime="2020-04-16T20:38:19+08:00">2020-04-16</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/04/16/mit6-824-GFS-FAQ-翻译/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/mit6-824-GFS-FAQ-翻译/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GFS常见问题"><a href="#GFS常见问题" class="headerlink" title="GFS常见问题"></a>GFS常见问题</h1><h2 id="1-为什么原子性的记录只保证最少一次，而不是精确的一次？"><a href="#1-为什么原子性的记录只保证最少一次，而不是精确的一次？" class="headerlink" title="1. 为什么原子性的记录只保证最少一次，而不是精确的一次？"></a>1. 为什么原子性的记录只保证最少一次，而不是精确的一次？</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: Why is atomic record append at-least-once, rather than exactly once?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故障（例如，原始故障之间的主要故障请求和客户的重试）。 您将在实验3中实现这样的设计，在复杂性和性能上付出相当大的代价。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Section 3.1, Step 7, says that if a write fails at one of the secondaries, the client re-tries the write. That will cause the data to be appended more than once at the non-failed replicas. A different design could probably detect duplicate client requests despite arbitrary failures (e.g. a primary failure between the original request and the client&apos;s retry). You&apos;ll implement such a design in Lab 3, at considerable expense in complexity and performance.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="2-应用程序如何知道块的哪些部分是padding，哪些是重复的记录"><a href="#2-应用程序如何知道块的哪些部分是padding，哪些是重复的记录" class="headerlink" title="2. 应用程序如何知道块的哪些部分是padding，哪些是重复的记录"></a>2. 应用程序如何知道块的哪些部分是padding，哪些是重复的记录</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: How does an application know what sections of a chunk consist of</span><br><span class="line">&gt; padding and duplicate records?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>为了检测填充，应用程序可以输入可预测的幻数在有效记录的开头，或包含可能会出现的校验和仅当记录有效时才有效。 该应用程序可以检测通过在记录中包含唯一ID进行重复。 然后，如果它读取一个与先前的记录具有相同ID的记录，它知道它们彼此重复。 GFS为应用程序提供了一个库处理这些情况。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; To detect padding, applications can put a predictable magic number at the start of a valid record, or include a checksum that will likely only be valid if the record is valid. The application can detect duplicates by including unique IDs in records. Then, if it reads a</span><br><span class="line">&gt; record that has the same ID as an earlier record, it knows that they are duplicates of each other. GFS provides a library for applications that handles these cases.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></blockquote>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/11/mit6-824-lab1-MapReduce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -292,11 +391,19 @@
                 
               
 
-              <time title="创建时间：2020-04-11 17:31:38 / 修改时间：17:52:34" itemprop="dateCreated datePublished" datetime="2020-04-11T17:31:38+08:00">2020-04-11</time>
+              <time title="创建时间：2020-04-11 17:31:38" itemprop="dateCreated datePublished" datetime="2020-04-11T17:31:38+08:00">2020-04-11</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-16 20:39:43" itemprop="dateModified" datetime="2020-04-16T20:39:43+08:00">2020-04-16</time>
+              </span>
             
           
 
@@ -1176,104 +1283,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/04/转载：人脸识别的挑战问题和解决技术/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ChocoCLv">
-      <meta itemprop="description" content="兔子🐇和窝边草🌱">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="窝边草">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/11/04/转载：人脸识别的挑战问题和解决技术/" class="post-title-link" itemprop="url">转载：人脸识别的挑战问题和解决技术</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-04 16:05:30 / 修改时间：16:06:46" itemprop="dateCreated datePublished" datetime="2019-11-04T16:05:30+08:00">2019-11-04</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/11/04/转载：人脸识别的挑战问题和解决技术/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/11/04/转载：人脸识别的挑战问题和解决技术/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>西湖大学讲席教授、IEEE Fellow 李子青作为该技术论坛的开场演讲嘉宾，带来了主题为《 人脸识别挑战问题和解决技术》的演讲，他主要从人脸识别当前所存在的大数量类别的模式识别问题、人脸防伪问题以及复杂光照问题三个未来需要重点 关注的挑战出发，阐述了应对这三个问题的解决方案。</p>
-<blockquote>
-<p>来自 “ITPUB 博客” ，链接：<a href="http://blog.itpub.net/69946223/viewspace-2661447/" target="_blank" rel="noopener">http://blog.itpub.net/69946223/viewspace-2661447/</a></p>
-</blockquote>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/11/04/转载：人脸识别的挑战问题和解决技术/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1326,7 +1335,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1339,7 +1348,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1491,9 +1500,9 @@
   
     
       
-        
-      
     
+      
+        
       
     
       
