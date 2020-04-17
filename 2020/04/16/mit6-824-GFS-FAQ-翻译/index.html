@@ -56,18 +56,18 @@
   };
 </script>
 
-  <meta name="description" content="GFS常见问题1. 为什么原子性的记录只保证最少一次，而不是精确的一次？ 12&amp;gt; Q: Why is atomic record append at-least-once, rather than exactly once?&amp;gt;  3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故">
+  <meta name="description" content="mit 6.824课程提供了GFS FAQ，本文为简单翻译。">
 <meta name="keywords" content="6.824,GFS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mit6.824-GFS-FAQ(翻译)">
 <meta property="og:url" content="http://yoursite.com/2020/04/16/mit6-824-GFS-FAQ-翻译/index.html">
 <meta property="og:site_name" content="窝边草">
-<meta property="og:description" content="GFS常见问题1. 为什么原子性的记录只保证最少一次，而不是精确的一次？ 12&amp;gt; Q: Why is atomic record append at-least-once, rather than exactly once?&amp;gt;  3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故">
+<meta property="og:description" content="mit 6.824课程提供了GFS FAQ，本文为简单翻译。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-16T12:49:50.931Z">
+<meta property="og:updated_time" content="2020-04-17T03:57:00.528Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mit6.824-GFS-FAQ(翻译)">
-<meta name="twitter:description" content="GFS常见问题1. 为什么原子性的记录只保证最少一次，而不是精确的一次？ 12&amp;gt; Q: Why is atomic record append at-least-once, rather than exactly once?&amp;gt;  3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故">
+<meta name="twitter:description" content="mit 6.824课程提供了GFS FAQ，本文为简单翻译。">
   <link rel="canonical" href="http://yoursite.com/2020/04/16/mit6-824-GFS-FAQ-翻译/">
 
 
@@ -294,11 +294,19 @@
                 
               
 
-              <time title="创建时间：2020-04-16 20:38:19 / 修改时间：20:49:50" itemprop="dateCreated datePublished" datetime="2020-04-16T20:38:19+08:00">2020-04-16</time>
+              <time title="创建时间：2020-04-16 20:38:19" itemprop="dateCreated datePublished" datetime="2020-04-16T20:38:19+08:00">2020-04-16</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-17 11:57:00" itemprop="dateModified" datetime="2020-04-17T11:57:00+08:00">2020-04-17</time>
+              </span>
             
           
 
@@ -335,19 +343,89 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="GFS常见问题"><a href="#GFS常见问题" class="headerlink" title="GFS常见问题"></a>GFS常见问题</h1><h2 id="1-为什么原子性的记录只保证最少一次，而不是精确的一次？"><a href="#1-为什么原子性的记录只保证最少一次，而不是精确的一次？" class="headerlink" title="1. 为什么原子性的记录只保证最少一次，而不是精确的一次？"></a>1. 为什么原子性的记录只保证最少一次，而不是精确的一次？</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: Why is atomic record append at-least-once, rather than exactly once?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+        <p>mit 6.824课程提供了<a href="https://pdos.csail.mit.edu/6.824/papers/gfs-faq.txt" target="_blank" rel="noopener">GFS FAQ</a>，本文为简单翻译。</p>
+<a id="more"></a>
+<h1 id="GFS相关问题"><a href="#GFS相关问题" class="headerlink" title="GFS相关问题"></a>GFS相关问题</h1><h2 id="为什么原子性的记录只保证最少一次，而不是精确的一次？"><a href="#为什么原子性的记录只保证最少一次，而不是精确的一次？" class="headerlink" title="为什么原子性的记录只保证最少一次，而不是精确的一次？"></a>为什么原子性的记录只保证最少一次，而不是精确的一次？</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: Why is atomic record append at-least-once, rather than exactly</span><br><span class="line">&gt; once?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <p>3.1节（第7步）说，如果在其中一个写入失败二次，客户端重试写入。 那会导致数据要在不失败的副本中多次添加。 不同的设计可能会检测到重复的客户请求，尽管任意故障（例如，原始故障之间的主要故障请求和客户的重试）。 您将在实验3中实现这样的设计，在复杂性和性能上付出相当大的代价。</p>
 <blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Section 3.1, Step 7, says that if a write fails at one of the secondaries, the client re-tries the write. That will cause the data to be appended more than once at the non-failed replicas. A different design could probably detect duplicate client requests despite arbitrary failures (e.g. a primary failure between the original request and the client&apos;s retry). You&apos;ll implement such a design in Lab 3, at considerable expense in complexity and performance.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; Section 3.1, Step 7, says that if a write fails at one of the</span><br><span class="line">&gt; secondaries, the client re-tries the write. That will cause the data</span><br><span class="line">&gt; to be appended more than once at the non-failed replicas. A different</span><br><span class="line">&gt; design could probably detect duplicate client requests despite</span><br><span class="line">&gt; arbitrary failures (e.g. a primary failure between the original</span><br><span class="line">&gt; request and the client&apos;s retry). You&apos;ll implement such a design in Lab</span><br><span class="line">&gt; 3, at considerable expense in complexity and performance.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<h2 id="2-应用程序如何知道块的哪些部分是padding，哪些是重复的记录"><a href="#2-应用程序如何知道块的哪些部分是padding，哪些是重复的记录" class="headerlink" title="2. 应用程序如何知道块的哪些部分是padding，哪些是重复的记录"></a>2. 应用程序如何知道块的哪些部分是padding，哪些是重复的记录</h2><blockquote>
+<h2 id="应用程序如何知道块的哪些部分是padding，哪些是重复的记录"><a href="#应用程序如何知道块的哪些部分是padding，哪些是重复的记录" class="headerlink" title="应用程序如何知道块的哪些部分是padding，哪些是重复的记录"></a>应用程序如何知道块的哪些部分是padding，哪些是重复的记录</h2><blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: How does an application know what sections of a chunk consist of</span><br><span class="line">&gt; padding and duplicate records?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<p>为了检测填充，应用程序可以输入可预测的幻数在有效记录的开头，或包含可能会出现的校验和仅当记录有效时才有效。 该应用程序可以检测通过在记录中包含唯一ID进行重复。 然后，如果它读取一个与先前的记录具有相同ID的记录，它知道它们彼此重复。 GFS为应用程序提供了一个库处理这些情况。</p>
+<p>为了检测填充，应用程序在有效记录的开头写入可预测的Magic Number，或包含可能会出现的校验和仅当记录有效时才有效。 该应用程序可以检测通过在记录中包含唯一ID进行重复。 然后，如果它读取一个与先前的记录具有相同ID的记录，它知道它们彼此重复。 GFS为应用程序提供了一个库处理这些情况。</p>
 <blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; To detect padding, applications can put a predictable magic number at the start of a valid record, or include a checksum that will likely only be valid if the record is valid. The application can detect duplicates by including unique IDs in records. Then, if it reads a</span><br><span class="line">&gt; record that has the same ID as an earlier record, it knows that they are duplicates of each other. GFS provides a library for applications that handles these cases.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: To detect padding, applications can put a predictable magic number</span><br><span class="line">&gt; at the start of a valid record, or include a checksum that will likely</span><br><span class="line">&gt; only be valid if the record is valid. The application can detect</span><br><span class="line">&gt; duplicates by including unique IDs in records. Then, if it reads a</span><br><span class="line">&gt; record that has the same ID as an earlier record, it knows that they</span><br><span class="line">&gt; are duplicates of each other. GFS provides a library for applications</span><br><span class="line">&gt; that handles these cases.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="给定原子记录后，客户如何找到他们的数据，将其以不可预测的偏移量写入文件中？"><a href="#给定原子记录后，客户如何找到他们的数据，将其以不可预测的偏移量写入文件中？" class="headerlink" title="给定原子记录后，客户如何找到他们的数据，将其以不可预测的偏移量写入文件中？"></a>给定原子记录后，客户如何找到他们的数据，将其以不可预测的偏移量写入文件中？</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: How can clients find their data given that atomic record append</span><br><span class="line">&gt; writes it at an unpredictable offset in the file?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: Append (and GFS in general) is mostly intended for applications</span><br><span class="line">&gt; that sequentially read entire files. Such applications will scan the</span><br><span class="line">&gt; file looking for valid records (see the previous question), so they</span><br><span class="line">&gt; don&apos;t need to know the record locations in advance. For example, the</span><br><span class="line">&gt; file might contain the set of link URLs encountered by a set of</span><br><span class="line">&gt; concurrent web crawlers. The file offset of any given URL doesn&apos;t</span><br><span class="line">&gt; matter much; readers just want to be able to read the entire set of</span><br><span class="line">&gt; URLs.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="什么是校验和"><a href="#什么是校验和" class="headerlink" title="什么是校验和"></a>什么是校验和</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: What&apos;s a checksum?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>校验和算法将一个字节块作为输入并返回一个单个数字是所有输入字节的函数。 例如，一个简单校验和可能是输入中所有字节的总和（mod一些大数字）。 GFS存储每个块的校验和以及块。 块服务器在其磁盘上写入块时，首先计算新块的校验和，并将校验和保存在磁盘上以及大块 当块服务器从磁盘读取块时，它还读取先前保存的校验和，从从磁盘读取块，并检查两个校验和是否匹配。 如果数据已被磁盘损坏，校验和不匹配，并且chunkserver将知道返回错误。 另外，一些GFS应用程序根据应用程序定义存储自己的校验和GFS文件中的记录，以区分正确的记录和填充。 CRC32是校验和算法的示例。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: A checksum algorithm takes a block of bytes as input and returns a</span><br><span class="line">&gt; single number that&apos;s a function of all the input bytes. For example, a</span><br><span class="line">&gt; simple checksum might be the sum of all the bytes in the input (mod</span><br><span class="line">&gt; some big number). GFS stores the checksum of each chunk as well as the</span><br><span class="line">&gt; chunk. When a chunkserver writes a chunk on its disk, it first</span><br><span class="line">&gt; computes the checksum of the new chunk, and saves the checksum on disk</span><br><span class="line">&gt; as well as the chunk. When a chunkserver reads a chunk from disk, it</span><br><span class="line">&gt; also reads the previously-saved checksum, re-computes a checksum from</span><br><span class="line">&gt; the chunk read from disk, and checks that the two checksums match. If</span><br><span class="line">&gt; the data was corrupted by the disk, the checksums won&apos;t match, and the</span><br><span class="line">&gt; chunkserver will know to return an error. Separately, some GFS</span><br><span class="line">&gt; applications stored their own checksums, over application-defined</span><br><span class="line">&gt; records, inside GFS files, to distinguish between correct records and</span><br><span class="line">&gt; padding. CRC32 is an example of a checksum algorithm.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="论文中提到的引用计数是什么"><a href="#论文中提到的引用计数是什么" class="headerlink" title="论文中提到的引用计数是什么"></a>论文中提到的引用计数是什么</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: The paper mentions reference counts -- what are they?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>它们是快照写时复制实现的一部分。当GFS创建快照时，它不会复制数据块，而是复制增加每个块的参考计数器。 这使得创建一个快照价格便宜。 如果客户写了一个块，而主人写了注意引用计数大于一，高手在前制作副本，以便客户端可以更新副本（而不是快照的一部分）。 您可以将其视为延迟复制，直到绝对必要。 希望不是所有的块将被修改，可以避免制作一些副本。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: They are part of the implementation of copy-on-write for snapshots.</span><br><span class="line">&gt; When GFS creates a snapshot, it doesn&apos;t copy the chunks, but instead</span><br><span class="line">&gt; increases the reference counter of each chunk. This makes creating a</span><br><span class="line">&gt; snapshot inexpensive. If a client writes a chunk and the master</span><br><span class="line">&gt; notices the reference count is greater than one, the master first</span><br><span class="line">&gt; makes a copy so that the client can update the copy (instead of the</span><br><span class="line">&gt; chunk that is part of the snapshot). You can view this as delaying the</span><br><span class="line">&gt; copy until it is absolutely necessary. The hope is that not all chunks</span><br><span class="line">&gt; will be modified and one can avoid making some copies.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="如果一个程序使用了标准的POSIX文件操作接口，为了使用GFS，它是否需要进行修改"><a href="#如果一个程序使用了标准的POSIX文件操作接口，为了使用GFS，它是否需要进行修改" class="headerlink" title="如果一个程序使用了标准的POSIX文件操作接口，为了使用GFS，它是否需要进行修改"></a>如果一个程序使用了标准的POSIX文件操作接口，为了使用GFS，它是否需要进行修改</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: If an application uses the standard POSIX file APIs, would it need</span><br><span class="line">&gt; to be modified in order to use GFS?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>是的，但是GFS不适用于现有应用程序。 它是设计用于新编写的应用程序，例如MapReduce程序。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: Yes, but GFS isn&apos;t intended for existing applications. It is</span><br><span class="line">&gt; designed for newly-written applications, such as MapReduce programs.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="GFS如何确定最近副本的位置"><a href="#GFS如何确定最近副本的位置" class="headerlink" title="GFS如何确定最近副本的位置"></a>GFS如何确定最近副本的位置</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: How does GFS determine the location of the nearest replica?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>本文暗示GFS会根据服务器的IP地址来执行此操作。存储可用副本的服务器。 在2003年，Google必须具备分配IP地址的方式，如果两个IP地址接近在IP地址空间中彼此连接，那么它们也彼此靠近在机房。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: The paper hints that GFS does this based on the IP addresses of the</span><br><span class="line">&gt; servers storing the available replicas. In 2003, Google must have</span><br><span class="line">&gt; assigned IP addresses in such a way that if two IP addresses are close</span><br><span class="line">&gt; to each other in IP address space, then they are also close together</span><br><span class="line">&gt; in the machine room.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="假设S1是块的Primary，并且master和S1之间的网络故障。-master会注意到这个问题并指定其他服务器作为Primary，比如S2。-由于S1实际上并没有失败，所以现在在同一个块中存在两个Primary？"><a href="#假设S1是块的Primary，并且master和S1之间的网络故障。-master会注意到这个问题并指定其他服务器作为Primary，比如S2。-由于S1实际上并没有失败，所以现在在同一个块中存在两个Primary？" class="headerlink" title="假设S1是块的Primary，并且master和S1之间的网络故障。 master会注意到这个问题并指定其他服务器作为Primary，比如S2。 由于S1实际上并没有失败，所以现在在同一个块中存在两个Primary？"></a>假设S1是块的Primary，并且master和S1之间的网络故障。 master会注意到这个问题并指定其他服务器作为Primary，比如S2。 由于S1实际上并没有失败，所以现在在同一个块中存在两个Primary？</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: Suppose S1 is the primary for a chunk, and the network between the</span><br><span class="line">&gt; master and S1 fails. The master will notice and designate some other</span><br><span class="line">&gt; server as primary, say S2. Since S1 didn&apos;t actually fail, are there</span><br><span class="line">&gt; now two primaries for the same chunk?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>那将是一场灾难，因为两个Primary都可能适用对同一块的不同更新。 幸运的是，GFS的租赁机制防止这种情况。 主机授予S1 60秒的租约。 当租约到期时，S1知道不再是主要服务器。 master不会将租约授予S2，直到之前的租约授予S1<br>到期。 因此，直到S1停止后，S2才开始充当主要对象。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: That would be a disaster, since both primaries might apply</span><br><span class="line">&gt; different updates to the same chunk. Luckily GFS&apos;s lease mechanism</span><br><span class="line">&gt; prevents this scenario. The master granted S1 a 60-second lease to be</span><br><span class="line">&gt; primary. S1 knows to stop being primary when its lease expires. The</span><br><span class="line">&gt; master won&apos;t grant a lease to S2 until the previous lease to S1</span><br><span class="line">&gt; expires. So S2 won&apos;t start acting as primary until after S1 stops.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="64MB对于块大小来说是否太大了"><a href="#64MB对于块大小来说是否太大了" class="headerlink" title="64MB对于块大小来说是否太大了"></a>64MB对于块大小来说是否太大了</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: 64 megabytes sounds awkwardly large for the chunk size!</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>64 MB的块大小是master中book-keeping的单位，以及块服务器分片文件的粒度。 客户端可以发出更小的读取和写入-他们没有被迫处理总共64 MB块。 使用这么大的块大小是为了减少master数据库中元数据表的大小，并避免限制想要进行大量传输以减少开销的客户端。 另一方面，小于64 MB的文件不会得到太多并行性。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: The 64 MB chunk size is the unit of book-keeping in the master, and</span><br><span class="line">&gt; the granularity at which files are sharded over chunkservers. Clients</span><br><span class="line">&gt; could issue smaller reads and writes -- they were not forced to deal</span><br><span class="line">&gt; in whole 64 MB chunks. The point of using such a big chunk size is to</span><br><span class="line">&gt; reduce the size of the meta-data tables in the master, and to avoid</span><br><span class="line">&gt; limiting clients that want to do huge transfers to reduce overhead. On</span><br><span class="line">&gt; the other hand, files less than 64 MB in size do not get much</span><br><span class="line">&gt; parallelism.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="Google现在还在用GFS吗"><a href="#Google现在还在用GFS吗" class="headerlink" title="Google现在还在用GFS吗"></a>Google现在还在用GFS吗</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: Does Google still use GFS?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: Rumor has it that GFS has been replaced by something called</span><br><span class="line">&gt; Colossus, with the same overall goals, but improvements in master</span><br><span class="line">&gt; performance and fault-tolerance.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="How-acceptable-is-it-that-GFS-trades-correctness-for-performance-and-simplicity"><a href="#How-acceptable-is-it-that-GFS-trades-correctness-for-performance-and-simplicity" class="headerlink" title="How acceptable is it that GFS trades correctness for performance and simplicity?"></a>How acceptable is it that GFS trades correctness for performance and simplicity?</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: How acceptable is it that GFS trades correctness for performance</span><br><span class="line">&gt; and simplicity?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: This a recurring theme in distributed systems. Strong consistency</span><br><span class="line">&gt; usually requires protocols that are complex and require chit-chat</span><br><span class="line">&gt; between machines (as we will see in the next few lectures). By</span><br><span class="line">&gt; exploiting ways that specific application classes can tolerate relaxed</span><br><span class="line">&gt; consistency, one can design systems that have good performance and</span><br><span class="line">&gt; sufficient consistency. For example, GFS optimizes for MapReduce</span><br><span class="line">&gt; applications, which need high read performance for large files and are</span><br><span class="line">&gt; OK with having holes in files, records showing up several times, and</span><br><span class="line">&gt; inconsistent reads. On the other hand, GFS would not be good for</span><br><span class="line">&gt; storing account balances at a bank.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="master-失败了会发生什么"><a href="#master-失败了会发生什么" class="headerlink" title="master 失败了会发生什么"></a>master 失败了会发生什么</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: What if the master fails?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>存在具有完整master状态的副本，论文的设计中在master fail后需要进行人工干预才能切换到master副本，稍后我们将看到如何使用Raft自动切换。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: There are replica masters with a full copy of the master state; the</span><br><span class="line">&gt; paper&apos;s design requires human intervention to switch to one of the</span><br><span class="line">&gt; replicas after a master failure (Section 5.1.3). We will see later how</span><br><span class="line">&gt; to build replicated services with automatic cut-over to a backup,</span><br><span class="line">&gt; using Raft.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="single-master是一个好的主意吗"><a href="#single-master是一个好的主意吗" class="headerlink" title="single master是一个好的主意吗"></a>single master是一个好的主意吗</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Q: Did having a single master turn out to be a good idea?</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>这个想法简化了初始化部署，但从长远来看并不是很好。 <a href="https://queue.acm.org/detail.cfm?id=1594206" target="_blank" rel="noopener">本文</a>说，随着时间的流逝和GFS使用的增加，有些事情出了问题。 文件数量增长到足以将所有文件的元数据存储在单个主机的RAM中是不合理的。 客户端数量增长到足以使单个主服务器没有足够的CPU能力为他们服务。 从发生故障的主服务器切换到其备份之一需要人工干预，这使恢复速度变慢。 显然，谷歌（Google）取代了GFS，即Colossus，将主服务器拆分为多个服务器，并具有更自动的主服务器故障恢复功能。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; A: That idea simplified initial deployment but was not so great in the</span><br><span class="line">&gt; long run. This article -- https://queue.acm.org/detail.cfm?id=1594206</span><br><span class="line">&gt; -- says that as the years went by and GFS use grew, a few things went</span><br><span class="line">&gt; wrong. The number of files grew enough that it wasn&apos;t reasonable to</span><br><span class="line">&gt; store all files&apos; metadata in the RAM of a single master. The number of</span><br><span class="line">&gt; clients grew enough that a single master didn&apos;t have enough CPU power</span><br><span class="line">&gt; to serve them. The fact that switching from a failed master to one of</span><br><span class="line">&gt; its backups required human intervention made recovery slow. Apparently</span><br><span class="line">&gt; Google&apos;s replacement for GFS, Colossus, splits the master over</span><br><span class="line">&gt; multiple servers, and has more automated master failure recovery.A: That idea simplified initial deployment but was not so great in the long run. This article -- https://queue.acm.org/detail.cfm?id=1594206 -- </span><br><span class="line">&gt; says that as the years went by and GFS use grew, a few things went wrong. The number of files grew enough that it wasn&apos;t reasonable to store all files&apos; metadata in the RAM of a single master. The number of clients grew enough that a single master didn&apos;t have enough CPU power</span><br><span class="line">&gt; to serve them. The fact that switching from a failed master to one of its backups required human intervention made recovery slow. Apparently Google&apos;s replacement for GFS, Colossus, splits the master over multiple servers, and has more automated master failure recovery.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></blockquote>
 
     </div>
 
@@ -384,6 +462,10 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/04/17/vscode-remote-connect-to-Windows/" rel="prev" title="vscode-remote-connect-to-Windows">
+                  vscode-remote-connect-to-Windows <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -435,7 +517,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS常见问题"><span class="nav-number">1.</span> <span class="nav-text">GFS常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-为什么原子性的记录只保证最少一次，而不是精确的一次？"><span class="nav-number">1.1.</span> <span class="nav-text">1. 为什么原子性的记录只保证最少一次，而不是精确的一次？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-应用程序如何知道块的哪些部分是padding，哪些是重复的记录"><span class="nav-number">1.2.</span> <span class="nav-text">2. 应用程序如何知道块的哪些部分是padding，哪些是重复的记录</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS相关问题"><span class="nav-number">1.</span> <span class="nav-text">GFS相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么原子性的记录只保证最少一次，而不是精确的一次？"><span class="nav-number">1.1.</span> <span class="nav-text">为什么原子性的记录只保证最少一次，而不是精确的一次？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用程序如何知道块的哪些部分是padding，哪些是重复的记录"><span class="nav-number">1.2.</span> <span class="nav-text">应用程序如何知道块的哪些部分是padding，哪些是重复的记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给定原子记录后，客户如何找到他们的数据，将其以不可预测的偏移量写入文件中？"><span class="nav-number">1.3.</span> <span class="nav-text">给定原子记录后，客户如何找到他们的数据，将其以不可预测的偏移量写入文件中？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是校验和"><span class="nav-number">1.4.</span> <span class="nav-text">什么是校验和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#论文中提到的引用计数是什么"><span class="nav-number">1.5.</span> <span class="nav-text">论文中提到的引用计数是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如果一个程序使用了标准的POSIX文件操作接口，为了使用GFS，它是否需要进行修改"><span class="nav-number">1.6.</span> <span class="nav-text">如果一个程序使用了标准的POSIX文件操作接口，为了使用GFS，它是否需要进行修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GFS如何确定最近副本的位置"><span class="nav-number">1.7.</span> <span class="nav-text">GFS如何确定最近副本的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#假设S1是块的Primary，并且master和S1之间的网络故障。-master会注意到这个问题并指定其他服务器作为Primary，比如S2。-由于S1实际上并没有失败，所以现在在同一个块中存在两个Primary？"><span class="nav-number">1.8.</span> <span class="nav-text">假设S1是块的Primary，并且master和S1之间的网络故障。 master会注意到这个问题并指定其他服务器作为Primary，比如S2。 由于S1实际上并没有失败，所以现在在同一个块中存在两个Primary？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#64MB对于块大小来说是否太大了"><span class="nav-number">1.9.</span> <span class="nav-text">64MB对于块大小来说是否太大了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google现在还在用GFS吗"><span class="nav-number">1.10.</span> <span class="nav-text">Google现在还在用GFS吗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-acceptable-is-it-that-GFS-trades-correctness-for-performance-and-simplicity"><span class="nav-number">1.11.</span> <span class="nav-text">How acceptable is it that GFS trades correctness for performance and simplicity?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#master-失败了会发生什么"><span class="nav-number">1.12.</span> <span class="nav-text">master 失败了会发生什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#single-master是一个好的主意吗"><span class="nav-number">1.13.</span> <span class="nav-text">single master是一个好的主意吗</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -453,7 +535,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -466,7 +548,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
