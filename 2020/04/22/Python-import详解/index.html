@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="原文地址 https://blog.csdn.net/weixin_38256474/article/details/81228492?fps=1&amp;amp;locationNum=2  如需转载请注明出处。win10+Python 3.6.3 一旦使用多层文件架构就很容易遇上 import 的坑！哈哈。 一、理解一些基本概念1、模块、包模块 module：一般情况下，是一个以.py 为后缀的文件">
+<meta name="keywords" content="转载,Python,import">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python import详解">
+<meta property="og:url" content="http://yoursite.com/2020/04/22/Python-import详解/index.html">
+<meta property="og:site_name" content="窝边草">
+<meta property="og:description" content="原文地址 https://blog.csdn.net/weixin_38256474/article/details/81228492?fps=1&amp;amp;locationNum=2  如需转载请注明出处。win10+Python 3.6.3 一旦使用多层文件架构就很容易遇上 import 的坑！哈哈。 一、理解一些基本概念1、模块、包模块 module：一般情况下，是一个以.py 为后缀的文件">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdn.net/20180727110240655?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180727120550441?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/2018072714235219?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180727142629596?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180727142811352?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180727143522855?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180727144304644?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:updated_time" content="2020-04-22T07:43:18.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python import详解">
+<meta name="twitter:description" content="原文地址 https://blog.csdn.net/weixin_38256474/article/details/81228492?fps=1&amp;amp;locationNum=2  如需转载请注明出处。win10+Python 3.6.3 一旦使用多层文件架构就很容易遇上 import 的坑！哈哈。 一、理解一些基本概念1、模块、包模块 module：一般情况下，是一个以.py 为后缀的文件">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180727110240655?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+  <link rel="canonical" href="http://yoursite.com/2020/04/22/Python-import详解/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Python import详解 | 窝边草</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?859cee8f5da7a00121e9a0bef911e58c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">窝边草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-commonweal">
+      
+    
+
+    <a href="/404.html" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/22/Python-import详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Python import详解
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-22 15:40:32 / 修改时间：15:43:18" itemprop="dateCreated datePublished" datetime="2020-04-22T15:40:32+08:00">2020-04-22</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/04/22/Python-import详解/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/04/22/Python-import详解/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>原文地址 <a href="https://blog.csdn.net/weixin_38256474/article/details/81228492?fps=1&amp;locationNum=2" target="_blank" rel="noopener">https://blog.csdn.net/weixin_38256474/article/details/81228492?fps=1&amp;locationNum=2</a></p>
+</blockquote>
+<p>如需转载请注明出处。<br>win10+Python 3.6.3</p>
+<p>一旦使用<strong>多层文件架构</strong>就很容易遇上 import 的坑！哈哈。</p>
+<h2 id="一、理解一些基本概念"><a href="#一、理解一些基本概念" class="headerlink" title="一、理解一些基本概念"></a><strong>一、理解一些基本概念</strong></h2><p><strong>1、模块、包</strong><br><strong>模块 module：</strong>一般情况下，是一个以.py 为后缀的文件。其他可作为 module 的文件类型还有”.pyo”、”.pyc”、”.pyd”、”.so”、”.dll”，但 Python 初学者几乎用不到。<br>module 可看作一个工具类，可共用或者隐藏代码细节，将相关代码放置在一个 module 以便让代码更好用、易懂，让 coder 重点放在高层逻辑上。<br>module 能定义函数、类、变量，也能包含可执行的代码。module 来源有 3 种：<br>①Python 内置的模块（标准库）；<br>②第三方模块；<br>③自定义模块。</p>
+<a id="more"></a>
+<p><strong>包 package：</strong> 为避免模块名冲突，Python 引入了按目录组织模块的方法，称之为 包（package）。包 是含有 Python 模块的文件夹。<br><img src="https://img-blog.csdn.net/20180727110240655?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt><br>当一个文件夹下有init.py 时，意为该文件夹是一个包（package），其下的多个模块（module）构成一个整体，而这些模块（module）都可通过同一个包（package）导入其他代码中。</p>
+<p>其中init.py 文件 <strong>用于组织包（package），方便管理各个模块之间的引用、控制着包的导入行为。</strong><br>该文件可以什么内容都不写，即为空文件（为空时，仅仅用 import [该包] 形式 是什么也做不了的），存在即可，相当于一个标记。<br>但若想使用 from pacakge_1 import * 这种形式的写法，需在init.py 中加上：all = [‘file_a’, ‘file_b’] #package_1 下有 file_a.py 和 file_b.py，在导入时init.py 文件将被执行。<br>但不建议在init.py 中写模块，以保证该文件简单。不过可在init.py 导入我们需要的模块，以便避免一个个导入、方便使用。</p>
+<p>其中，all是一个重要的变量，用来指定此包（package）被 import * 时，哪些模块（module）会被 import 进【当前作用域中】。不在all列表中的模块不会被其他程序引用。可以重写all，如all = [‘当前所属包模块 1 名字’, ‘模块 1 名字’]，如果写了这个，则会按列表中的模块名进行导入。</p>
+<p>在模糊导入时，形如 from package import <em>，</em> 是由<strong>all</strong>定义的。</p>
+<p>精确导入，形如 from package import *、import package.class。</p>
+<p>path也是一个常用变量，是个列表，默认情况下只有一个元素，即当前包（package）的路径。修改path可改变包（package）内的搜索路径。</p>
+<p>当我们在导入一个包（package）时（会先加载init.py 定义的引入模块，然后再运行其他代码），实际上是导入的它的init.py 文件（导入时，该文件自动运行，助我们一下导入该包中的多个模块）。我们可以在init.py 中再导入其他的包（package）或模块 或自定义类。</p>
+<p><strong>2、sys.modules、命名空间、模块内置属性</strong><br><strong>2.1 sys.modules</strong><br>官方解释：<a href="https://docs.python.org/3.6/library/sys.html?highlight=sys%20modules#sys.modules" target="_blank" rel="noopener">链接</a><br><strong>sys.modules</strong> 是一个 将模块名称（module_name）映射到已加载的模块（modules） 的字典。可用来强制重新加载 modules。Python 一启动，它将被加载在内存中。<br>当我们导入新 modules，sys.modules 将自动记录下该 module；当第二次再导入该 module 时，Python 将直接到字典中查找，加快运行速度。</p>
+<p>它是个<strong>字典</strong>，故拥有字典的一切方法，如 sys.modules.keys()、sys.modules.values()、sys.modules[‘os’]。但请不要轻易替换字典、或从字典中删除某元素，将可能导致 Python 运行失败。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.modules)<span class="comment">#打印，查看该字典具体内容。</span></span><br></pre></td></tr></table></figure>
+<p><strong>2.2 命名空间</strong><br>如同一个 dict，key 是变量名字，value 是变量的值。</p>
+<ul>
+<li>每个函数 function 有自己的命名空间，称 local namespace，记录函数的变量。</li>
+<li>每个模块 module 有自己的命名空间，称 global namespace，记录模块的变量，包括 <strong>functions、classes、导入的 modules、module 级别的变量和常量</strong>。</li>
+<li>build-in 命名空间，它包含 build-in function 和 exceptions，可被任意模块访问。</li>
+</ul>
+<p>某段 Python 代码访问 变量 x 时，Python 会所有的命名空间中查找该变量，顺序是：</p>
+<ol>
+<li>local namespace 即当前函数或类方法。若找到，则停止搜索；</li>
+<li>global namespace 即当前模块。若找到，则停止搜索；</li>
+<li>build-in namespace Python 会假设变量 x 是 build-in 的函数函数或变量。若变量 x 不是 build-in 的内置函数或变量，Python 将报错 NameError。</li>
+<li>对于闭包，若在 local namespace 找不到该变量，则下一个查找目标是父函数的 local namespace。</li>
+</ol>
+<p>例：namespace_test.py 代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a=<span class="number">1</span>)</span>:</span></span><br><span class="line">    b = <span class="number">2</span></span><br><span class="line">    print(locals())<span class="comment">#打印当前函数（方法）的局部命名空间</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    locs = locals()#只读，不可写。将报错！</span></span><br><span class="line"><span class="string">    locs['c'] = 3</span></span><br><span class="line"><span class="string">    print(c)</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="keyword">return</span> a+b</span><br><span class="line">func()</span><br><span class="line">glos = globals()</span><br><span class="line">glos[<span class="string">'d'</span>] = <span class="number">4</span></span><br><span class="line">print(d)</span><br><span class="line"></span><br><span class="line">print(globals())<span class="comment">#打印当前模块namespace_test.py的全局命名空间</span></span><br></pre></td></tr></table></figure>
+<p>内置函数 locals()、globals() 返回一个字典。区别：前者只读、后者可写。</p>
+<p><strong>命名空间</strong> 在 from module_name import 、import module_name 中的体现：from 关键词是导入模块或包中的某个部分。</p>
+<ol>
+<li>from module_A import X：会将该模块的函数 / 变量导入到当前模块的命名空间中，无须用 module_A.X 访问了。</li>
+<li>import module_A：modules_A 本身被导入，但保存它原有的命名空间，故得用 module_A.X 方式访问其函数或变量。</li>
+</ol>
+<p><strong>2.3 模块内置属性</strong></p>
+<ol>
+<li>name直接运行本模块，name值为main；import module，name值为模块名字。</li>
+<li>file当前 module 的绝对路径</li>
+<li>dict</li>
+<li>doc</li>
+<li>package</li>
+<li>path</li>
+</ol>
+<p><strong>3、绝对导入、相对导入</strong><br><img src="https://img-blog.csdn.net/20180727120550441?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt><br><strong>3.1 绝对导入</strong>：所有的模块 import 都从 “根节点” 开始。根节点的位置由 sys.path 中的路径决定，项目的根目录一般自动在 sys.path 中。如果希望程序能处处执行，需手动修改 sys.path。<br>例 1：c.py 中导入 B 包 / B1 子包 / b1.py 模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys,os</span><br><span class="line">BASE_DIR = os.path.dirname(os.path.abspath(__file__))<span class="comment">#存放c.py所在的绝对路径</span></span><br><span class="line"></span><br><span class="line">sys.path.append(BASE_DIR)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> B.B1 <span class="keyword">import</span> b1<span class="comment">#导入B包中子包B1中的模块b1</span></span><br></pre></td></tr></table></figure>
+<p>例 2：b1.py 中导入 b2.py 模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> B.B1 <span class="keyword">import</span> b2<span class="comment">#从B包中的子包B1中导入模块b2</span></span><br></pre></td></tr></table></figure>
+<p><strong>3.2 相对导入</strong>：只关心相对自己当前目录的模块位置就好。不能在包（package）的内部直接执行（会报错）。不管根节点在哪儿，包内的模块相对位置都是正确的。<br>b1.py 代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#from . import b2 #这种导入方式会报错。</span></span><br><span class="line"><span class="keyword">import</span> b2<span class="comment">#正确</span></span><br><span class="line">b2.print_b2()</span><br></pre></td></tr></table></figure>
+<p>b2.py 代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_b2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'b2'</span>)</span><br></pre></td></tr></table></figure>
+<p>运行 b1.py，打印：b2。</p>
+<p>在使用相对导入时，可能遇到 ValueError: Attempted relative import beyond toplevel package<br>解决方案：参考这篇文章，<a href="https://blog.csdn.net/sky453589103/article/details/78863050" target="_blank" rel="noopener">链接</a>。</p>
+<p><strong>3.3 单独导入包（package）</strong>：单独 import 某个包名称时，不会导入该包中所包含的所有子模块。<br>c.py 导入同级目录 B 包的子包 B1 包的 b2 模块，执行 b2 模块的 print_b2() 方法：<br>c.py 代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> B</span><br><span class="line">B.B1.b2.print_b2()</span><br></pre></td></tr></table></figure>
+<p>运行 c.py，会报错。</p>
+<p><strong>解决办法</strong>：<br>B/init.py 代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> B1<span class="comment">#其中的.表示当前目录</span></span><br></pre></td></tr></table></figure>
+<p>B/B1/init.py 代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> b2</span><br></pre></td></tr></table></figure>
+<p>此时，执行 c.py，成功打印：b2。</p>
+<p><strong>3.4 额外</strong><br>①一个. py 文件调用另一个. py 文件中的类。<br>如 a.py（class A）、b.py（class B），a.py 调用 b.py 中类 B 用：from b import B<br>②一个. py 文件中的类 继承另一个. py 文件中的类。如 a.py（class A）、b.py（class B），a.py 中类 A 继承 b.py 类 B。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> b <span class="keyword">import</span> B</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(B)</span>:</span></span><br><span class="line"><span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h2 id="二、Python-运行机制：理解-Python-在执行-import-语句（导入内置（Python-自个的）或第三方模块（已在-sys-path-中））时，进行了啥操作？"><a href="#二、Python-运行机制：理解-Python-在执行-import-语句（导入内置（Python-自个的）或第三方模块（已在-sys-path-中））时，进行了啥操作？" class="headerlink" title="二、Python 运行机制：理解 Python 在执行 import 语句（导入内置（Python 自个的）或第三方模块（已在 sys.path 中））时，进行了啥操作？"></a><strong>二、Python 运行机制：理解 Python 在执行 import 语句（导入内置（Python 自个的）或第三方模块（已在 sys.path 中））时，进行了啥操作？</strong></h2><p>step1：创建一个新的、空的 module 对象（它可能包含多个 module）；<br>step2：将该 module 对象 插入 sys.modules 中；<br>step3：装载 module 的代码（如果需要，需先编译）；<br>step4：执行新的 module 中对应的代码。</p>
+<p>在执行 step3 时，首先需找到 module 程序所在的位置，如导入的 module 名字为 mod_1，则解释器得找到 mod_1.py 文件，搜索顺序是：<br>当前路径（或当前目录指定 sys.path）—–&gt;PYTHONPATH—–&gt;Python 安装设置相关的默认路径。</p>
+<p>对于不在 sys.path 中，一定要避免用 import 导入 自定义包（package）的子模块（module），而要用 from…import… 的绝对导入 或相对导入，且包（package）的相对导入只能用 from 形式。</p>
+<p>1、<strong>“标准”import，顶部导入</strong><br><img src="https://img-blog.csdn.net/2018072714235219?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt><br>有上述基础知识，再理解这个思维导图，就很容易了。在运用模块的变量或函数时，就能得心应手了。</p>
+<p><strong>2、嵌套 import</strong></p>
+<p><strong>2.1 顺序导入 - import</strong><br><img src="https://img-blog.csdn.net/20180727142629596?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt></p>
+<p>PS：<strong>各个模块的 Local 命名空间的独立的</strong>。即：<br><strong>test 模块</strong> import moduleA 后，只能访问 moduleA 模块，不能访问 moduleB 模块。虽然 moduleB 已加载到内存中，如需访问，还得明确地在 test 模块 import moduleB。实际上打印 locals()，字典中只有 moduleA，没有 moduleB。</p>
+<p><strong>2.2 循环导入 / 嵌套导入 - import</strong><br><img src="https://img-blog.csdn.net/20180727142811352?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt><br><strong>形如 from moduleB import ClassB 语句，根据 Python 内部 import 机制</strong>，执行细分步骤：  </p>
+<ol>
+<li>在 sys.modules 中查找 符号 “moduleB”；  </li>
+<li>如果符号 “moduleB” 存在，则获得符号 “moduleB” 对应的 module 对象；<br>从的dict__中获得 符号 “ClassB” 对应的对象。如果 “ClassB” 不存在，则抛出异常 “ImportError: cannot import name ‘classB’”  </li>
+<li>如果符号 “moduleB” 不存在，则创建一个新的 module 对象。不过此时该新 module 对象的dict为空。然后执行 moduleB.py 文件中的语句，填充的dict。</li>
+</ol>
+<p><strong>总结：from moduleB import ClassB 有两个过程，先 from module，后 import ClassB。</strong><br><img src="https://img-blog.csdn.net/20180727143522855?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt></p>
+<p>当然将 moduleA.py 语句 from moduleB import ClassB 改为：import moduleB，将在第二次执行 moduleB.py 语句 from moduleA import ClassA 时报错：ImportError: cannot import name ‘classA’</p>
+<p><strong>解决这种 circular import 循环导入的方法：</strong><br>例比：安装无线网卡时，需上网下载网卡驱动；<br>安装压缩软件时，从网上下载的压缩软件安装程序是被压缩的文件。<br><strong>方法 1</strong>—–&gt; 延迟导入（lazy import）：把 import 语句写在方法 / 函数里，将它的作用域限制在局部。（此法可能导致性能问题）<br><strong>方法 2</strong>—–&gt; 将 from x import y 改成 import x.y 形式<br><strong>方法 3</strong>—–&gt; 组织代码（重构代码）：更改代码布局，可合并或分离竞争资源。<br>合并—–&gt; 都写到一个. py 文件里；<br>分离–&gt; 把需要 import 的资源提取到一个第三方. py 文件中。<br>总之，将循环变成单向。</p>
+<p><strong>3、包（package）import</strong><br>在一个文件下同时有init.py 文件、和其他模块文件时，该文件夹即看作一个包（package）。包的导入 和模块导入基本一致，只是<strong>导入包</strong>时，<strong>会执行这个init.py，而不是模块中的语句。</strong><br>而且，如果<strong>只是单纯地导入包【形如：import xxx】</strong>，而包的init.py 中有没有明确地的其他初始化操作，则：此包下的模块 是不会被自动导入的。当然该包是会成功导入的，并将包名称放入当前. py 的 Local 命名空间中。<br><img src="https://img-blog.csdn.net/20180727144304644?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODI1NjQ3NA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt><br>[D：youcaihua\test\PkgDemo\mod.py] 文件<br>[D：youcaihua\test\PkgDemo\pkg1\pkg1_mod.py] 文件<br>[D：youcaihua\test\PkgDemo\pkg2\pkg2_mod.py] 文件，三个文件同样的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getName</span><span class="params">()</span>:</span></span><br><span class="line">    print(__name__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    getName()</span><br></pre></td></tr></table></figure>
+<p>[D：youcaihua\test\test.py] 文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PkgDemo.mod<span class="comment">#1</span></span><br><span class="line">print(locals(),<span class="string">'\n'</span>)</span><br><span class="line"><span class="keyword">import</span> PkgDemo.pkg1<span class="comment">#2</span></span><br><span class="line">print(locals(),<span class="string">'\n'</span>)</span><br><span class="line"><span class="keyword">import</span> PkgDemo.pkg1.pkg1_mod <span class="keyword">as</span> m1<span class="comment">#3</span></span><br><span class="line">print(locals(),<span class="string">'\n'</span>)</span><br><span class="line"><span class="keyword">import</span> PkgDemo.pkg2.pkg2_mod<span class="comment">#4</span></span><br><span class="line">PkgDemo.mod.getName()<span class="comment">#5</span></span><br><span class="line">print(<span class="string">'调用mod.py----'</span>, locals(), <span class="string">'\n'</span>)</span><br><span class="line">m1.getName()<span class="comment">#6</span></span><br><span class="line">PkgDemo.pkg2.pkg2_mod.getName()<span class="comment">#7</span></span><br></pre></td></tr></table></figure>
+<p>执行 <strong>#1</strong> 后，将 PkgDemo、PkgDemo.mod 加入 sys.modules 中，此时可调用 PkgDemo.mod 的任何类、或函数。当不能调用包 PkgDemo.pkg1 或 pkg2 下任何模块。但当前 test.py 文件 Local 命名空间中<strong>只有</strong> PkgDemo。</p>
+<p>执行 <strong>#2</strong> 后，只是将 PkgDemo.pkg1 载入内存，sys.modules 会有 PkgDemo、PkgDemo.mod、PkgDemo.pkg1 三个模块。但 PkgDemo.pkg1 下的任何模块 都没有自动载入内存，所以在此时：PkgDemo.pkg1.pkg1_mod.getName() 将会出错。当前 test.py 的 Local 命名空间依然只有 PkgDemo。</p>
+<p>执行 <strong>#3</strong> 后，会将 pkg1_mod 载入内存，sys.modules 会有 PkgDemo、PkgDemo.mod、PkgDemo.pkg1、PkgDemo.pkg1.pkg1_mod 四个模块，此时可执行 PkgDemo.pkg1.pkg1_mod.getName()。由于使用了 as，当前 Local 命名空间将另外添加 m1（作为 PkgDemo.pkg1.pkg1_mod 的别名）、当然还有 PkgDemo。</p>
+<p>执行 <strong>#4</strong> 后，会将 PkgDemo.pkg2、PkgDemo.pkg2.pkg2_mod 载入内存，sys.modules 中会有 PkgDemo、PkgDemo.mod、PkgDemo.pkg1、PkgDemo.pkg1.pkg1_mod、PkgDemo.pkg2、PkgDemo.pkg2.pkg2_mod 六个模块，当然：当前 Local 命名空间还是只有 PkgDemo、m1。</p>
+<p><strong>#5</strong>、<strong>#6</strong>、<strong>#7</strong> 当然都可正确执行。</p>
+<h2 id="三、How-to-avoid-Python-circle-import-error？如何避免-Python-的循环导入问题？"><a href="#三、How-to-avoid-Python-circle-import-error？如何避免-Python-的循环导入问题？" class="headerlink" title="三、How to avoid Python circle import error？如何避免 Python 的循环导入问题？"></a>三、How to avoid Python circle import error？如何避免 Python 的循环导入问题？</h2><p>代码布局、（架构）设计问题，解决之道是：将循环变成单向。采用分层、用时导入、相对导入（层次建议不要超过两个）</p>
+<p>注意：在命令行执行 Python xx.py、与 IDE 中执行，结果可能不同。</p>
+<p>如需转载请注明出处。<br>参考：<br><a href="https://www.python.org/dev/peps/pep-0328/" target="_blank" rel="noopener">官方规范</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/转载/" rel="tag"><i class="fa fa-tag"></i> 转载</a>
+            
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+            
+              <a href="/tags/import/" rel="tag"><i class="fa fa-tag"></i> import</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/04/17/vscode-remote-connect-to-Windows/" rel="next" title="vscode-remote-connect-to-Windows">
+                  <i class="fa fa-chevron-left"></i> vscode-remote-connect-to-Windows
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、理解一些基本概念"><span class="nav-number">1.</span> <span class="nav-text">一、理解一些基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Python-运行机制：理解-Python-在执行-import-语句（导入内置（Python-自个的）或第三方模块（已在-sys-path-中））时，进行了啥操作？"><span class="nav-number">2.</span> <span class="nav-text">二、Python 运行机制：理解 Python 在执行 import 语句（导入内置（Python 自个的）或第三方模块（已在 sys.path 中））时，进行了啥操作？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、How-to-avoid-Python-circle-import-error？如何避免-Python-的循环导入问题？"><span class="nav-number">3.</span> <span class="nav-text">三、How to avoid Python circle import error？如何避免 Python 的循环导入问题？</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/avatar.jpg"
+      alt="ChocoCLv">
+  <p class="site-author-name" itemprop="name">ChocoCLv</p>
+  <div class="site-description" itemprop="description">兔子🐇和窝边草🌱</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/ChocoCLv" title="GitHub &rarr; https://github.com/ChocoCLv" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:choco_cl@163.com" title="E-Mail &rarr; mailto:choco_cl@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yihuan18.github.io" title="https://yihuan18.github.io" rel="noopener" target="_blank">🐇</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ChocoCLv</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: true,
+    notify: true,
+    appId: 'GwHoR7bLobe4hKkOCAWxciu9-gzGzoHsz',
+    appKey: 'Jh8cJAls7JYaw9FeidM0gtVQ',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
