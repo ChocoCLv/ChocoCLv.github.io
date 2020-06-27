@@ -292,7 +292,7 @@
                 
               
 
-              <time title="创建时间：2020-06-27 20:56:59 / 修改时间：20:57:11" itemprop="dateCreated datePublished" datetime="2020-06-27T20:56:59+08:00">2020-06-27</time>
+              <time title="创建时间：2020-06-27 20:56:59 / 修改时间：21:11:11" itemprop="dateCreated datePublished" datetime="2020-06-27T20:56:59+08:00">2020-06-27</time>
             </span>
           
             
@@ -327,34 +327,15 @@
       
           <h1 id="k8s"><a href="#k8s" class="headerlink" title="k8s"></a>k8s</h1><p>kubernetes 是一个开源<strong>容器</strong>编排引擎，用于容器化应用的自动化部署、扩展和管理。</p>
 <h2 id="minikube"><a href="#minikube" class="headerlink" title="minikube"></a>minikube</h2><p>Minikube 是一种可以让您在本地轻松运行 Kubernetes 的工具。Minikube 在笔记本电脑上的虚拟机（VM）中运行单节点 Kubernetes 集群，供那些希望尝试 Kubernetes 或进行日常开发的用户使用。</p>
-<p>minikube 支持<a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver" target="_blank" rel="noopener">多种虚拟化平台</a>，比如</p>
-<ul>
-<li>docker</li>
-<li>virtualbox</li>
-<li>podman</li>
-<li>vmwarefusion</li>
-<li>kvm2</li>
-<li>hyperkit</li>
-<li>hyperv</li>
-<li>vmware</li>
-<li>parallels</li>
-<li>none</li>
-</ul>
-<h3 id="Windows-平台下安装-minikube"><a href="#Windows-平台下安装-minikube" class="headerlink" title="Windows 平台下安装 minikube"></a>Windows 平台下安装 minikube</h3><p>本文在 Windows 平台上安装，考虑 docker、hyperv 两种方式，要求 docker 的容器类型为 Linux Container，但是一直无法转换成功，故选用 hyperv。</p>
-<p>宿主机曾经安装、卸载过 hyperv，此次直接在功能中开启 hyperv 并开启 BIOS 的虚拟化后仍无法识别到 hyperv。在 powershell 中运行以下命令成功开启</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All</span><br><span class="line">bcdedit / set hypervisorlaunchtype auto</span><br></pre></td></tr></table></figure>
-<p>后续需要下载镜像，所以还需要配置 powershell 的代理</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$env:HTTPS_PROXY</span>=<span class="string">"http://127.0.0.1:1080"</span></span><br><span class="line"><span class="variable">$env:HTTP_PROXY</span>=<span class="string">"http://127.0.0.1:1080"</span></span><br></pre></td></tr></table></figure>
-<p><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/tools/install-minikube/</a></p>
-<p>下载<a href="https://github.com/kubernetes/minikube/releases/latest/download/minikube-installer.exe" target="_blank" rel="noopener">minikube</a></p>
-<p>启动 minikube，需要以管理员权限启动 powershell.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">minikube start --driver=hyperv</span><br><span class="line"><span class="comment"># 该命令下载https://storage.googleapis.com/minikube/iso/minikube-v1.11.0.iso，</span></span><br></pre></td></tr></table></figure>
-<p>输出以下内容</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">* Microsoft Windows 10 Pro 10.0.18362 Build 18362 上的 minikube v1.11.0                                                 * 根据现有的配置文件使用 hyperv 驱动程序</span><br><span class="line">* Starting control plane node minikube <span class="keyword">in</span> cluster minikube</span><br><span class="line">* Creating hyperv VM (CPUs=2, Memory=4000MB, Disk=20000MB) ...</span><br><span class="line">! This VM is having trouble accessing https://k8s.gcr.io</span><br><span class="line">* To pull new external images, you may need to configure a proxy: https://minikube.sigs.k8s.io/docs/reference/networking/proxy/</span><br><span class="line">* 正在 Docker 19.03.8 中准备 Kubernetes v1.18.3…</span><br><span class="line">* Verifying Kubernetes components...</span><br><span class="line">* Enabled addons: default-storageclass, storage-provisioner</span><br><span class="line">* 完成！kubectl 已经配置至 <span class="string">"minikube"</span></span><br><span class="line"></span><br><span class="line">! C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe is version 1.14.8, <span class="built_in">which</span> may be incompatible with Kubernetes 1.18.3.</span><br><span class="line">* You can also use <span class="string">'minikube kubectl -- get pods'</span> to invoke a matching version</span><br></pre></td></tr></table></figure>
-<p>查看 minikube 状态</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube status</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">minikube</span><br><span class="line">type: Control Plane</span><br><span class="line">host: Running</span><br><span class="line">kubelet: Running</span><br><span class="line">apiserver: Running</span><br><span class="line">kubeconfig: Configured</span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2020/06/27/k8s/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
