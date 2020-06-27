@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="FabricFabric 是一个用于执行 SSH 命令的 Python 库，提供了run(), local(), sudo接口封装，分别用于执行远程命令、本地命令以及 sudo 权限的远程命令。 一般用于应用远程部署以及系统管理任务。 官网为：https://www.fabfile.org/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fabric">
+<meta property="og:url" content="http://yoursite.com/2020/06/27/Fabric/index.html">
+<meta property="og:site_name" content="窝边草">
+<meta property="og:description" content="FabricFabric 是一个用于执行 SSH 命令的 Python 库，提供了run(), local(), sudo接口封装，分别用于执行远程命令、本地命令以及 sudo 权限的远程命令。 一般用于应用远程部署以及系统管理任务。 官网为：https://www.fabfile.org/">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-27T12:56:43.393Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fabric">
+<meta name="twitter:description" content="FabricFabric 是一个用于执行 SSH 命令的 Python 库，提供了run(), local(), sudo接口封装，分别用于执行远程命令、本地命令以及 sudo 权限的远程命令。 一般用于应用远程部署以及系统管理任务。 官网为：https://www.fabfile.org/">
+  <link rel="canonical" href="http://yoursite.com/2020/06/27/Fabric/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Fabric | 窝边草</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?859cee8f5da7a00121e9a0bef911e58c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">窝边草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-commonweal">
+      
+    
+
+    <a href="/404.html" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/27/Fabric/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Fabric
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-27 20:56:06 / 修改时间：20:56:43" itemprop="dateCreated datePublished" datetime="2020-06-27T20:56:06+08:00">2020-06-27</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/27/Fabric/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/06/27/Fabric/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Fabric"><a href="#Fabric" class="headerlink" title="Fabric"></a>Fabric</h1><p>Fabric 是一个用于执行 SSH 命令的 Python 库，提供了<code>run(), local(), sudo</code>接口封装，分别用于执行远程命令、本地命令以及 sudo 权限的远程命令。</p>
+<p>一般用于应用远程部署以及系统管理任务。</p>
+<p>官网为：<a href="https://www.fabfile.org/" target="_blank" rel="noopener">https://www.fabfile.org/</a></p>
+<a id="more"></a>
+<h2 id="不同版本"><a href="#不同版本" class="headerlink" title="不同版本"></a>不同版本</h2><p>目前存在 Fabric1、Fabric2 和 Fabric3 三个版本，其中 Fabric1 只支持 Python2，Fabric2 同时支持 Python2 和 Python3，但是不兼容 Fabric1。而 Fabric3 为网友从 Fabric1 fork 出来并修改支持 Python2 和 Python3 的版本，同时兼容 Fabric1。</p>
+<p>官方目前推荐使用 Fabric2。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install fabric2</span><br></pre></td></tr></table></figure>
+<p>本文安装后版本为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ fab -V</span><br><span class="line">Fabric 2.5.0</span><br><span class="line">Paramiko 2.7.1</span><br><span class="line">Invoke 1.4.1</span><br></pre></td></tr></table></figure>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><p><a href="https://docs.fabfile.org/en/2.5/getting-started.html" target="_blank" rel="noopener">https://docs.fabfile.org/en/2.5/getting-started.html</a></p>
+<h3 id="关于-import-的说明"><a href="#关于-import-的说明" class="headerlink" title="关于 import 的说明"></a>关于 import 的说明</h3><p>Fabric 组合使用了一系列其他库，但同时提供了直接访问这些库的方法，用户代码通常从<code>fabric</code>导入，但仍然可以直接从<code>invoke</code>或<code>paramiko</code>导入。</p>
+<ul>
+<li><a href="https://www.pyinvoke.org/" target="_blank" rel="noopener">Invoke</a>：实现了 CLI 解析、任务管理以及（本地）shell 命令执行。Fabric 用户通常需要导入 Invoke 的对象。</li>
+<li><a href="https://www.paramiko.org/" target="_blank" rel="noopener">Paramiko</a>：实现了低/中层次的 SSH 功能，比如 SSH 和 SFTP 会话以及 key 管理。很少需要直接从 Paramiko 导入。</li>
+<li>Fabric 子类化 Invoke 的上下文和 command-runner classes，并包装为 Paramiko 级别的原语；通过使用 Paramiko 对 sshd_config 的解析继承了 Invoke 的配置系统；实现了一个新的高级别的原语，比如端口转发上下文管理器。</li>
+</ul>
+<h2 id="通过-Connects-和-run-运行命令"><a href="#通过-Connects-和-run-运行命令" class="headerlink" title="通过 Connects 和 run 运行命令"></a>通过 Connects 和 run 运行命令</h2><p>Fabric 的最基础应用就是通过 SSH 在远端机器上执行 shell 命令。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fabric2 <span class="keyword">import</span> Connection</span><br><span class="line"></span><br><span class="line">c = Connection(<span class="string">'aliyun'</span>)</span><br><span class="line">result = c.run(<span class="string">'uname -s'</span>)<span class="comment">#Linux</span></span><br><span class="line">print(result.stdout.strip() == <span class="string">'Linux'</span>) <span class="comment">#True</span></span><br><span class="line">print(result.exited) <span class="comment"># True</span></span><br><span class="line">print(result.ok) <span class="comment"># 0</span></span><br><span class="line">print(result.command)<span class="comment"># uname -s</span></span><br><span class="line">print(result.connection)<span class="comment">#&lt;Connection host=xxx port=xxx&gt;</span></span><br><span class="line">print(result.connection.host)<span class="comment"># xxx</span></span><br><span class="line">print(result.shell) <span class="comment"># /bin/bash</span></span><br></pre></td></tr></table></figure>
+<p><code>Connection</code>表示一个 SSH 会话，并提供了 Fabric 的核心 API，比如<code>run()</code></p>
+<blockquote>
+<p><code>Connection</code>: <a href="https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection" target="_blank" rel="noopener">https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection</a></p>
+</blockquote>
+<p>可以通过以下几种方式创建一个 Connection</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Connection(<span class="string">'web1'</span>)</span><br><span class="line">Connection(host=<span class="string">'web1'</span>, user=<span class="string">'deploy'</span>, port=<span class="number">2202</span>)</span><br><span class="line">Connection(<span class="string">'deploy@web1:2202'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="fabric-connection-Connection-run"><a href="#fabric-connection-Connection-run" class="headerlink" title="fabric.connection.Connection.run()"></a><a href="https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.run" target="_blank" rel="noopener">fabric.connection.Connection.run()</a></h3><p>包装调用 <a href="http://docs.pyinvoke.org/en/latest/api/runners.html#invoke.runners.Runner.run" target="_blank" rel="noopener">invoke.runners.Runner.run</a></p>
+<h3 id="invoke-runners-Result"><a href="#invoke-runners-Result" class="headerlink" title="invoke.runners.Result"></a>invoke.runners.Result</h3><p><code>run()</code>返回的数据结构为<a href="http://docs.pyinvoke.org/en/latest/api/runners.html#invoke.runners.Result" target="_blank" rel="noopener">invoke.runners.Result</a>，包含以下参数，用于指示 what was requested, what happened while the remote action occurred, and what the final result was。</p>
+<ul>
+<li>stdout: str</li>
+<li>stderr: str</li>
+<li>encoding: str，本地 shell 环境使用的字符串编码</li>
+<li>command: str, 被执行的命令</li>
+<li>shell: str，执行命令的 shell</li>
+<li>env: dict，默认为{}</li>
+<li>exited: int，0 为 ok，但是当 subprocess 没有执行完成时可能会返回 None。</li>
+<li>pty: bool，subprocess 是否是被 pty 调用</li>
+<li>hide: tuple，取值为(‘stdout’, ‘stderr’)</li>
+<li>return_code: 同 exited</li>
+<li>ok: exited==0</li>
+<li>failed：not ok</li>
+<li>tail(stream, count=10):</li>
+<li>__weakref__ : list of weak references to the object (if defined)</li>
+</ul>
+<h2 id="通过-auto-response-使用超级用户权限"><a href="#通过-auto-response-使用超级用户权限" class="headerlink" title="通过 auto-response 使用超级用户权限"></a>通过 auto-response 使用超级用户权限</h2><p>直接使用 c.run(‘sudo xxx’)将需要在每次执行该命令时输入密码（如果远端机器没被配置为 passwordless sudo）。</p>
+<p>Invoke 提供了 auto-respond 机制用于自动回复系统要求的输入，通过模板匹配填充对应的输入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fabric2 <span class="keyword">import</span> Connection</span><br><span class="line"><span class="keyword">from</span> invoke <span class="keyword">import</span> Responder</span><br><span class="line"></span><br><span class="line">c = Connection(<span class="string">'aliyun'</span>)</span><br><span class="line">sudopass = Responder(</span><br><span class="line">    pattern=<span class="string">'root@localhost\'s password:'</span>, <span class="comment">#一般为正则表达式</span></span><br><span class="line">    response=<span class="string">'xxx\n'</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">c.run(<span class="string">'ssh root@localhost -p xxx'</span>, pty=<span class="literal">True</span>, watchers=[sudopass])</span><br></pre></td></tr></table></figure>
+<h3 id="sudo-helper"><a href="#sudo-helper" class="headerlink" title="sudo helper"></a>sudo helper</h3><p><code>Responder</code>需要设置固定的模板，用起来还是有些许不便，<code>Invoke</code>还提供了<code>Context.sudo()</code>来处理 sudo 命令，由于<code>Connection</code>是<code>Context</code>的子类，所以可以直接使用该接口。在使用<code>Context.sudo()</code>之前，需要确保在配置文件中填充了<code>sudo.password</code>。或者使用命令行参数<code>--prompt-for-sudo-password</code>。</p>
+<h2 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fabric2 <span class="keyword">import</span> Connection</span><br><span class="line"></span><br><span class="line">c = Connection(<span class="string">'aliyun'</span>)</span><br><span class="line">result = c.put(<span class="string">'fabric.py'</span>, remote=<span class="string">'/root/'</span>)</span><br><span class="line">print(<span class="string">"Uploaded &#123;0.local&#125; to &#123;0.remote&#125;"</span>.format(result))</span><br><span class="line"><span class="comment"># Uploaded /root/python/fabric.py to /root/fabric.py</span></span><br></pre></td></tr></table></figure>
+<h2 id="使用-Group-对一组服务器进行同样的操作"><a href="#使用-Group-对一组服务器进行同样的操作" class="headerlink" title="使用 Group 对一组服务器进行同样的操作"></a>使用 Group 对一组服务器进行同样的操作</h2><p>遍历分别处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fabric <span class="keyword">import</span> Connection</span><br><span class="line"><span class="keyword">for</span> host <span class="keyword">in</span> (<span class="string">'web1'</span>, <span class="string">'web2'</span>, <span class="string">'mac1'</span>):</span><br><span class="line">    result = Connection(host).run(<span class="string">'uname -s'</span>)</span><br><span class="line">    print(<span class="string">"&#123;&#125;: &#123;&#125;"</span>.format(host, result.stdout.strip()))</span><br></pre></td></tr></table></figure>
+<p>Group</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fabric <span class="keyword">import</span> SerialGroup <span class="keyword">as</span> Group</span><br><span class="line">pool = Group(<span class="string">'web1'</span>, <span class="string">'web2'</span>, <span class="string">'web3'</span>)</span><br><span class="line">pool.put(<span class="string">'myfiles.tgz'</span>, <span class="string">'/opt/mydata'</span>)</span><br><span class="line">pool.run(<span class="string">'tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz'</span>)</span><br></pre></td></tr></table></figure>
+<p>但是如果需要进行逻辑判断后再进行操作，还是需要分别对每个 Connection 进行处理。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/04/22/Python-import详解/" rel="next" title="Python import详解">
+                  <i class="fa fa-chevron-left"></i> Python import详解
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/06/27/k8s/" rel="prev" title="k8s">
+                  k8s <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Fabric"><span class="nav-number">1.</span> <span class="nav-text">Fabric</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不同版本"><span class="nav-number">1.1.</span> <span class="nav-text">不同版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速开始"><span class="nav-number">1.3.</span> <span class="nav-text">快速开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于-import-的说明"><span class="nav-number">1.3.1.</span> <span class="nav-text">关于 import 的说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过-Connects-和-run-运行命令"><span class="nav-number">1.4.</span> <span class="nav-text">通过 Connects 和 run 运行命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fabric-connection-Connection-run"><span class="nav-number">1.4.1.</span> <span class="nav-text">fabric.connection.Connection.run()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#invoke-runners-Result"><span class="nav-number">1.4.2.</span> <span class="nav-text">invoke.runners.Result</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过-auto-response-使用超级用户权限"><span class="nav-number">1.5.</span> <span class="nav-text">通过 auto-response 使用超级用户权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo-helper"><span class="nav-number">1.5.1.</span> <span class="nav-text">sudo helper</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传输文件"><span class="nav-number">1.6.</span> <span class="nav-text">传输文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Group-对一组服务器进行同样的操作"><span class="nav-number">1.7.</span> <span class="nav-text">使用 Group 对一组服务器进行同样的操作</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/avatar.jpg"
+      alt="ChocoCLv">
+  <p class="site-author-name" itemprop="name">ChocoCLv</p>
+  <div class="site-description" itemprop="description">兔子🐇和窝边草🌱</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/ChocoCLv" title="GitHub &rarr; https://github.com/ChocoCLv" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:choco_cl@163.com" title="E-Mail &rarr; mailto:choco_cl@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yihuan18.github.io" title="https://yihuan18.github.io" rel="noopener" target="_blank">🐇</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ChocoCLv</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: true,
+    notify: true,
+    appId: 'GwHoR7bLobe4hKkOCAWxciu9-gzGzoHsz',
+    appKey: 'Jh8cJAls7JYaw9FeidM0gtVQ',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

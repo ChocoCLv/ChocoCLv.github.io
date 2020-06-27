@@ -263,6 +263,218 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/27/k8s/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/06/27/k8s/" class="post-title-link" itemprop="url">k8s</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-27 20:56:59 / 修改时间：20:57:11" itemprop="dateCreated datePublished" datetime="2020-06-27T20:56:59+08:00">2020-06-27</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/27/k8s/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/06/27/k8s/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="k8s"><a href="#k8s" class="headerlink" title="k8s"></a>k8s</h1><p>kubernetes 是一个开源<strong>容器</strong>编排引擎，用于容器化应用的自动化部署、扩展和管理。</p>
+<h2 id="minikube"><a href="#minikube" class="headerlink" title="minikube"></a>minikube</h2><p>Minikube 是一种可以让您在本地轻松运行 Kubernetes 的工具。Minikube 在笔记本电脑上的虚拟机（VM）中运行单节点 Kubernetes 集群，供那些希望尝试 Kubernetes 或进行日常开发的用户使用。</p>
+<p>minikube 支持<a href="https://kubernetes.io/docs/setup/learning-environment/minikube/#specifying-the-vm-driver" target="_blank" rel="noopener">多种虚拟化平台</a>，比如</p>
+<ul>
+<li>docker</li>
+<li>virtualbox</li>
+<li>podman</li>
+<li>vmwarefusion</li>
+<li>kvm2</li>
+<li>hyperkit</li>
+<li>hyperv</li>
+<li>vmware</li>
+<li>parallels</li>
+<li>none</li>
+</ul>
+<h3 id="Windows-平台下安装-minikube"><a href="#Windows-平台下安装-minikube" class="headerlink" title="Windows 平台下安装 minikube"></a>Windows 平台下安装 minikube</h3><p>本文在 Windows 平台上安装，考虑 docker、hyperv 两种方式，要求 docker 的容器类型为 Linux Container，但是一直无法转换成功，故选用 hyperv。</p>
+<p>宿主机曾经安装、卸载过 hyperv，此次直接在功能中开启 hyperv 并开启 BIOS 的虚拟化后仍无法识别到 hyperv。在 powershell 中运行以下命令成功开启</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All</span><br><span class="line">bcdedit / set hypervisorlaunchtype auto</span><br></pre></td></tr></table></figure>
+<p>后续需要下载镜像，所以还需要配置 powershell 的代理</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$env:HTTPS_PROXY</span>=<span class="string">"http://127.0.0.1:1080"</span></span><br><span class="line"><span class="variable">$env:HTTP_PROXY</span>=<span class="string">"http://127.0.0.1:1080"</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/tools/install-minikube/</a></p>
+<p>下载<a href="https://github.com/kubernetes/minikube/releases/latest/download/minikube-installer.exe" target="_blank" rel="noopener">minikube</a></p>
+<p>启动 minikube，需要以管理员权限启动 powershell.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">minikube start --driver=hyperv</span><br><span class="line"><span class="comment"># 该命令下载https://storage.googleapis.com/minikube/iso/minikube-v1.11.0.iso，</span></span><br></pre></td></tr></table></figure>
+<p>输出以下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">* Microsoft Windows 10 Pro 10.0.18362 Build 18362 上的 minikube v1.11.0                                                 * 根据现有的配置文件使用 hyperv 驱动程序</span><br><span class="line">* Starting control plane node minikube <span class="keyword">in</span> cluster minikube</span><br><span class="line">* Creating hyperv VM (CPUs=2, Memory=4000MB, Disk=20000MB) ...</span><br><span class="line">! This VM is having trouble accessing https://k8s.gcr.io</span><br><span class="line">* To pull new external images, you may need to configure a proxy: https://minikube.sigs.k8s.io/docs/reference/networking/proxy/</span><br><span class="line">* 正在 Docker 19.03.8 中准备 Kubernetes v1.18.3…</span><br><span class="line">* Verifying Kubernetes components...</span><br><span class="line">* Enabled addons: default-storageclass, storage-provisioner</span><br><span class="line">* 完成！kubectl 已经配置至 <span class="string">"minikube"</span></span><br><span class="line"></span><br><span class="line">! C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe is version 1.14.8, <span class="built_in">which</span> may be incompatible with Kubernetes 1.18.3.</span><br><span class="line">* You can also use <span class="string">'minikube kubectl -- get pods'</span> to invoke a matching version</span><br></pre></td></tr></table></figure>
+<p>查看 minikube 状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube status</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">minikube</span><br><span class="line">type: Control Plane</span><br><span class="line">host: Running</span><br><span class="line">kubelet: Running</span><br><span class="line">apiserver: Running</span><br><span class="line">kubeconfig: Configured</span><br></pre></td></tr></table></figure>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/27/Fabric/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ChocoCLv">
+      <meta itemprop="description" content="兔子🐇和窝边草🌱">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="窝边草">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/06/27/Fabric/" class="post-title-link" itemprop="url">Fabric</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-27 20:56:06 / 修改时间：20:56:43" itemprop="dateCreated datePublished" datetime="2020-06-27T20:56:06+08:00">2020-06-27</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/27/Fabric/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/06/27/Fabric/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Fabric"><a href="#Fabric" class="headerlink" title="Fabric"></a>Fabric</h1><p>Fabric 是一个用于执行 SSH 命令的 Python 库，提供了<code>run(), local(), sudo</code>接口封装，分别用于执行远程命令、本地命令以及 sudo 权限的远程命令。</p>
+<p>一般用于应用远程部署以及系统管理任务。</p>
+<p>官网为：<a href="https://www.fabfile.org/" target="_blank" rel="noopener">https://www.fabfile.org/</a></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2020/06/27/Fabric/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/22/Python-import详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1062,227 +1274,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ChocoCLv">
-      <meta itemprop="description" content="兔子🐇和窝边草🌱">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="窝边草">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/" class="post-title-link" itemprop="url">（转）如何熟悉一个系统？（内含知识大图）</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2020-01-31 16:41:38" itemprop="dateCreated datePublished" datetime="2020-01-31T16:41:38+08:00">2020-01-31</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-22 15:41:15" itemprop="dateModified" datetime="2020-04-22T15:41:15+08:00">2020-04-22</time>
-              </span>
-            
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>开发人员经常会面临下面一些场景：</p>
-<ul>
-<li>新人入职，需要学习已有系统，作为 landing 的一部分，如何学习？</li>
-<li>被拉过去参与一个陌生系统的迭代开发或者系统维护（bugfix），如何快速上手？</li>
-<li>同事离职或转岗，需要把系统交接给你，怎么去接？ 内心 os：这是一口锅吗？</li>
-</ul>
-<p><img src="https://static001.infoq.cn/resource/image/cb/bb/cbf60fd42b79fabeea36ed0523beeebb.png" alt></p>
-<p>这样的场景多了，就需要去梳理常见问题以及应对方法，方便后续遇到类似场景可以快速应对。本文总结熟悉系统主要分三部分：业务学习、技术学习、实战。每部分会梳理一些在学习过程中需要解答的问题，这些问题随着经验的积累需要逐步补充完善。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2020/01/31/（转）如何熟悉一个系统？（内含知识大图）/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/06/JVM-堆/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ChocoCLv">
-      <meta itemprop="description" content="兔子🐇和窝边草🌱">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="窝边草">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/01/06/JVM-堆/" class="post-title-link" itemprop="url">JVM:堆</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2020-01-06 10:54:00" itemprop="dateCreated datePublished" datetime="2020-01-06T10:54:00+08:00">2020-01-06</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-11 16:49:57" itemprop="dateModified" datetime="2020-04-11T16:49:57+08:00">2020-04-11</time>
-              </span>
-            
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/01/06/JVM-堆/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/01/06/JVM-堆/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在菜鸟补招面试中被问到</p>
-<blockquote>
-<p>详细讲讲堆吧。</p>
-</blockquote>
-<p>竟一时不知从何说起。面试完才想起来：</p>
-<ol>
-<li>JVM垃圾回收不就主要针对的堆区域吗，至少可以说说年轻代和老年代等。</li>
-<li>实例对象都是放在堆中的，那还可以说下实例对象的组成：Markword、实例数据和填充等。</li>
-</ol>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2020/01/06/JVM-堆/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1335,7 +1326,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1506,11 +1497,11 @@
       
     
       
+    
+      
+    
+      
         
-      
-    
-      
-    
       
     
       
